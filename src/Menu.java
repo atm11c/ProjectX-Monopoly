@@ -101,7 +101,6 @@ class MenuPanel extends JPanel{
                 JFrame gFrame = new JFrame("Game Board");
                 BoardPanel test1 = new BoardPanel();
 
-
                 gFrame.setSize( 1100, 1100 );
                 gFrame.setResizable(false);
                 gFrame.setVisible( true );
