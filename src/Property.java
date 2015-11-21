@@ -3,6 +3,8 @@
  */
 public class Property extends OwnedCell {
 
+    private final String[] COLORS = {"Brown", "Light Blue", "Pink", "Orange", "Red", "Yellow", "Green", "Dark Blue"};
+
     private String color;
     private int rent0,rent1,rent2,rent3,rent4,rent5;
     private int numHouses;
@@ -10,15 +12,15 @@ public class Property extends OwnedCell {
 
     Property(int i){
         super(i);
-        setColor("derp");
+        setColor(COLORS[i/5]);
         setRent0(i);
         setRent1(i);
         setRent2(i);
         setRent3(i);
         setRent4(i);
         setRent5(i);
-        setNumHouses(i);
-        setRowNum(i);
+        setNumHouses(0);
+        setRowNum(getCellId()/10+1);
     }
 
     /**
