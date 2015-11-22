@@ -11,12 +11,16 @@ public class OwnedCell extends BoardCell {
     private int price;
     private int mortgage;
     private boolean owned;
+    private boolean isRR;
+    private boolean isUtil;
 
     OwnedCell(int i){
         super(i);
         setPrice(PRICES[i]);
         setMortgage(MORTS[i]);
         setOwned(false);
+        setisRR(i);
+        setisUtil(i);
     }
 
     /**
@@ -46,5 +50,28 @@ public class OwnedCell extends BoardCell {
     public boolean getOwned(){
         return owned;
     }
+
+    public void setisRR(int i){
+        if(i%5==0)
+            isRR = true;
+        else
+            isRR = false;
+    }
+
+    public boolean getisRR(){
+        return isRR;
+    }
+
+    public void setisUtil(int i){
+        if(i==12 ||i== 28)
+            isUtil = true;
+        else
+            isUtil = false;
+    }
+
+    public boolean getisUtil(){
+        return isUtil;
+    }
+
 
 }
