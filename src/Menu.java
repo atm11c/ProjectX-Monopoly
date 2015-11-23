@@ -156,6 +156,7 @@ class BoardPanel extends JPanel{
 
         add(pic);
 
+
     }
     public class test {
         public BufferedImage scaleImage(int w, int h, ImageIcon I) {
