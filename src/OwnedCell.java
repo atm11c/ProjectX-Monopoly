@@ -10,7 +10,7 @@ public class OwnedCell extends BoardCell {
     //private Player owner;
     private int price;
     private int mortgage;
-    private boolean owned;
+    private int owner;
     private boolean isRR;
     private boolean isUtil;
 
@@ -18,7 +18,7 @@ public class OwnedCell extends BoardCell {
         super(i);
         setPrice(PRICES[i]);
         setMortgage(MORTS[i]);
-        setOwned(false);
+        setOwner(10);
         setisRR(i);
         setisUtil(i);
     }
@@ -42,13 +42,12 @@ public class OwnedCell extends BoardCell {
         return mortgage;
     }
 
-    public void setOwned(boolean b){
-        owned = b;
+    public void setOwner(int i){
+        owner = i;
     }
 
-    //THE DREAM
-    public boolean getOwned(){
-        return owned;
+    public int getOwner(){
+        return owner;
     }
 
     public void setisRR(int i){
