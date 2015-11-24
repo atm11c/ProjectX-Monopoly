@@ -111,7 +111,7 @@ class MenuPanel extends JPanel{
                 int height = (int)screenSize.getHeight();
 
 
-                gFrame.setSize( width/2, height);
+                gFrame.setSize( width, height);
                 gFrame.setResizable( false );
                 gFrame.setVisible( true );
                 gFrame.add(test1);
@@ -136,39 +136,185 @@ class MenuPanel extends JPanel{
 }
 
 
-class BoardPanel extends JPanel{
+//class BoardPanel extends JPanel{
+//
+//    public BoardPanel(){
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        int width = (int)screenSize.getWidth()/2 -100;
+//        int height = (int)screenSize.getHeight()-100;
+//
+//
+//
+//
+//        ImageIcon man = new ImageIcon( this.getClass().getResource("Board.jpg"));
+//
+//        BufferedImage img = new test().scaleImage(width, height, man);
+//
+//        ImageIcon i = new ImageIcon(img);
+//
+//        JLabel pic = new JLabel(i);
+//
+//        add(pic);
+//
+//
+//    }
+//    public class test {
+//        public BufferedImage scaleImage(int w, int h, ImageIcon I) {
+//
+//
+//            BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+//            Graphics2D g2d = (Graphics2D) bi.createGraphics();
+//
+//            g2d.drawImage(I.getImage(), 0, 0, w, h, null);
+//
+//            return bi;
+//        }
+//    }
+//
+//}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class BoardPanel extends JPanel
+{
     public BoardPanel(){
+
+        setLayout(new GridLayout(1,2));
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth()/2 -100;
-        int height = (int)screenSize.getHeight()-100;
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+
+        ImageIcon man = new ImageIcon( this.getClass().getResource("Monopoly-artwork-detail.jpg"));
+        //JLabel pic = new JLabel(man);
+        //add(pic);
 
 
+        JPanel board, t1, t2, t3, t4;
+
+        PlayerInfoPanel pan = new PlayerInfoPanel();
+
+        add(pan);
+
+        board = new JPanel();
+        board.setLayout(new BorderLayout());
 
 
-        ImageIcon man = new ImageIcon( this.getClass().getResource("Board.jpg"));
+        JLabel dumb[] = new JLabel[44];
+        //JLabel dumb[] =  new JLabel[40];
 
-        BufferedImage img = new test().scaleImage(width, height, man);
+        for(int i = 0; i < 41; i++){
 
-        ImageIcon i = new ImageIcon(img);
 
-        JLabel pic = new JLabel(i);
+            if(i == 2 || i == 4  || i == 7  || i == 9 || i == 10  || i == 12  || i == 14 || i == 15
+                      || i == 17 || i == 19 || i == 20 || i == 22 || i == 24 || i == 25 || i == 27
+                      || i == 28 || i == 30 || i == 32 || i == 33 || i == 35 || i == 38 || i == 40) {
+            dumb[i] = new JLabel("Property",  SwingConstants.CENTER);
+            }else if(i == 6 || i == 16 || i == 26 || i == 36){
+                dumb[i] = new JLabel("Train",  SwingConstants.CENTER);
+            }else if(i == 3 || i == 18 || i == 34) {
+                dumb[i] = new JLabel("Chest",  SwingConstants.CENTER);
+            }else if(i == 8 || i == 23 || i == 37) {
+                dumb[i] = new JLabel("Chance",  SwingConstants.CENTER);
+            }else if(i == 5){
+                dumb[i] = new JLabel("Income Tax",  SwingConstants.CENTER);
+            }else if(i == 1) {
+                dumb[i] = new JLabel("Go", SwingConstants.CENTER);
+            }else if(i == 11){
+                dumb[i] = new JLabel("Jail",  SwingConstants.CENTER);
+            }else if(i == 13){
+                dumb[i] = new JLabel("Electric",  SwingConstants.CENTER);
+            }else if(i == 21){
+                dumb[i] = new JLabel("Parking",  SwingConstants.CENTER);
+            }else if(i == 29){
+                dumb[i] = new JLabel("Water",  SwingConstants.CENTER);
+            }else if(i == 31){
+                dumb[i] = new JLabel("Go to Jail",  SwingConstants.CENTER);
+            }else if(i == 39){
+                dumb[i] = new JLabel("Lux Tax",  SwingConstants.CENTER);
+            }else {
+                dumb[i] = new JLabel("", SwingConstants.CENTER);
+            }
 
-        add(pic);
+            dumb[i].setSize((width/2)/10,(width/2)/10);
+        }
 
+        t1 = new JPanel();
+        t2 = new JPanel();
+
+        t3 = new JPanel();
+        t4 = new JPanel();
+
+        t1.setLayout(new GridLayout(1,11));
+        t1.setPreferredSize(new Dimension((width/2)/10,100));
+        t2.setLayout(new GridLayout(1,11));
+        t2.setPreferredSize(new Dimension((width/2)/10,100));
+
+        t3.setLayout(new GridLayout(9,1));
+        t3.setPreferredSize(new Dimension(100,(height/2)/9));
+        t4.setLayout(new GridLayout(9,1));
+        t4.setPreferredSize(new Dimension(100,(height/2)/9));
+
+        for(int i = 11; i > 0; i--){
+            t1.add(dumb[i]);
+        }
+        for(int i = 21; i >11; i--){
+            t3.add(dumb[i]);
+        }
+        for(int i = 21; i < 32; i++){
+            t2.add(dumb[i]);
+        }
+        for(int i = 32; i < 41; i++){
+            t4.add(dumb[i]);
+        }
+
+        board.add(t1, BorderLayout.SOUTH);
+        board.add(t2, BorderLayout.NORTH);
+
+        board.add(t3, BorderLayout.WEST);
+        board.add(t4, BorderLayout.EAST);
+
+        add(board);
+
+        //add(pic, BorderLayout.CENTER);
 
     }
-    public class test {
-        public BufferedImage scaleImage(int w, int h, ImageIcon I) {
+
+}
+
+class PlayerInfoPanel extends JPanel{
+
+    public PlayerInfoPanel(){
+        setLayout(new GridLayout(2,1));
+
+        JButton test = new JButton("Test");
+        add(test);
+
+        JPanel options = new JPanel();
+        options.setLayout(new GridLayout(1,4));
+
+        options.add(new JButton("test1"));
+        options.add(new JButton("test2"));
+        options.add(new JButton("test3"));
+        options.add(new JButton("test4"));
+
+        add(options);
 
 
-            BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = (Graphics2D) bi.createGraphics();
+        //each column will need buttons and which player that column is
 
-            g2d.drawImage(I.getImage(), 0, 0, w, h, null);
-
-            return bi;
-        }
     }
 
 }
@@ -177,109 +323,4 @@ class BoardPanel extends JPanel{
 
 
 
-
-
-
-
-
-
-
-
-
-//
-//class BoardPanel extends JPanel
-//{
-//    public BoardPanel(){
-//
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        int width = (int)screenSize.getWidth();
-//        int height = (int)screenSize.getHeight();
-//
-//        ImageIcon man = new ImageIcon( this.getClass().getResource("Monopoly-artwork-detail.jpg"));
-//        JLabel pic = new JLabel(man);
-//        add(pic);
-//
-//        setLayout(new BorderLayout());
-//        JPanel t1, t2, t3, t4;
-//
-//        JLabel dumb[] = new JLabel[44];
-//        //JLabel dumb[] =  new JLabel[40];
-//
-//        for(int i = 0; i < 44; i++){
-//
-//
-//            if(i == 2 || i == 4  || i == 7  || i == 9 || i == 10  || i == 12  || i == 14 || i == 15
-//                      || i == 17 || i == 19 || i == 20 || i == 22 || i == 24 || i == 25 || i == 27
-//                      || i == 28 || i == 30 || i == 32 || i == 33 || i == 35 || i == 38 || i == 40) {
-//            dumb[i] = new JLabel("Property",  SwingConstants.CENTER);
-//            }else if(i == 6 || i == 16 || i == 26 || i == 36){
-//                dumb[i] = new JLabel("Train",  SwingConstants.CENTER);
-//            }else if(i == 3 || i == 18 || i == 34) {
-//                dumb[i] = new JLabel("Chest",  SwingConstants.CENTER);
-//            }else if(i == 8 || i == 23 || i == 37) {
-//                dumb[i] = new JLabel("Chance",  SwingConstants.CENTER);
-//            }else if(i == 5){
-//                dumb[i] = new JLabel("Income Tax",  SwingConstants.CENTER);
-//            }else if(i == 1) {
-//                dumb[i] = new JLabel("Go", SwingConstants.CENTER);
-//            }else if(i == 11){
-//                dumb[i] = new JLabel("Jail",  SwingConstants.CENTER);
-//            }else if(i == 13){
-//                dumb[i] = new JLabel("Electric",  SwingConstants.CENTER);
-//            }else if(i == 21){
-//                dumb[i] = new JLabel("Parking",  SwingConstants.CENTER);
-//            }else if(i == 29){
-//                dumb[i] = new JLabel("Water",  SwingConstants.CENTER);
-//            }else if(i == 31){
-//                dumb[i] = new JLabel("Go to Jail",  SwingConstants.CENTER);
-//            }else if(i == 39){
-//                dumb[i] = new JLabel("Lux Tax",  SwingConstants.CENTER);
-//            }else {
-//                dumb[i] = new JLabel("", SwingConstants.CENTER);
-//            }
-//
-//            dumb[i].setSize((width/2)/10,(width/2)/10);
-//        }
-//
-//        t1 = new JPanel();
-//        t2 = new JPanel();
-//
-//        t3 = new JPanel();
-//        t4 = new JPanel();
-//
-//        t1.setLayout(new GridLayout(1,11));
-//        t1.setPreferredSize(new Dimension((width/2)/10,100));
-//        t2.setLayout(new GridLayout(1,11));
-//        t2.setPreferredSize(new Dimension((width/2)/10,100));
-//
-//        t3.setLayout(new GridLayout(9,1));
-//        t3.setPreferredSize(new Dimension(100,(height/2)/9));
-//        t4.setLayout(new GridLayout(9,1));
-//        t4.setPreferredSize(new Dimension(100,(height/2)/9));
-//
-//        for(int i = 11; i > 0; i--){
-//            t1.add(dumb[i]);
-//        }
-//        for(int i = 21; i >11; i--){
-//            t3.add(dumb[i]);
-//        }
-//        for(int i = 21; i < 32; i++){
-//            t2.add(dumb[i]);
-//        }
-//        for(int i = 32; i < 41; i++){
-//            t4.add(dumb[i]);
-//        }
-//
-//        add(t1, BorderLayout.SOUTH);
-//        add(t2, BorderLayout.NORTH);
-//
-//        add(t3, BorderLayout.WEST);
-//        add(t4, BorderLayout.EAST);
-//
-//
-//        //add(pic, BorderLayout.CENTER);
-//
-//    }
-//
-//}
 
