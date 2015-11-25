@@ -5,7 +5,8 @@ public class Gameboard {
 
     final int[] BOARDCELLNUMS = {0,2,4,7,10,17,20,22,30,33,36,38};
     final int[] SPECIALCELLS = {5,12,15,25,28,35};
-    BoardCell[] cells = new BoardCell[40];
+    public BoardCell[] cells = new BoardCell[40];
+    public Player[] players = new Player[4];
 
 
     Gameboard() {
@@ -17,6 +18,10 @@ public class Gameboard {
                 cells[i] = new OwnedCell(i);
             } else
                 cells[i] = new Property(i);
+        }
+
+        for(int i=0;i<players.length;i++){
+            players[i] = new Player(i);
         }
 
     }

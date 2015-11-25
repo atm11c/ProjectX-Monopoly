@@ -1,4 +1,7 @@
+import com.sun.xml.internal.bind.v2.TODO;
+
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Created by Andrew on 11/23/2015.
@@ -11,6 +14,7 @@ public class Player {
     private int position;
     private int roll;
     private boolean inJail;
+    Scanner scanner = new Scanner(System.in);
 
     Player(int i){
         setMoney(1500);
@@ -158,13 +162,15 @@ public class Player {
      *  to resolve that cell's effects.
      */
     private void checkCell(Gameboard gb){
-        if(gb.contains(gb.BOARDCELLNUMS, position)){
+        if(Gameboard.contains(gb.BOARDCELLNUMS, position)){
             effectCell(gb);
         }
 
-        else{
-            System.out.println("Buying NYI");
+        else if(Gameboard.contains(gb.SPECIALCELLS, position)){
+            System.out.println("Buying RRs and Utils NYI");
         }
+        else
+            buyCell(gb);
     }
 
 
@@ -240,7 +246,60 @@ public class Player {
      *  If the cell is a property of some sort, then buy it, pay rent, or stand there and look silly.
      */
     private void buyCell(Gameboard gb){
-        System.out.println("Hurrdurr");
+        //Check which player owns the cell
+        Property property = (Property)gb.cells[position];
+
+        //If nobody owns the property, prompt player to buy the property.
+        if(property.getOwner() == 10){
+            System.out.print("Nobody owns this property. Would you like to buy it? y/n ");
+            String input = scanner.next();
+            if(input.matches("y")){
+                money-=property.getPrice();
+                property.setOwner(playerId);
+            }
+        }
+        //If somebody does own the property, and it's not the current player, pay up buttercup
+        else if(property.getOwner() != playerId){
+            //find rent value based on the number of houses the property has
+            //TODO: Make it check to see if the player owns all of this color
+            switch(property.getNumHouses()) {
+                case 0:
+                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent0());
+                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent0());
+                    money -= property.getRent0();
+                    break;
+                case 1:
+                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent1());
+                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent1());
+                    money -= property.getRent1();
+                    break;
+                case 2:
+                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent2());
+                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent2());
+                    money -= property.getRent2();
+                    break;
+                case 3:
+                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent3());
+                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent3());
+                    money -= property.getRent3();
+                    break;
+                case 4:
+                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent4());
+                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent4());
+                    money -= property.getRent4();
+                    break;
+                case 5:
+                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent5());
+                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent5());
+                    money -= property.getRent5();
+                    break;
+                default:
+                    System.out.println("Well this shouldnt have happened...");
+            }
+        }
+
+        else
+            System.out.println("You own this!");
     }
 
 

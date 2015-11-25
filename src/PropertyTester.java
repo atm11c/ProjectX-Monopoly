@@ -8,11 +8,11 @@ public class PropertyTester {
 
         Scanner scanner = new Scanner(System.in);
         Gameboard gameboard = new Gameboard();
-        Player[] players = new Player[4];
+
 
         //Initialize the players
-        for(int i=0;i<players.length;i++){
-            players[i] = new Player(i);
+        for(int i=0;i<gameboard.players.length;i++){
+            gameboard.players[i] = new Player(i);
         }
 
         boolean flag = true;
@@ -22,9 +22,9 @@ public class PropertyTester {
         while(flag) {
             System.out.printf("Player %d, press Enter to take your turn!", playerTurn+1);
             scanner.nextLine();
-            players[playerTurn].takeTurn(gameboard);
+            gameboard.players[playerTurn].takeTurn(gameboard);
 
-            System.out.printf("Money: %d\n", players[playerTurn].getMoney());
+            System.out.printf("Money: %d\n", gameboard.players[playerTurn].getMoney());
 
             //next player
             playerTurn+=1;
