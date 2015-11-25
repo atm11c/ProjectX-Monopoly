@@ -24,9 +24,13 @@ public class PropertyTester {
             scanner.nextLine();
             players[playerTurn].takeTurn(gameboard);
 
+            System.out.printf("Money: %d\n", players[playerTurn].getMoney());
+
             //next player
             playerTurn+=1;
             playerTurn%=4;
+
+            System.out.println("End Turn\n\n");
         }
 
     }

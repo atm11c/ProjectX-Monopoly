@@ -22,7 +22,7 @@ public class Gameboard {
     }
 
     /**
-     *Method to test if an integer value is in an array
+     * Method to test if an integer value is in an array
      */
     public static boolean contains(int[] arr, int key){
         boolean b = false;
