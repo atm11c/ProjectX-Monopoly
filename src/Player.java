@@ -101,7 +101,6 @@ public class Player {
         Random random = new Random();
 
         while(dubs && !inJail){
-            System.out.printf("Current position: %s\n", gb.cells[position].getName());
             //roll the dice
             int die1 = random.nextInt(6)+1;
             int die2 = random.nextInt(6)+1;
@@ -167,7 +166,7 @@ public class Player {
         }
 
         else if(Gameboard.contains(gb.SPECIALCELLS, position)){
-            System.out.println("Buying RRs and Utils NYI");
+            buySpec(gb);
         }
         else
             buyCell(gb);
@@ -243,7 +242,7 @@ public class Player {
 
     /**
      *  Method buyCell
-     *  If the cell is a property of some sort, then buy it, pay rent, or stand there and look silly.
+     *  If the cell is a property, then buy it, pay rent, or stand there and look silly.
      */
     private void buyCell(Gameboard gb){
         //Check which player owns the cell
@@ -302,5 +301,84 @@ public class Player {
             System.out.println("You own this!");
     }
 
+    /**
+     *  Method buySpec
+     *  For when a player lands on a utility or a railroad.
+     */
+
+    public void buySpec(Gameboard gb){
+        OwnedCell ownedCell = (OwnedCell)gb.cells[position];
+
+        //If unowned, prompt user to buy
+        if(ownedCell.getOwner() == 10){
+            System.out.print("Would you like to buy this property? y/n ");
+            String input = scanner.next();
+
+            if(input.matches("y")){
+                money-=ownedCell.getPrice();
+                ownedCell.setOwner(playerId);
+
+                //Increase the number of railroads or utilities owned
+                if(ownedCell.getisRR()){
+                    rrOwned+=1;
+                }
+                else if(ownedCell.getisUtil()){
+                    utilOwned+=1;
+                }
+                else
+                    System.out.println("Wait how did you...?");
+            }
+        }
+        //If another player owns this, pay up buttercup
+        else if(ownedCell.getOwner() != playerId){
+            //if the cell is a railroad...
+            if(ownedCell.getisRR()){
+                switch(gb.players[ownedCell.getOwner()].getRrOwned()){
+                    case 1:
+                        System.out.printf("Player %d owns this. You owe them $25.\n", ownedCell.getOwner() + 1);
+                        gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 25);
+                        money -= 25;
+                        break;
+                    case 2:
+                        System.out.printf("Player %d owns this. You owe them $50.\n", ownedCell.getOwner() + 1);
+                        gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 50);
+                        money -= 50;
+                        break;
+                    case 3:
+                        System.out.printf("Player %d owns this. You owe them $100.\n", ownedCell.getOwner() + 1);
+                        gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 100);
+                        money -= 100;
+                        break;
+                    case 4:
+                        System.out.printf("Player %d owns this. You owe them $200.\n", ownedCell.getOwner() + 1);
+                        gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 200);
+                        money -= 200;
+                        break;
+                    default:
+                        System.out.println("You broke it. Good job.");
+
+                }
+            }
+            //If it's a utility
+            else if(ownedCell.getisUtil()){
+                Random random = new Random();
+                int d1 = random.nextInt(6)+1;
+                int d2 = random.nextInt(6)+1;
+                int sum = d1+d2;
+                if(gb.players[ownedCell.getOwner()].utilOwned == 1){
+                    System.out.printf("You rolled a %d, you owe Player %d $%d.\n", sum, ownedCell.getOwner() + 1, sum * 4);
+                    gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + (sum*4));
+                    money -= sum*4;
+                }
+                else if(gb.players[ownedCell.getOwner()].utilOwned== 2){
+                    System.out.printf("You rolled a %d, you owe Player %d $%d.\n", sum, ownedCell.getOwner()+1, sum*10);
+                    gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + (sum*10));
+                    money -= sum*10;
+                }
+                else
+                    System.out.println("Way to go. It broke.");
+            }
+        }
+    }
 
 }
