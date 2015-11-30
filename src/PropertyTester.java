@@ -20,12 +20,28 @@ public class PropertyTester {
         int playerTurn = 0;
 
         while(flag) {
-            System.out.printf("Player %d, press Enter to take your turn!", playerTurn+1);
-            scanner.nextLine();
-            gameboard.players[playerTurn].takeTurn(gameboard);
-
-            System.out.printf("Money: %d\n", gameboard.players[playerTurn].getMoney());
-
+            System.out.printf("Player %d, it's your turn!\n", playerTurn+1);
+            boolean derp = false;
+            while(!derp) {
+                System.out.print("r. roll dice\nt. trade with other player\nv. view all properties and their owners\n");
+                String hurrdurr = scanner.next();
+                switch (hurrdurr) {
+                    case "r":
+                        gameboard.players[playerTurn].takeTurn(gameboard);
+                        derp = true;
+                        break;
+                    case "t":
+                        System.out.println("Trading not yet implemented.");
+                        break;
+                    case "v":
+                        //System.out.println("Viewing all properties is not yet implemented.");
+                        gameboard.showPropertyOwners();
+                        break;
+                    default:
+                        System.out.println("That wasn't one of the options.");
+                }
+                System.out.printf("Money: %d\n", gameboard.players[playerTurn].getMoney());
+            }
             //next player
             playerTurn+=1;
             playerTurn%=4;

@@ -249,6 +249,7 @@ public class Player {
                 position+=die1+die2;
                 checkCell(gb);
             }
+
         }
 
     }
@@ -302,6 +303,7 @@ public class Player {
                     System.out.println("Just visiting...");
                 break;
             //W. Community Chest
+            //TODO Community Chests
             case 17:
                 System.out.println("Community Chest NYI");
                 break;
@@ -310,6 +312,7 @@ public class Player {
                 break;
             //N. Chance
             case 22:
+                //TODO Chance cards
                 System.out.println("Chance NYI");
                 break;
             //Go to Jail
