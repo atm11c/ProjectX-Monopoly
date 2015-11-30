@@ -23,7 +23,7 @@ public class PropertyTester {
             System.out.printf("Player %d, it's your turn!\n", playerTurn+1);
             boolean derp = false;
             while(!derp) {
-                System.out.print("r. roll dice\nt. trade with other player\nv. view all properties and their owners\n");
+                System.out.print("r. roll dice\nt. trade with other player\nv. view my properties\n");
                 String hurrdurr = scanner.next();
                 switch (hurrdurr) {
                     case "r":
@@ -31,11 +31,11 @@ public class PropertyTester {
                         derp = true;
                         break;
                     case "t":
-                        System.out.println("Trading not yet implemented.");
+                        //System.out.println("Trading not yet implemented.");
+                        gameboard.players[playerTurn].trade(gameboard);
                         break;
                     case "v":
-                        //System.out.println("Viewing all properties is not yet implemented.");
-                        gameboard.showPropertyOwners();
+                        gameboard.players[playerTurn].playerProps(gameboard);
                         break;
                     default:
                         System.out.println("That wasn't one of the options.");

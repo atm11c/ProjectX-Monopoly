@@ -524,5 +524,73 @@ public class Player {
         return flag;
     }
 
+    /**
+     *  Method playerProps
+     *  Prints a specific player's owned properties
+     */
+    public void playerProps(Gameboard gb){
+        OwnedCell oc;
+        System.out.printf("Player %d owns the following properties: \n", playerId+1);
+        for(int i=0;i<gb.cells.length;i++){
+            if(!Gameboard.contains(gb.BOARDCELLNUMS,i)){
+                oc = (OwnedCell)gb.cells[i];
+                if(oc.getOwner()==playerId){
+                    System.out.printf("%d, %s\n", oc.getCellId(), oc.getName());
+                }
+            }
+        }
+    }
+
+    /**
+     *  Method trade
+     *  Starts a trade between two players.
+     */
+    //TODO: Add and subtract from the number of utilities and railroads owned
+    //TODO: Ensure that players cannot trade properties they do not own.
+    public void trade(Gameboard gb){
+        System.out.print("Which player do you want to trade with?");
+        int trader = scanner.nextInt();
+        trader-=1;
+
+        //Print current players stuff
+        System.out.printf("Player %d has $%d\n", playerId+1, money);
+        playerProps(gb);
+
+        //Print other players stuff
+        System.out.printf("Player %d has $%d\n", trader+1, gb.players[trader].getMoney());
+        gb.players[trader].playerProps(gb);
+
+        //Ask what the trading player wants.
+        System.out.print("What property do you want?(Enter -1 for none)");
+        int rProp = scanner.nextInt();
+        System.out.print("How much money do you want from this trade?");
+        int rCash = scanner.nextInt();
+
+        //Ask what the trading player will offer.
+        System.out.print("What property will you give?(Enter -1 for none)");
+        int sProp = scanner.nextInt();
+        System.out.print("How much money will you pay for this trade?");
+        int sCash = scanner.nextInt();
+
+        //Confirm trade
+        System.out.printf("Player %d, do you want trade %s and $%d for %s and $%d? y/n ", trader+1,
+                gb.cells[rProp].getName(), rCash, gb.cells[sProp].getName(), sCash);
+        String in = scanner.next();
+        if(in.matches("y")){
+            money+=rCash;
+            money-=sCash;
+            gb.players[trader].setMoney(gb.players[trader].getMoney()+sCash);
+            gb.players[trader].setMoney(gb.players[trader].getMoney()-rCash);
+
+            OwnedCell oc = (OwnedCell)gb.cells[rProp];
+            oc.setOwner(playerId);
+            oc = (OwnedCell)gb.cells[sProp];
+            oc.setOwner(trader);
+        }
+        else{
+            System.out.printf("Player %d declined the trade.\n", trader+1);
+        }
+    }
+
 
 }
