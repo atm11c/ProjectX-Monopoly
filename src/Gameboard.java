@@ -40,4 +40,25 @@ public class Gameboard {
 
         return b;
     }
+
+    /**
+     *  Method showPropertyOwners
+     *  Method prints all of the properties and the players that own them.
+     */
+    public void showPropertyOwners(){
+        for(int i=0;i<cells.length;i++){
+            if(!contains(BOARDCELLNUMS,i)){
+                OwnedCell oc = (OwnedCell)cells[i];
+                String owner;
+                if(oc.getOwner() == 10){
+                    owner = "Unowned";
+                }
+                else{
+                    owner = "Player " + (oc.getOwner()+1);
+                }
+                System.out.printf("%s, Owner: %s\n",oc.getName() ,owner);
+            }
+        }
+    }
+
 }

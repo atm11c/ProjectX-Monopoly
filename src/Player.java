@@ -14,6 +14,7 @@ public class Player {
     private int position;
     private int roll;
     private boolean inJail;
+    private boolean browns,lblues,pinks,oranges,reds,yellows,greens,dblues;
     Scanner scanner = new Scanner(System.in);
 
     Player(int i){
@@ -61,6 +62,70 @@ public class Player {
         this.inJail = inJail;
     }
 
+    public void setBrowns(Gameboard gb){
+        OwnedCell prop1, prop2;
+        prop1 = (OwnedCell) gb.cells[1];
+        prop2 = (OwnedCell) gb.cells[3];
+        browns = prop1.getOwner() == playerId && prop2.getOwner() == playerId;
+    }
+
+    public void setLblues(Gameboard gb){
+        OwnedCell prop1,prop2,prop3;
+        prop1 = (OwnedCell) gb.cells[6];
+        prop2 = (OwnedCell) gb.cells[8];
+        prop3 = (OwnedCell) gb.cells[9];
+        lblues = prop1.getOwner() == playerId && prop2.getOwner() == playerId && prop3.getOwner() == playerId;
+
+    }
+
+    public void setPinks(Gameboard gb){
+        OwnedCell prop1,prop2,prop3;
+        prop1 = (OwnedCell) gb.cells[11];
+        prop2 = (OwnedCell) gb.cells[13];
+        prop3 = (OwnedCell) gb.cells[14];
+        pinks = prop1.getOwner() == playerId && prop2.getOwner() == playerId && prop3.getOwner() == playerId;
+    }
+
+    public void setOranges(Gameboard gb){
+        OwnedCell prop1,prop2,prop3;
+        prop1 = (OwnedCell) gb.cells[16];
+        prop2 = (OwnedCell) gb.cells[18];
+        prop3 = (OwnedCell) gb.cells[19];
+        oranges = prop1.getOwner() == playerId && prop2.getOwner() == playerId && prop3.getOwner() == playerId;
+    }
+
+    public void setReds(Gameboard gb) {
+        OwnedCell prop1,prop2,prop3;
+        prop1 = (OwnedCell) gb.cells[21];
+        prop2 = (OwnedCell) gb.cells[23];
+        prop3 = (OwnedCell) gb.cells[24];
+        reds = prop1.getOwner() == playerId && prop2.getOwner() == playerId && prop3.getOwner() == playerId;
+    }
+
+    public void setYellows(Gameboard gb) {
+        OwnedCell prop1,prop2,prop3;
+        prop1 = (OwnedCell) gb.cells[26];
+        prop2 = (OwnedCell) gb.cells[27];
+        prop3 = (OwnedCell) gb.cells[29];
+        yellows = prop1.getOwner() == playerId && prop2.getOwner() == playerId && prop3.getOwner() == playerId;
+    }
+
+    public void setGreens(Gameboard gb) {
+        OwnedCell prop1,prop2,prop3;
+        prop1 = (OwnedCell) gb.cells[31];
+        prop2 = (OwnedCell) gb.cells[32];
+        prop3 = (OwnedCell) gb.cells[34];
+        greens = prop1.getOwner() == playerId && prop2.getOwner() == playerId && prop3.getOwner() == playerId;
+    }
+
+    public void setDblues(Gameboard gb) {
+        OwnedCell prop1, prop2;
+        prop1 = (OwnedCell) gb.cells[37];
+        prop2 = (OwnedCell) gb.cells[39];
+        dblues = prop1.getOwner() == playerId && prop2.getOwner() == playerId;
+    }
+
+    //The Dream
     public int getMoney() {
         return money;
     }
@@ -87,6 +152,38 @@ public class Player {
 
     public boolean isInJail() {
         return inJail;
+    }
+
+    public boolean isBrowns() {
+        return browns;
+    }
+
+    public boolean isLblues() {
+        return lblues;
+    }
+
+    public boolean isPinks() {
+        return pinks;
+    }
+
+    public boolean isOranges() {
+        return oranges;
+    }
+
+    public boolean isReds() {
+        return reds;
+    }
+
+    public boolean isYellows() {
+        return yellows;
+    }
+
+    public boolean isGreens() {
+        return greens;
+    }
+
+    public boolean isDblues() {
+        return dblues;
     }
 
     /**
@@ -143,6 +240,7 @@ public class Player {
         }
 
         //If the player is in Jail, try to roll dubs to get out.
+        //TODO: Add option to pay way out of jail, then force payment after 3 turns.
         if(inJail && !turnDone){
             int die1 = random.nextInt(6)+1;
             int die2 = random.nextInt(6)+1;
@@ -151,6 +249,7 @@ public class Player {
                 position+=die1+die2;
                 checkCell(gb);
             }
+
         }
 
     }
@@ -162,7 +261,7 @@ public class Player {
      */
     private void checkCell(Gameboard gb){
         if(Gameboard.contains(gb.BOARDCELLNUMS, position)){
-            effectCell(gb);
+            effectCell();
         }
 
         else if(Gameboard.contains(gb.SPECIALCELLS, position)){
@@ -177,7 +276,7 @@ public class Player {
      *  Method effectCell
      *  If the player landed on a cell that is not buyable, then this method resolves the effects of that cell.
      */
-    private void effectCell(Gameboard gb){
+    private void effectCell(){
         switch(position){
             //Go
             case 0:
@@ -204,6 +303,7 @@ public class Player {
                     System.out.println("Just visiting...");
                 break;
             //W. Community Chest
+            //TODO Community Chests
             case 17:
                 System.out.println("Community Chest NYI");
                 break;
@@ -212,6 +312,7 @@ public class Player {
                 break;
             //N. Chance
             case 22:
+                //TODO Chance cards
                 System.out.println("Chance NYI");
                 break;
             //Go to Jail
@@ -260,41 +361,37 @@ public class Player {
         //If somebody does own the property, and it's not the current player, pay up buttercup
         else if(property.getOwner() != playerId){
             //find rent value based on the number of houses the property has
-            //TODO: Make it check to see if the player owns all of this color
+            int rent=0;
             switch(property.getNumHouses()) {
                 case 0:
-                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent0());
-                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent0());
-                    money -= property.getRent0();
+                    //If player owns all colors of a set, and the lot is unimproved, rent is doubled.
+                    if(checkSet(gb,property.getColor()))
+                        rent = property.getRent0()*2;
+                    else
+                        rent = property.getRent0();
+
                     break;
                 case 1:
-                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent1());
-                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent1());
-                    money -= property.getRent1();
+                    rent = property.getRent1();
                     break;
                 case 2:
-                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent2());
-                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent2());
-                    money -= property.getRent2();
+                    rent = property.getRent2();
                     break;
                 case 3:
-                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent3());
-                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent3());
-                    money -= property.getRent3();
+                    rent = property.getRent3();
                     break;
                 case 4:
-                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent4());
-                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent4());
-                    money -= property.getRent4();
+                    rent = property.getRent4();
                     break;
                 case 5:
-                    System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, property.getRent5());
-                    gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + property.getRent5());
-                    money -= property.getRent5();
+                    rent = property.getRent5();
                     break;
                 default:
                     System.out.println("Well this shouldnt have happened...");
             }
+            System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, rent);
+            gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + rent);
+            money-=rent;
         }
 
         else
@@ -380,5 +477,120 @@ public class Player {
             }
         }
     }
+
+    /**
+     *  Method checkSet
+     *  Checks to see if the player owns all of the properties of one set color and sets a flag accordingly.
+     */
+    public boolean checkSet(Gameboard gb, String color){
+        boolean flag = false;
+        switch(color) {
+            case "Brown":
+                setBrowns(gb);
+                flag = isBrowns();
+                break;
+            case "Light Blue":
+                setLblues(gb);
+                flag = isLblues();
+                break;
+            case "Pink":
+                setPinks(gb);
+                flag = isPinks();
+                break;
+            case "Orange":
+                setOranges(gb);
+                flag = isOranges();
+                break;
+            case "Red":
+                setReds(gb);
+                flag = isReds();
+                break;
+            case "Yellow":
+                setYellows(gb);
+                flag = isYellows();
+                break;
+            case "Green":
+                setGreens(gb);
+                flag = isGreens();
+                break;
+            case "Dark Blue":
+                setDblues(gb);
+                flag = isDblues();
+                break;
+            default:
+                System.out.println("You mispelled something somewhere pal");
+
+        }
+        return flag;
+    }
+
+    /**
+     *  Method playerProps
+     *  Prints a specific player's owned properties
+     */
+    public void playerProps(Gameboard gb){
+        OwnedCell oc;
+        System.out.printf("Player %d owns the following properties: \n", playerId+1);
+        for(int i=0;i<gb.cells.length;i++){
+            if(!Gameboard.contains(gb.BOARDCELLNUMS,i)){
+                oc = (OwnedCell)gb.cells[i];
+                if(oc.getOwner()==playerId){
+                    System.out.printf("%d, %s\n", oc.getCellId(), oc.getName());
+                }
+            }
+        }
+    }
+
+    /**
+     *  Method trade
+     *  Starts a trade between two players.
+     */
+    //TODO: Add and subtract from the number of utilities and railroads owned
+    //TODO: Ensure that players cannot trade properties they do not own.
+    public void trade(Gameboard gb){
+        System.out.print("Which player do you want to trade with?");
+        int trader = scanner.nextInt();
+        trader-=1;
+
+        //Print current players stuff
+        System.out.printf("Player %d has $%d\n", playerId+1, money);
+        playerProps(gb);
+
+        //Print other players stuff
+        System.out.printf("Player %d has $%d\n", trader+1, gb.players[trader].getMoney());
+        gb.players[trader].playerProps(gb);
+
+        //Ask what the trading player wants.
+        System.out.print("What property do you want?(Enter -1 for none)");
+        int rProp = scanner.nextInt();
+        System.out.print("How much money do you want from this trade?");
+        int rCash = scanner.nextInt();
+
+        //Ask what the trading player will offer.
+        System.out.print("What property will you give?(Enter -1 for none)");
+        int sProp = scanner.nextInt();
+        System.out.print("How much money will you pay for this trade?");
+        int sCash = scanner.nextInt();
+
+        //Confirm trade
+        System.out.printf("Player %d, do you want trade %s and $%d for %s and $%d? y/n ", trader+1,
+                gb.cells[rProp].getName(), rCash, gb.cells[sProp].getName(), sCash);
+        String in = scanner.next();
+        if(in.matches("y")){
+            money+=rCash;
+            money-=sCash;
+            gb.players[trader].setMoney(gb.players[trader].getMoney()+sCash);
+            gb.players[trader].setMoney(gb.players[trader].getMoney()-rCash);
+
+            OwnedCell oc = (OwnedCell)gb.cells[rProp];
+            oc.setOwner(playerId);
+            oc = (OwnedCell)gb.cells[sProp];
+            oc.setOwner(trader);
+        }
+        else{
+            System.out.printf("Player %d declined the trade.\n", trader+1);
+        }
+    }
+
 
 }
