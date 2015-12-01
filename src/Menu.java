@@ -31,6 +31,7 @@ class MenuPanel extends JPanel{
     private JButton start, quit, credits;
     private JButton n1, n2, n3, n4, n5, n6;
 
+
     public MenuPanel(){
 
         JPanel derp = new JPanel();
@@ -235,7 +236,7 @@ class BoardPanel extends JPanel
             t4.add(dumb[i]);
         }
 
-        ImageIcon centerPiece = new ImageIcon( this.getClass().getResource("/Pieces/CenterPiece.png"));
+        ImageIcon centerPiece = new ImageIcon( this.getClass().getResource("CenterPiece.png"));
 
 
         BufferedImage center = scaleImage(width/2 - 180, height - 200, centerPiece);
@@ -249,6 +250,7 @@ class BoardPanel extends JPanel
         board.add(t4, BorderLayout.EAST);
 
         add(board);
+
 
     }
 
@@ -274,7 +276,7 @@ class BoardPanel extends JPanel
         BufferedImage sizedBoardPieces[] = new BufferedImage[40];
 
         for(int i = 0 ; i < 40; i++){
-            boardSpaces[i] = new ImageIcon(this.getClass().getResource("/Pieces/"+ (i+1) + ".png"));
+            boardSpaces[i] = new ImageIcon(this.getClass().getResource((i+1) + ".png"));
             sizedBoardPieces[i] = scaleImage((width/2)/10, 100, boardSpaces[i]);
             y[i] = new ImageIcon(sizedBoardPieces[i]);
         }
