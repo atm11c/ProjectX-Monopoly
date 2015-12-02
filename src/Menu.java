@@ -240,7 +240,7 @@ class BoardPanel extends JPanel
         ImageIcon centerPiece = new ImageIcon( this.getClass().getResource("/Pieces/CenterPiece.png"));
 
 
-        BufferedImage center = scaleImage(width/2 -((width / 2) / 11)*2, height -((height/11))*2, centerPiece);
+        BufferedImage center = scaleImage(width/2 -((width / 2) / 11)*2, height -((height/11))*2 , centerPiece);
         JLabel pic = new JLabel(new ImageIcon(center));
 
         board.add(pic, BorderLayout.CENTER);
