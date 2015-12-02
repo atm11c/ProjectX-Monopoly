@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.Scanner;
 
 
 public class Menu {
@@ -15,12 +16,13 @@ public class Menu {
         int x = (int) ((dimension.getWidth()/2 - frame.getWidth())/2);
         int y = (int) ((dimension.getHeight()/2 - frame.getHeight()) / 2);
 
-
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         frame.setSize( 600, 400 );
         frame.setVisible( true );
         frame.setLocation(x, y);
         frame.add(mPanel);
+
+
     }
 
 }
@@ -112,10 +114,10 @@ class MenuPanel extends JPanel{
                 System.exit(1);
             }
             if(event.getSource() == credits){
-                String cred = "Prepare for a ruuuudddeee Diddling";
+                String cred = "PlaceHolder";
 
-                ImageIcon diddle = new ImageIcon( this.getClass().getResource("Monopoly-artwork-detail.jpg"));
-                JLabel dPic = new JLabel(diddle);
+                ImageIcon placeHolder = new ImageIcon( this.getClass().getResource("Monopoly-artwork-detail.jpg"));
+                JLabel dPic = new JLabel(placeHolder);
 
                 JOptionPane.showMessageDialog(null, cred);
                 JOptionPane.showMessageDialog(null, dPic, cred, JOptionPane.INFORMATION_MESSAGE);
@@ -137,7 +139,7 @@ class BoardPanel extends JPanel
 
         JPanel board, t1, t2, t3, t4;
 
-        PlayerInfoPanel pan = new PlayerInfoPanel();
+        PlayerOptionPanel pan = new PlayerOptionPanel();
 
         add(pan);
 
@@ -187,16 +189,15 @@ class BoardPanel extends JPanel
             dumb[i].setSize((width/2)/10,(width/2)/10);
         }
 
-//        JLabel entity1 = new JLabel();
-//        entity1.setIcon(new ImageIcon(this.getClass().getResource("test.png")));
+        JLabel entity1 = new JLabel();
+        entity1.setIcon(new ImageIcon(this.getClass().getResource("test.png")));
 
-//        dumb[1].setLayout(new BorderLayout());
         for(int i = 0; i <40 ; i++){
             dumb[i].setLayout(new BorderLayout());
             dumb[i].setIcon(Pieces[i]);
-//            dumb[i].add(entity1, BorderLayout.SOUTH);
-        }
 
+        }
+        dumb[0].add(entity1, BorderLayout.SOUTH);
 
 
 //        JLabel entity2 = new JLabel();
@@ -236,7 +237,7 @@ class BoardPanel extends JPanel
             t4.add(dumb[i]);
         }
 
-        ImageIcon centerPiece = new ImageIcon( this.getClass().getResource("CenterPiece.png"));
+        ImageIcon centerPiece = new ImageIcon( this.getClass().getResource("/Pieces/CenterPiece.png"));
 
 
         BufferedImage center = scaleImage(width/2 - 180, height - 200, centerPiece);
@@ -276,7 +277,7 @@ class BoardPanel extends JPanel
         BufferedImage sizedBoardPieces[] = new BufferedImage[40];
 
         for(int i = 0 ; i < 40; i++){
-            boardSpaces[i] = new ImageIcon(this.getClass().getResource((i+1) + ".png"));
+            boardSpaces[i] = new ImageIcon(this.getClass().getResource("/Pieces/" + (i+1) + ".png"));
             sizedBoardPieces[i] = scaleImage((width/2)/10, 100, boardSpaces[i]);
             y[i] = new ImageIcon(sizedBoardPieces[i]);
         }
@@ -287,13 +288,14 @@ class BoardPanel extends JPanel
 
 }
 
-class PlayerInfoPanel extends JPanel{
+class PlayerOptionPanel extends JPanel{
 
-    public PlayerInfoPanel(){
+    public PlayerOptionPanel(){
         setLayout(new GridLayout(2,1));
 
-        JButton test = new JButton("Test");
-        add(test);
+        PlayerInfoPanel playerInfo = new PlayerInfoPanel();
+
+        add(playerInfo);
 
         JPanel options = new JPanel();
         options.setAlignmentX( Component.CENTER_ALIGNMENT );
@@ -317,21 +319,26 @@ class PlayerInfoPanel extends JPanel{
         }
 
         JButton playerButtons[] = new JButton[16];
-        for(int i = 0; i < 12; i+=3){
-            playerButtons[i] = new JButton("Buy");
-            playerButtons[i+1] = new JButton("Sell");
-            playerButtons[i+2] = new JButton("Properties");
+        for(int i = 0; i < 16; i+=4){
+            playerButtons[i] = new JButton("Roll");
+            playerButtons[i+1] = new JButton("Buy");
+            playerButtons[i+2] = new JButton("Sell");
+            playerButtons[i+3] = new JButton("Properties");
 
             playerButtons[i].setAlignmentX(CENTER_ALIGNMENT);
             playerButtons[i+1].setAlignmentX(CENTER_ALIGNMENT);
             playerButtons[i+2].setAlignmentX(CENTER_ALIGNMENT);
+            playerButtons[i+3].setAlignmentX(CENTER_ALIGNMENT);
+
+
         }
 
-        for(int i = 0, j = 0; i < 4; i++, j+=3){
+        for(int i = 0, j = 0; i < 4; i++, j+=4){
 
             playerBoxes[i].add(playerButtons[j]);
             playerBoxes[i].add(playerButtons[j+1]);
             playerBoxes[i].add(playerButtons[j+2]);
+            playerBoxes[i].add(playerButtons[j+3]);
 
         }
 
@@ -343,6 +350,36 @@ class PlayerInfoPanel extends JPanel{
 
         add(options);
 
+    }
+
+}
+
+
+
+class PlayerInfoPanel extends JPanel{
+
+    public PlayerInfoPanel(){
+
+        JPanel playerStats[] = new JPanel[5];
+
+        setLayout(new GridLayout(5,1));
+
+        for(int i=0; i < 4;i++){
+            playerStats[i] = new JPanel();
+            playerStats[i].setLayout(new GridLayout(1,4));
+
+            playerStats[i].add(new JLabel("Player" + (i+1)));
+            playerStats[i].add(new JLabel("Total cash:"));
+            playerStats[i].add(new JLabel("Number of Properties:"));
+            playerStats[i].add(new JLabel("Placeholder:"));
+
+           add(playerStats[i]);
+        }
+        JTextArea output = new JTextArea();
+        output.setText("This is a test");
+        output.setEditable(false);
+
+        add(output);
     }
 
 }
