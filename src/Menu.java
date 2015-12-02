@@ -265,6 +265,9 @@ class BoardPanel extends JPanel
         return bi;
     }
 
+
+
+
     public ImageIcon[] SetAllPieces(){
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -278,8 +281,13 @@ class BoardPanel extends JPanel
 
         for(int i = 0 ; i < 40; i++){
             boardSpaces[i] = new ImageIcon(this.getClass().getResource("/Pieces/" + (i+1) + ".png"));
-            sizedBoardPieces[i] = scaleImage((width/2)/10, 100, boardSpaces[i]);
-            y[i] = new ImageIcon(sizedBoardPieces[i]);
+            if((i >= 0 && i < 11) || (i >= 21 && i < 32) ){
+                sizedBoardPieces[i] = scaleImage((width / 2) / 11, 100, boardSpaces[i]);
+                y[i] = new ImageIcon(sizedBoardPieces[i]);
+            }else if((i >= 11 && i < 21) || (i >=31 && i < 40)){
+                sizedBoardPieces[i] = scaleImage((width / 2) / 9, 100, boardSpaces[i]);
+                y[i] = new ImageIcon(sizedBoardPieces[i]);
+            }
         }
 
         return y;
