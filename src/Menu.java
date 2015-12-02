@@ -286,7 +286,7 @@ class BoardPanel extends JPanel
                 sizedBoardPieces[i] = scaleImage((width / 2) / 11, (height/11), boardSpaces[i]);
                 y[i] = new ImageIcon(sizedBoardPieces[i]);
             }else if((i >= 11 && i < 20) || (i >=31 && i < 40)){
-                sizedBoardPieces[i] = scaleImage((width / 2) / 9, (height/11), boardSpaces[i]);
+                sizedBoardPieces[i] = scaleImage((width / 2) / 11, (height/11), boardSpaces[i]);
                 y[i] = new ImageIcon(sizedBoardPieces[i]);
             }
         }
