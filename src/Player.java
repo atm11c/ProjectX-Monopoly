@@ -13,7 +13,8 @@ public class Player {
     private int playerId;
     private int position;
     private int roll;
-    private boolean inJail;
+    private int jailTurns;
+    private boolean inJail, bankrupt;
     private boolean browns,lblues,pinks,oranges,reds,yellows,greens,dblues;
     Scanner scanner = new Scanner(System.in);
 
@@ -24,6 +25,8 @@ public class Player {
         setPlayerId(i);
         setPosition(0);
         setInJail(false);
+        setJailTurns(0);
+        setBankrupt(false);
     }
 
     /**
@@ -31,11 +34,7 @@ public class Player {
      */
 
     public void setMoney(int money) {
-        if(money < 1){
-            this.money = 0;
-        }
-        else
-            this.money = money;
+        this.money = money;
     }
 
     public void setRrOwned(int rrOwned) {
@@ -60,6 +59,10 @@ public class Player {
 
     public void setInJail(boolean inJail) {
         this.inJail = inJail;
+    }
+
+    public void setBankrupt(boolean bankrupt) {
+        this.bankrupt = bankrupt;
     }
 
     public void setBrowns(Gameboard gb){
@@ -124,6 +127,9 @@ public class Player {
         prop2 = (OwnedCell) gb.cells[39];
         dblues = prop1.getOwner() == playerId && prop2.getOwner() == playerId;
     }
+    public void setJailTurns(int i){
+        jailTurns = i;
+    }
 
     //The Dream
     public int getMoney() {
@@ -187,6 +193,24 @@ public class Player {
     }
 
     /**
+     *  Method canAfford
+     *  Checks to see if the player can afford a transaction
+     */
+    public boolean canAfford(int price){
+        boolean flag = true;
+        if(money < price){
+            setBankrupt(true);
+            money = 0;
+            flag = false;
+        }
+        else{
+            money-=price;
+        }
+
+        return flag;
+    }
+
+    /**
      * Method takeTurn
      * Simulates a turn taken by a player.
      *
@@ -240,15 +264,40 @@ public class Player {
         }
 
         //If the player is in Jail, try to roll dubs to get out.
-        //TODO: Add option to pay way out of jail, then force payment after 3 turns.
         if(inJail && !turnDone){
-            int die1 = random.nextInt(6)+1;
-            int die2 = random.nextInt(6)+1;
-            if(die1 == die2){
-                setInJail(false);
-                position+=die1+die2;
-                checkCell(gb);
+            System.out.print("You are in jail! Roll or pay your way out? r/p");
+            String answer = scanner.next();
+
+            //Pay
+            if(answer.matches("p")){
+                if(canAfford(50)) {
+                    jailTurns = 0;
+                    setInJail(false);
+                }
             }
+            //roll for it
+            else if(answer.matches("r")) {
+                int die1 = random.nextInt(6) + 1;
+                int die2 = random.nextInt(6) + 1;
+                if (die1 == die2) {
+                    setInJail(false);
+                    position += die1 + die2;
+                    checkCell(gb);
+                    jailTurns = 0;
+                }
+                else
+                    jailTurns++;
+            }
+
+
+            //after 3 turns in jail, force payment.
+            if(jailTurns == 3){
+                if(canAfford(50)) {
+                    setInJail(false);
+                    jailTurns = 0;
+                }
+            }
+
 
         }
 
@@ -288,7 +337,7 @@ public class Player {
             //Income Tax
             case 4:
                 System.out.println("INCOME TAX: Lose $200");
-                money-=200;
+                canAfford(200);
                 break;
             //S. Chance
             case 7:
@@ -332,7 +381,7 @@ public class Player {
             //Luxury Tax
             case 38:
                 System.out.println("Luxury Tax, pay $75");
-                money-=75;
+                canAfford(75);
                 break;
             //Better not...
             default:
@@ -354,8 +403,9 @@ public class Player {
             System.out.print("Nobody owns this property. Would you like to buy it? y/n ");
             String input = scanner.next();
             if(input.matches("y")){
-                money-=property.getPrice();
-                property.setOwner(playerId);
+                if(canAfford(property.getPrice())) {
+                    property.setOwner(playerId);
+                }
             }
         }
         //If somebody does own the property, and it's not the current player, pay up buttercup
@@ -391,7 +441,7 @@ public class Player {
             }
             System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, rent);
             gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + rent);
-            money-=rent;
+            canAfford(rent);
         }
 
         else
@@ -412,7 +462,7 @@ public class Player {
             String input = scanner.next();
 
             if(input.matches("y")){
-                money-=ownedCell.getPrice();
+                canAfford(ownedCell.getPrice());
                 ownedCell.setOwner(playerId);
 
                 //Increase the number of railroads or utilities owned
@@ -434,22 +484,22 @@ public class Player {
                     case 1:
                         System.out.printf("Player %d owns this. You owe them $25.\n", ownedCell.getOwner() + 1);
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 25);
-                        money -= 25;
+                        canAfford(25);
                         break;
                     case 2:
                         System.out.printf("Player %d owns this. You owe them $50.\n", ownedCell.getOwner() + 1);
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 50);
-                        money -= 50;
+                        canAfford(50);
                         break;
                     case 3:
                         System.out.printf("Player %d owns this. You owe them $100.\n", ownedCell.getOwner() + 1);
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 100);
-                        money -= 100;
+                        canAfford(100);
                         break;
                     case 4:
                         System.out.printf("Player %d owns this. You owe them $200.\n", ownedCell.getOwner() + 1);
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 200);
-                        money -= 200;
+                        canAfford(200);
                         break;
                     default:
                         System.out.println("You broke it. Good job.");
@@ -465,12 +515,12 @@ public class Player {
                 if(gb.players[ownedCell.getOwner()].utilOwned == 1){
                     System.out.printf("You rolled a %d, you owe Player %d $%d.\n", sum, ownedCell.getOwner() + 1, sum * 4);
                     gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + (sum*4));
-                    money -= sum*4;
+                    canAfford(sum*4);
                 }
                 else if(gb.players[ownedCell.getOwner()].utilOwned== 2){
                     System.out.printf("You rolled a %d, you owe Player %d $%d.\n", sum, ownedCell.getOwner()+1, sum*10);
                     gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + (sum*10));
-                    money -= sum*10;
+                    canAfford(sum*10);
                 }
                 else
                     System.out.println("Way to go. It broke.");
@@ -578,9 +628,9 @@ public class Player {
         String in = scanner.next();
         if(in.matches("y")){
             money+=rCash;
-            money-=sCash;
+            canAfford(sCash);
             gb.players[trader].setMoney(gb.players[trader].getMoney()+sCash);
-            gb.players[trader].setMoney(gb.players[trader].getMoney()-rCash);
+            gb.players[trader].canAfford(rCash);
 
             OwnedCell oc = (OwnedCell)gb.cells[rProp];
             oc.setOwner(playerId);
