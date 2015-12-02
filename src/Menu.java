@@ -186,7 +186,7 @@ class BoardPanel extends JPanel
                 dumb[i] = new JLabel("", SwingConstants.CENTER);
             }
 
-            dumb[i].setSize((width/2)/10,(width/2)/10);
+            dumb[i].setSize((width/2)/11,(width/2)/11);
         }
 
         JLabel entity1 = new JLabel();
