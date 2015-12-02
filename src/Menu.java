@@ -158,30 +158,30 @@ class BoardPanel extends JPanel
             if(i == 2 || i == 4  || i == 7  || i == 9 || i == 10  || i == 12  || i == 14 || i == 15
                     || i == 17 || i == 19 || i == 20 || i == 22 || i == 24 || i == 25 || i == 27
                     || i == 28 || i == 30 || i == 32 || i == 33 || i == 35 || i == 38) {
-                dumb[i] = new JLabel("Property",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",SwingConstants.CENTER);
 
             }else if(i == 6 || i == 16 || i == 26 || i == 36){
-                dumb[i] = new JLabel("Train",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 3 || i == 18 || i == 34) {
-                dumb[i] = new JLabel("Chest",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 8 || i == 23 || i == 37) {
-                dumb[i] = new JLabel("Chance",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 5){
-                dumb[i] = new JLabel("Income Tax",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 1) {
-                dumb[i] = new JLabel("Go", SwingConstants.CENTER);
+                dumb[i] = new JLabel("", SwingConstants.CENTER);
             }else if(i == 11){
-                dumb[i] = new JLabel("Jail",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 13){
-                dumb[i] = new JLabel("Electric",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 21){
-                dumb[i] = new JLabel("Parking",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 29){
-                dumb[i] = new JLabel("Water",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 31){
-                dumb[i] = new JLabel("Go to Jail",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else if(i == 39){
-                dumb[i] = new JLabel("Lux Tax",  SwingConstants.CENTER);
+                dumb[i] = new JLabel("",  SwingConstants.CENTER);
             }else {
                 dumb[i] = new JLabel("", SwingConstants.CENTER);
             }
