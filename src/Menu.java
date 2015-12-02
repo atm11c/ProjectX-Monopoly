@@ -215,14 +215,14 @@ class BoardPanel extends JPanel
         t4 = new JPanel();
 
         t1.setLayout(new GridLayout(1,11));
-        t1.setPreferredSize(new Dimension((width/2)/10,100));
+        t1.setPreferredSize(new Dimension((width/2)/11,height/11));
         t2.setLayout(new GridLayout(1,11));
-        t2.setPreferredSize(new Dimension((width/2)/10,100));
+        t2.setPreferredSize(new Dimension((width/2)/11,height/11));
 
         t3.setLayout(new GridLayout(9,1));
-        t3.setPreferredSize(new Dimension(90,(height/2)/9));
+        t3.setPreferredSize(new Dimension((width/2)/11,(height)/11));
         t4.setLayout(new GridLayout(9,1));
-        t4.setPreferredSize(new Dimension(90,(height/2)/9));
+        t4.setPreferredSize(new Dimension((width/2)/11,(height)/11));
 
         for(int i = 10; i >= 0; i--){
             t1.add(dumb[i]);
@@ -239,6 +239,7 @@ class BoardPanel extends JPanel
 
         ImageIcon centerPiece = new ImageIcon( this.getClass().getResource("/Pieces/CenterPiece.png"));
 
+        //hardcode to 720
 
         BufferedImage center = scaleImage(width/2 -((width / 2) / 11)*2, height -((height/11))*2 , centerPiece);
         JLabel pic = new JLabel(new ImageIcon(center));
