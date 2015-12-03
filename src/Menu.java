@@ -129,7 +129,13 @@ class MenuPanel extends JPanel{
 
 class BoardPanel extends JPanel
 {
+
+    private Gameboard board = new Gameboard();
+    private JLabel entity1;
+
     public BoardPanel(){
+        entity1 = new JLabel();
+        entity1.setIcon(new ImageIcon(this.getClass().getResource("test.png")));
 
         setLayout(new GridLayout(1,2));
 
@@ -189,8 +195,7 @@ class BoardPanel extends JPanel
             dumb[i].setSize((width/2)/11,(width/2)/11);
         }
 
-        JLabel entity1 = new JLabel();
-        entity1.setIcon(new ImageIcon(this.getClass().getResource("test.png")));
+
 
         for(int i = 0; i <40 ; i++){
             dumb[i].setLayout(new BorderLayout());
@@ -266,9 +271,6 @@ class BoardPanel extends JPanel
         return bi;
     }
 
-
-
-
     public ImageIcon[] SetAllPieces(){
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -296,100 +298,195 @@ class BoardPanel extends JPanel
 
     }
 
-}
 
-class PlayerOptionPanel extends JPanel{
+    class PlayerOptionPanel extends JPanel{
 
-    public PlayerOptionPanel(){
-        setLayout(new GridLayout(2,1));
+        public PlayerOptionPanel(){
+            setLayout(new GridLayout(2,1));
 
-        PlayerInfoPanel playerInfo = new PlayerInfoPanel();
+            PlayerInfoPanel playerInfo = new PlayerInfoPanel();
 
-        add(playerInfo);
+            add(playerInfo);
 
-        JPanel options = new JPanel();
-        options.setAlignmentX( Component.CENTER_ALIGNMENT );
-        options.setLayout(new GridLayout(1,4));
+            JPanel options = new JPanel();
+            options.setAlignmentX( Component.CENTER_ALIGNMENT );
+            options.setLayout(new GridLayout(1,4));
 
-        JPanel playerBoxes[] = new JPanel[4];
-        for(int i = 0; i < 4; i++){
-            playerBoxes[i] = new JPanel();
+            JPanel playerBoxes[] = new JPanel[4];
+            for(int i = 0; i < 4; i++){
+                playerBoxes[i] = new JPanel();
+            }
+
+            BoxLayout layout[] = new BoxLayout[4];
+            for(int i = 0;i < 4; i++){
+                layout[i]= new BoxLayout(playerBoxes[i], BoxLayout.Y_AXIS);
+                playerBoxes[i].setLayout(layout[i]);
+            }
+
+            JPanel players[] = new JPanel[4];
+            for(int i = 0; i < 4; i++){
+                players[i] = new JPanel();
+                players[i].setLayout(new BorderLayout());
+            }
+
+            JButton playerButtons[] = new JButton[16];
+            for(int i = 0; i < 16; i+=4){
+                playerButtons[i] = new JButton("Roll");
+                playerButtons[i+1] = new JButton("Buy");
+                playerButtons[i+2] = new JButton("Sell");
+                playerButtons[i+3] = new JButton("Properties");
+
+                playerButtons[i].setAlignmentX(CENTER_ALIGNMENT);
+                playerButtons[i+1].setAlignmentX(CENTER_ALIGNMENT);
+                playerButtons[i+2].setAlignmentX(CENTER_ALIGNMENT);
+                playerButtons[i+3].setAlignmentX(CENTER_ALIGNMENT);
+
+
+            }
+
+            for(int i = 0, j = 0; i < 4; i++, j+=4){
+
+                playerBoxes[i].add(playerButtons[j]);
+                playerBoxes[i].add(playerButtons[j+1]);
+                playerBoxes[i].add(playerButtons[j+2]);
+                playerBoxes[i].add(playerButtons[j+3]);
+
+            }
+
+            for(int i = 0; i < 4; i++){
+                players[i].add(playerBoxes[i], BorderLayout.CENTER);
+                players[i].add(new JButton("Player" + i), BorderLayout.NORTH);
+                options.add(players[i]);
+            }
+
+            add(options);
+
         }
 
-        BoxLayout layout[] = new BoxLayout[4];
-        for(int i = 0;i < 4; i++){
-            layout[i]= new BoxLayout(playerBoxes[i], BoxLayout.Y_AXIS);
-            playerBoxes[i].setLayout(layout[i]);
+    }
+
+    class PlayerInfoPanel extends JPanel{
+
+        public PlayerInfoPanel(){
+
+            JPanel playerStats[] = new JPanel[5];
+
+            setLayout(new GridLayout(5,1));
+
+            for(int i=0; i < 4;i++){
+                playerStats[i] = new JPanel();
+                playerStats[i].setLayout(new GridLayout(1,4));
+
+                playerStats[i].add(new JLabel("Player " + (i+1)));
+                playerStats[i].add(new JLabel("Total cash: " + board.players[i].getMoney()));
+                playerStats[i].add(new JLabel("Number of Properties: " ));
+                playerStats[i].add(new JLabel("Placeholder: "));
+
+                add(playerStats[i]);
+            }
+            JTextArea output = new JTextArea();
+            output.setText("This is a test");
+            output.setEditable(false);
+
+            add(output);
         }
-
-        JPanel players[] = new JPanel[4];
-        for(int i = 0; i < 4; i++){
-            players[i] = new JPanel();
-            players[i].setLayout(new BorderLayout());
-        }
-
-        JButton playerButtons[] = new JButton[16];
-        for(int i = 0; i < 16; i+=4){
-            playerButtons[i] = new JButton("Roll");
-            playerButtons[i+1] = new JButton("Buy");
-            playerButtons[i+2] = new JButton("Sell");
-            playerButtons[i+3] = new JButton("Properties");
-
-            playerButtons[i].setAlignmentX(CENTER_ALIGNMENT);
-            playerButtons[i+1].setAlignmentX(CENTER_ALIGNMENT);
-            playerButtons[i+2].setAlignmentX(CENTER_ALIGNMENT);
-            playerButtons[i+3].setAlignmentX(CENTER_ALIGNMENT);
-
-
-        }
-
-        for(int i = 0, j = 0; i < 4; i++, j+=4){
-
-            playerBoxes[i].add(playerButtons[j]);
-            playerBoxes[i].add(playerButtons[j+1]);
-            playerBoxes[i].add(playerButtons[j+2]);
-            playerBoxes[i].add(playerButtons[j+3]);
-
-        }
-
-        for(int i = 0; i < 4; i++){
-            players[i].add(playerBoxes[i], BorderLayout.CENTER);
-            players[i].add(new JButton("Player" + i), BorderLayout.NORTH);
-            options.add(players[i]);
-        }
-
-        add(options);
 
     }
 
 }
 
+//class PlayerOptionPanel extends JPanel{
+//
+//    public PlayerOptionPanel(){
+//        setLayout(new GridLayout(2,1));
+//
+//        PlayerInfoPanel playerInfo = new PlayerInfoPanel();
+//
+//        add(playerInfo);
+//
+//        JPanel options = new JPanel();
+//        options.setAlignmentX( Component.CENTER_ALIGNMENT );
+//        options.setLayout(new GridLayout(1,4));
+//
+//        JPanel playerBoxes[] = new JPanel[4];
+//        for(int i = 0; i < 4; i++){
+//            playerBoxes[i] = new JPanel();
+//        }
+//
+//        BoxLayout layout[] = new BoxLayout[4];
+//        for(int i = 0;i < 4; i++){
+//            layout[i]= new BoxLayout(playerBoxes[i], BoxLayout.Y_AXIS);
+//            playerBoxes[i].setLayout(layout[i]);
+//        }
+//
+//        JPanel players[] = new JPanel[4];
+//        for(int i = 0; i < 4; i++){
+//            players[i] = new JPanel();
+//            players[i].setLayout(new BorderLayout());
+//        }
+//
+//        JButton playerButtons[] = new JButton[16];
+//        for(int i = 0; i < 16; i+=4){
+//            playerButtons[i] = new JButton("Roll");
+//            playerButtons[i+1] = new JButton("Buy");
+//            playerButtons[i+2] = new JButton("Sell");
+//            playerButtons[i+3] = new JButton("Properties");
+//
+//            playerButtons[i].setAlignmentX(CENTER_ALIGNMENT);
+//            playerButtons[i+1].setAlignmentX(CENTER_ALIGNMENT);
+//            playerButtons[i+2].setAlignmentX(CENTER_ALIGNMENT);
+//            playerButtons[i+3].setAlignmentX(CENTER_ALIGNMENT);
+//
+//
+//        }
+//
+//        for(int i = 0, j = 0; i < 4; i++, j+=4){
+//
+//            playerBoxes[i].add(playerButtons[j]);
+//            playerBoxes[i].add(playerButtons[j+1]);
+//            playerBoxes[i].add(playerButtons[j+2]);
+//            playerBoxes[i].add(playerButtons[j+3]);
+//
+//        }
+//
+//        for(int i = 0; i < 4; i++){
+//            players[i].add(playerBoxes[i], BorderLayout.CENTER);
+//            players[i].add(new JButton("Player" + i), BorderLayout.NORTH);
+//            options.add(players[i]);
+//        }
+//
+//        add(options);
+//
+//    }
+//
+//}
 
-
-class PlayerInfoPanel extends JPanel{
-
-    public PlayerInfoPanel(){
-
-        JPanel playerStats[] = new JPanel[5];
-
-        setLayout(new GridLayout(5,1));
-
-        for(int i=0; i < 4;i++){
-            playerStats[i] = new JPanel();
-            playerStats[i].setLayout(new GridLayout(1,4));
-
-            playerStats[i].add(new JLabel("Player" + (i+1)));
-            playerStats[i].add(new JLabel("Total cash:"));
-            playerStats[i].add(new JLabel("Number of Properties:"));
-            playerStats[i].add(new JLabel("Placeholder:"));
-
-           add(playerStats[i]);
-        }
-        JTextArea output = new JTextArea();
-        output.setText("This is a test");
-        output.setEditable(false);
-
-        add(output);
-    }
-
-}
+//
+//
+//class PlayerInfoPanel extends JPanel{
+//
+//    public PlayerInfoPanel(){
+//
+//        JPanel playerStats[] = new JPanel[5];
+//
+//        setLayout(new GridLayout(5,1));
+//
+//        for(int i=0; i < 4;i++){
+//            playerStats[i] = new JPanel();
+//            playerStats[i].setLayout(new GridLayout(1,4));
+//
+//            playerStats[i].add(new JLabel("Player" + (i+1)));
+//            playerStats[i].add(new JLabel("Total cash:"));
+//            playerStats[i].add(new JLabel("Number of Properties:"));
+//            playerStats[i].add(new JLabel("Placeholder:"));
+//
+//           add(playerStats[i]);
+//        }
+//        JTextArea output = new JTextArea();
+//        output.setText("This is a test");
+//        output.setEditable(false);
+//
+//        add(output);
+//    }
+//
+//}
