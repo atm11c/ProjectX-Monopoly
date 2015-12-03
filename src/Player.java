@@ -603,7 +603,6 @@ public class Player {
      *  Method trade
      *  Starts a trade between two players.
      */
-    //TODO: Add and subtract from the number of utilities and railroads owned
     public void trade(Gameboard gb){
         System.out.print("Which player do you want to trade with?");
         int trader = scanner.nextInt();
@@ -639,12 +638,32 @@ public class Player {
             gb.players[trader].setMoney(gb.players[trader].getMoney()+sCash);
             gb.players[trader].canAfford(rCash);
 
-            OwnedCell oc = (OwnedCell)gb.cells[rProp];
-            oc.setOwner(playerId);
-            oc = (OwnedCell)gb.cells[sProp];
-            oc.setOwner(trader);
-        }
-        else{
+            OwnedCell rec = (OwnedCell)gb.cells[rProp];
+            rec.setOwner(playerId);
+            OwnedCell sen = (OwnedCell)gb.cells[sProp];
+            sen.setOwner(trader);
+
+            //Add and subtract number of railroads and utilities from players if applicable.
+            if(rec.getisRR()){
+                rrOwned+=1;
+                gb.players[trader].setRrOwned(gb.players[trader].getRrOwned() - 1);
+            }
+            else if(rec.getisUtil()){
+                utilOwned+=1;
+                gb.players[trader].setUtilOwned(gb.players[trader].getUtilOwned()-1);
+            }
+
+            if(sen.getisRR()){
+                rrOwned-=1;
+                gb.players[trader].setRrOwned(gb.players[trader].getRrOwned()+1);
+            }
+            else if(sen.getisUtil()){
+                utilOwned-=1;
+                gb.players[trader].setRrOwned(gb.players[trader].getRrOwned()+1);
+            }
+
+
+        } else {
             System.out.printf("Player %d declined the trade.\n", trader+1);
         }
     }
