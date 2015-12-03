@@ -43,17 +43,16 @@ public class Gameboard {
 
 
         if(chestCards.isEmpty()){
-            for(int i = 0; i < 15; i++){
+            for(int i = 0; i < 16; i++){
                 chestCards.add(i);
             }
             Collections.shuffle(chestCards);
         }
 
         if(chanceCards.isEmpty()){
-            for(int i = 0; i < 15; i++){
+            for(int i = 0; i < 16; i++){
                 chanceCards.add(i);
             }
-            chanceCards.add(15);
             Collections.shuffle(chanceCards);
         }
     }
