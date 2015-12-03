@@ -131,17 +131,117 @@ class BoardPanel extends JPanel
 {
 
     private Gameboard board = new Gameboard();
-    private JLabel entity1;
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int width = (int)screenSize.getWidth();
+    int height = (int)screenSize.getHeight();
+
 
     public BoardPanel(){
-        entity1 = new JLabel();
-        entity1.setIcon(new ImageIcon(this.getClass().getResource("test.png")));
+
+        JLabel buildings[][] = new JLabel[40][5];
+        JLabel playerPieces[][]= new JLabel[40][5];
+
+
+        for(int i = 0; i < 40; i++){
+            for(int j =0; j < 5; j++){
+
+
+                if(j < 4){
+                    ImageIcon house = new ImageIcon(this.getClass().getResource("house.png"));
+                    BufferedImage bHouse = null;
+
+                    if((i >= 11 && i < 20) || (i >=31 && i < 40)) {
+                        bHouse = scaleImage((width / 11) / 8, (height / 11) / 8, house);
+                    }
+                    if((i >= 0 && i < 11) || (i >= 20 && i < 31) ) {
+                        bHouse = scaleImage((width / 11) / 8, (height / 11) / 8, house);
+                    }
+
+
+
+                    if(i >= 0 && i <11) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHouse));
+                    }
+
+                    if(i >= 11 && i <20) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHouse), SwingConstants.RIGHT);
+                    }
+
+                    if(i >= 20 && i <31) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHouse));
+                    }
+
+                    if(i >= 31 && i <40) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHouse), SwingConstants.LEFT);
+                    }
+                    buildings[i][j].setVisible(false);
+                }else{
+
+                    ImageIcon hotel = new ImageIcon(this.getClass().getResource("hotel.png"));
+                    BufferedImage bHotel = null;
+
+                    if((i >= 11 && i < 20) || (i >=31 && i < 40)) {
+                        bHotel = scaleImage((width / 11) / 8, (height / 11) / 8, hotel);
+                    }
+                    if((i >= 0 && i < 11) || (i >= 20 && i < 31) ) {
+                        bHotel = scaleImage((width / 11) / 8, (height / 11) / 8, hotel);
+                    }
+
+
+
+                    if(i >= 0 && i <11) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHotel));
+                    }
+
+                    if(i >= 11 && i <20) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHotel), SwingConstants.RIGHT);
+                    }
+
+                    if(i >= 20 && i <31) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHotel));
+                    }
+
+                    if(i >= 31 && i <40) {
+                        buildings[i][j] = new JLabel(new ImageIcon(bHotel), SwingConstants.LEFT);
+                    }
+
+
+
+                    buildings[i][j].setVisible(false);
+
+                }
+            }
+        }
+
+
+        for(int i =0; i < 40; i++){
+            for(int j = 0; j < 5;j++){
+                ImageIcon piece = null;
+
+                if(j == 0){
+                    piece = new ImageIcon(this.getClass().getResource("Test1.png"));
+                }else if(j == 1){
+                    piece = new ImageIcon(this.getClass().getResource("Test2.png"));
+                }else if(j == 2){
+                    piece = new ImageIcon(this.getClass().getResource("Test3.png"));
+                }else if(j == 3){
+                    piece = new ImageIcon(this.getClass().getResource("Test4.png"));
+                }else{
+                    piece = new ImageIcon(this.getClass().getResource("Test4.png"));
+                }
+
+                BufferedImage bPiece = scaleImage(20,20, piece);
+                playerPieces[i][j] = new JLabel(new ImageIcon(bPiece));
+
+                if(j ==4)
+                    playerPieces[i][j].setVisible(false);
+
+                playerPieces[i][j].setVisible(false);
+            }
+        }
 
         setLayout(new GridLayout(1,2));
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
 
         JPanel board, t1, t2, t3, t4;
 
@@ -198,20 +298,64 @@ class BoardPanel extends JPanel
 
 
 
+
+
+
         for(int i = 0; i <40 ; i++){
-            dumb[i].setLayout(new BorderLayout());
+
+            if((i >= 0 && i < 11) || (i >= 20 && i < 31) ) {
+                dumb[i].setLayout(new GridLayout(2,5));
+            }else if((i >= 11 && i < 20) || (i >=31 && i < 40)) {
+                dumb[i].setLayout(new GridLayout(5,2));
+            }
+
             dumb[i].setIcon(Pieces[i]);
 
+            if(i >= 0 && i < 11) {
+                for (int j = 0; j < 5; j++) {
+                    dumb[i].add(buildings[i][j]);
+                }
+
+                for (int j = 0; j < 5; j++) {
+                    dumb[i].add(playerPieces[i][j]);
+                }
+            }
+
+            if(i >= 20 && i < 31){
+                for (int j = 0; j < 5; j++) {
+                    dumb[i].add(playerPieces[i][j]);
+                }
+
+                for (int j = 0; j < 5; j++) {
+                    dumb[i].add(buildings[i][j]);
+                }
+
+            }
+
+
+            if(i >= 11 && i < 20){
+                for(int j =0; j < 5; j++) {
+                    dumb[i].add(playerPieces[i][j]);
+                    dumb[i].add(buildings[i][j]);
+                }
+            }
+
+            if(i >=31 && i < 40){
+                for(int j =0; j < 5; j++) {
+                    dumb[i].add(buildings[i][j]);
+                    dumb[i].add(playerPieces[i][j]);
+                }
+            }
+
+
         }
-        dumb[0].add(entity1, BorderLayout.SOUTH);
 
-
-//        JLabel entity2 = new JLabel();
-//        JLabel entity3 = new JLabel();
-//        JLabel entity4 = new JLabel();
 //
+//        dumb[0].add(entity1);
+//        dumb[0].add(entity2);
+//        dumb[0].add(entity3);
+//        dumb[0].add(entity4);
 //
-//        dumb[1].add(entity1, BorderLayout.SOUTH);
 
 
         t1 = new JPanel();
@@ -320,25 +464,6 @@ class BoardPanel extends JPanel
                 playerBoxes[i].setLayout(new GridLayout(6,3));
                 playerBoxes[i].setBorder(BorderFactory.createLineBorder(Color.black));
             }
-//
-//            BoxLayout layout[] = new BoxLayout[4];
-//            for(int i = 0;i < 4; i++){
-//                layout[i]= new BoxLayout(playerBoxes[i], BoxLayout.Y_AXIS);
-////                playerBoxes[i].setLayout(layout[i]);
-//
-//            }
-//
-//
-//
-//            JPanel players[] = new JPanel[4];
-//            for(int i = 0; i < 4; i++){
-//                players[i] = new JPanel();
-////                players[i].setLayout(new BorderLayout());
-//            }
-//
-
-
-
 
             JPanel Holder1[][]= new JPanel[6][3];
             JPanel Holder2[][]= new JPanel[6][3];
@@ -369,14 +494,6 @@ class BoardPanel extends JPanel
             Holder4[0][1].add(new JLabel("Player 4"));
 
             JButton buttons[][] = new JButton[4][5];
-//
-//
-//
-//            JButton roll[] = new JButton[4];
-//            JButton buy[] = new JButton[4];
-//            JButton sell[] = new JButton[4];
-//            JButton build[] = new JButton[4];
-//            JButton properties[] = new JButton[4];
 
             for(int i =0 ; i < 4; i++){
 
@@ -384,14 +501,9 @@ class BoardPanel extends JPanel
                 buttons[i][1] = new JButton("Buy");
                 buttons[i][2] = new JButton("Build");
                 buttons[i][3] = new JButton("Properties");
+
                 buttons[i][4] = new JButton("PlaceHolder");
                 buttons[i][4].setVisible(false);
-
-//                roll[i] = new JButton("Roll");
-//                buy[i] = new JButton("Buy");
-//                sell[i] = new JButton("Sell");
-//                build[i] = new JButton("Build");
-//                properties[i] = new JButton("Properties");
             }
 
 
@@ -402,96 +514,14 @@ class BoardPanel extends JPanel
                     Holder3[i][1].add(buttons[2][i-1]);
                     Holder4[i][1].add(buttons[3][i-1]);
 
-
-//                    Holder1[i][1].add(buttons[j][i]);
-//                    Holder2[i][1].add(buttons[j][j]);
-//                    Holder3[i][1].add(buttons[j][j]);
-//                    Holder4[i][1].add(buttons[j][j]);
                 }
             }
-
-//
-//            for(int i = 1; i < 6; i++) {
-//                Holder1[1][1].add(roll[0]);
-//                Holder2[1][1].add(roll[1]);
-//                Holder3[1][1].add(roll[2]);
-//                Holder4[1][1].add(roll[3]);
-//
-//                Holder1[2][1].add(buy[0]);
-//                Holder2[2][1].add(buy[1]);
-//                Holder3[2][1].add(buy[2]);
-//                Holder4[2][1].add(buy[3]);
-//
-//                Holder1[3][1].add(roll[0]);
-//                Holder2[3][1].add(roll[1]);
-//                Holder3[3][1].add(roll[2]);
-//                Holder4[3][1].add(roll[3]);
-//
-//                Holder1[4][1].add(roll[0]);
-//                Holder2[4][1].add(roll[1]);
-//                Holder3[4][1].add(roll[2]);
-//                Holder4[4][1].add(roll[3]);
-//
-//                Holder1[5][1].add(roll[0]);
-//                Holder2[5][1].add(roll[1]);
-//                Holder3[5][1].add(roll[2]);
-//                Holder4[5][1].add(roll[3]);
-//
-//
-
-
-//                Holder2[i][1].add(new JButton("test"));
-//                Holder3[i][1].add(new JButton("test"));
-//                Holder4[i][1].add(new JButton("test"));
-
 
             options.add(playerBoxes[0]);
             options.add(playerBoxes[1]);
             options.add(playerBoxes[2]);
             options.add(playerBoxes[3]);
             add(options);
-
-
-
-//            JButton playerButtons[] = new JButton[20];
-//            for(int i = 0; i < 20; i+=5){
-//                playerButtons[i] = new JButton("Roll");
-//                playerButtons[i+1] = new JButton("Buy");
-//                playerButtons[i+2] = new JButton("Sell");
-//                playerButtons[i+3] = new JButton("Properties");
-//                playerButtons[i+4] = new JButton("Build");
-//
-//                playerButtons[i].setAlignmentX(CENTER_ALIGNMENT);
-//                playerButtons[i+1].setAlignmentX(CENTER_ALIGNMENT);
-//                playerButtons[i+2].setAlignmentX(CENTER_ALIGNMENT);
-//                playerButtons[i+3].setAlignmentX(CENTER_ALIGNMENT);
-//                playerButtons[i+4].setAlignmentX(CENTER_ALIGNMENT);
-//
-//            }
-//
-
-
-//            for(int i = 0, j = 0; i < 4; i++, j+=5){
-//                playerBoxes[i].add(playerButtons[j]);
-//                playerBoxes[i].add(playerButtons[j+1]);
-//                playerBoxes[i].add(playerButtons[j+2]);
-//                playerBoxes[i].add(playerButtons[j+3]);
-//                playerBoxes[i].add(playerButtons[j+4]);
-//
-//            }
-
-//
-//
-//            for(int i = 0; i < 4; i++){
-//
-//
-//                players[i].add(playerBoxes[i], BorderLayout.CENTER);
-//                players[i].add(new JButton("Player" + i), BorderLayout.NORTH);
-//                players[i].setBorder(BorderFactory.createLineBorder(Color.black));
-//
-//                options.add(players[i]);
-//            }
-
 
         }
 
