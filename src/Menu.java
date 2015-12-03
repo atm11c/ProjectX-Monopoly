@@ -314,31 +314,28 @@ class BoardPanel extends JPanel
             options.setLayout(new GridLayout(1,4));
 
 
-
-
-
             JPanel playerBoxes[] = new JPanel[4];
             for(int i = 0; i < 4; i++){
                 playerBoxes[i] = new JPanel();
                 playerBoxes[i].setLayout(new GridLayout(6,3));
                 playerBoxes[i].setBorder(BorderFactory.createLineBorder(Color.black));
             }
-
-            BoxLayout layout[] = new BoxLayout[4];
-            for(int i = 0;i < 4; i++){
-                layout[i]= new BoxLayout(playerBoxes[i], BoxLayout.Y_AXIS);
-//                playerBoxes[i].setLayout(layout[i]);
-
-            }
-
-
-
-            JPanel players[] = new JPanel[4];
-            for(int i = 0; i < 4; i++){
-                players[i] = new JPanel();
-//                players[i].setLayout(new BorderLayout());
-            }
-
+//
+//            BoxLayout layout[] = new BoxLayout[4];
+//            for(int i = 0;i < 4; i++){
+//                layout[i]= new BoxLayout(playerBoxes[i], BoxLayout.Y_AXIS);
+////                playerBoxes[i].setLayout(layout[i]);
+//
+//            }
+//
+//
+//
+//            JPanel players[] = new JPanel[4];
+//            for(int i = 0; i < 4; i++){
+//                players[i] = new JPanel();
+////                players[i].setLayout(new BorderLayout());
+//            }
+//
 
 
 
@@ -371,12 +368,88 @@ class BoardPanel extends JPanel
             Holder3[0][1].add(new JLabel("Player 3"));
             Holder4[0][1].add(new JLabel("Player 4"));
 
-            for(int i = 1; i < 6; i++) {
-                Holder1[i][1].add(new JButton("test"));
-                Holder2[i][1].add(new JButton("test"));
-                Holder3[i][1].add(new JButton("test"));
-                Holder4[i][1].add(new JButton("test"));
+            JButton buttons[][] = new JButton[4][5];
+//
+//
+//
+//            JButton roll[] = new JButton[4];
+//            JButton buy[] = new JButton[4];
+//            JButton sell[] = new JButton[4];
+//            JButton build[] = new JButton[4];
+//            JButton properties[] = new JButton[4];
+
+            for(int i =0 ; i < 4; i++){
+
+                buttons[i][0] = new JButton("Roll");
+                buttons[i][1] = new JButton("Buy");
+                buttons[i][2] = new JButton("Build");
+                buttons[i][3] = new JButton("Properties");
+                buttons[i][4] = new JButton("PlaceHolder");
+                buttons[i][4].setVisible(false);
+
+//                roll[i] = new JButton("Roll");
+//                buy[i] = new JButton("Buy");
+//                sell[i] = new JButton("Sell");
+//                build[i] = new JButton("Build");
+//                properties[i] = new JButton("Properties");
             }
+
+
+            for(int i = 1; i < 6; i++){
+                for(int j = 0; j < 4; j++){
+                    Holder1[i][1].add(buttons[0][i-1]);
+                    Holder2[i][1].add(buttons[1][i-1]);
+                    Holder3[i][1].add(buttons[2][i-1]);
+                    Holder4[i][1].add(buttons[3][i-1]);
+
+
+//                    Holder1[i][1].add(buttons[j][i]);
+//                    Holder2[i][1].add(buttons[j][j]);
+//                    Holder3[i][1].add(buttons[j][j]);
+//                    Holder4[i][1].add(buttons[j][j]);
+                }
+            }
+
+//
+//            for(int i = 1; i < 6; i++) {
+//                Holder1[1][1].add(roll[0]);
+//                Holder2[1][1].add(roll[1]);
+//                Holder3[1][1].add(roll[2]);
+//                Holder4[1][1].add(roll[3]);
+//
+//                Holder1[2][1].add(buy[0]);
+//                Holder2[2][1].add(buy[1]);
+//                Holder3[2][1].add(buy[2]);
+//                Holder4[2][1].add(buy[3]);
+//
+//                Holder1[3][1].add(roll[0]);
+//                Holder2[3][1].add(roll[1]);
+//                Holder3[3][1].add(roll[2]);
+//                Holder4[3][1].add(roll[3]);
+//
+//                Holder1[4][1].add(roll[0]);
+//                Holder2[4][1].add(roll[1]);
+//                Holder3[4][1].add(roll[2]);
+//                Holder4[4][1].add(roll[3]);
+//
+//                Holder1[5][1].add(roll[0]);
+//                Holder2[5][1].add(roll[1]);
+//                Holder3[5][1].add(roll[2]);
+//                Holder4[5][1].add(roll[3]);
+//
+//
+
+
+//                Holder2[i][1].add(new JButton("test"));
+//                Holder3[i][1].add(new JButton("test"));
+//                Holder4[i][1].add(new JButton("test"));
+
+
+            options.add(playerBoxes[0]);
+            options.add(playerBoxes[1]);
+            options.add(playerBoxes[2]);
+            options.add(playerBoxes[3]);
+            add(options);
 
 
 
@@ -418,12 +491,6 @@ class BoardPanel extends JPanel
 //
 //                options.add(players[i]);
 //            }
-
-            options.add(playerBoxes[0]);
-            options.add(playerBoxes[1]);
-            options.add(playerBoxes[2]);
-            options.add(playerBoxes[3]);
-            add(options);
 
 
         }

@@ -54,7 +54,7 @@ public class PropertyTester {
                         gameboard.players[playerTurn].playerProps(gameboard);
                         break;
                     case "b":
-                        gameboard.players[playerTurn].builder(gameboard);
+//                        gameboard.players[playerTurn].builder(gameboard);
                         break;
                     default:
                         System.out.println("That wasn't one of the options.");
