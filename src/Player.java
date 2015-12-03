@@ -1,6 +1,7 @@
 import com.sun.xml.internal.bind.v2.TODO;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Created by Andrew on 11/23/2015.
@@ -15,9 +16,6 @@ public class Player {
     private int jailTurns;
     private boolean inJail, bankrupt;
     private boolean browns,lblues,pinks,oranges,reds,yellows,greens,dblues;
-
-
-
     Scanner scanner = new Scanner(System.in);
 
     Player(int i){
@@ -29,45 +27,11 @@ public class Player {
         setInJail(false);
         setJailTurns(0);
         setBankrupt(false);
-
-
     }
 
     /**
      * Set and Get methods
      */
-
-
-
-    public void checkChanceCard(int x){
-        switch(x){
-
-        }
-    }
-
-    public void checkChestCard(int y){
-        switch (y){
-            case 0:
-                System.out.println("Collect $50");
-
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-
-
-        }
-    }
 
     public void setMoney(int money) {
         this.money = money;
@@ -354,7 +318,7 @@ public class Player {
      */
     private void checkCell(Gameboard gb){
         if(Gameboard.contains(gb.BOARDCELLNUMS, position)){
-            effectCell(gb);
+            effectCell();
         }
 
         else if(Gameboard.contains(gb.SPECIALCELLS, position)){
@@ -369,7 +333,7 @@ public class Player {
      *  Method effectCell
      *  If the player landed on a cell that is not buyable, then this method resolves the effects of that cell.
      */
-    private void effectCell(Gameboard board){
+    private void effectCell(){
         switch(position){
             //Go
             case 0:
@@ -377,14 +341,6 @@ public class Player {
             //S. Community Chest
             case 2:
                 System.out.println("Community Chest NYI");
-
-                int draw = board.chestCards.remove(0);
-                checkChestCard(draw);
-
-                if(board.chanceCards.isEmpty()){
-                    board.shuffleCards();
-                }
-
                 break;
             //Income Tax
             case 4:
