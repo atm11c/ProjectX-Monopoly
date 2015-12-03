@@ -252,6 +252,7 @@ public class Player {
             setRoll(die1+die2);
 
             System.out.printf("You rolled a %d!\n", roll);
+
             //check if doubles were rolled.
             if(die1 == die2){
                 System.out.println("DOUBLES");

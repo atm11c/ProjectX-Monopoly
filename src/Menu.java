@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 public class Menu {
 
+    public static Gameboard gb = new Gameboard();
+
     public static void main(String[] args){
         JFrame frame = new JFrame("Monopoly!");
         MenuPanel mPanel = new MenuPanel();
@@ -21,6 +23,25 @@ public class Menu {
         frame.setVisible( true );
         frame.setLocation(x, y);
         frame.add(mPanel);
+
+        boolean flag = true;
+
+        while(flag) {
+            int playerTurn = gb.getCurrentPlayer();
+            System.out.printf("Player %d, it's your turn!\n", playerTurn+1);
+
+
+            System.out.println("End Turn\n\n");
+
+            //Check for end of game
+            if(gb.players[playerTurn].isBankrupt()){
+                flag = false;
+                System.out.println("Game has ended!");
+            }
+
+            //next player
+            gb.setCurrentPlayer((playerTurn+1)%4);
+        }
 
 
     }
@@ -494,6 +515,9 @@ class BoardPanel extends JPanel
 
                 buttons[i][4] = new JButton("PlaceHolder");
                 buttons[i][4].setVisible(false);
+
+                RollHandler rollHandler = new RollHandler();
+                buttons[i][0].addActionListener(rollHandler);
             }
 
 
@@ -551,7 +575,16 @@ class BoardPanel extends JPanel
 
     }
 
+
+    private class RollHandler implements ActionListener{
+        public void actionPerformed(ActionEvent actionEvent) {
+            Menu.gb.players[Menu.gb.getCurrentPlayer()].takeTurn(Menu.gb);
+            Menu.gb.setCurrentPlayer((Menu.gb.getCurrentPlayer()+1)%4);
+        }
+    }
+
 }
+
 
 //class PlayerOptionPanel extends JPanel{
 //

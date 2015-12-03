@@ -6,6 +6,7 @@ import java.util.Scanner;
  * Created by Miller on 11/19/2015.
  */
 public class PropertyTester {
+    public static Gameboard gb = new Gameboard();
     public static void main(String[] args){
 
         JFrame frame = new JFrame("Monopoly!");
@@ -22,14 +23,25 @@ public class PropertyTester {
         frame.add(mPanel);
 
 
-        Scanner scanner = new Scanner(System.in);
-        Gameboard gameboard = new Gameboard();
+        boolean flag = true;
+
+        while(flag) {
+            int playerTurn = gb.getCurrentPlayer();
+            //System.out.printf("Player %d, it's your turn!\n", playerTurn+1);
 
 
-        //Initialize the players
-        for(int i=0;i<gameboard.players.length;i++){
-            gameboard.players[i] = new Player(i);
+            //System.out.println("End Turn\n\n");
+
+            //Check for end of game
+            if(gb.players[playerTurn].isBankrupt()){
+                flag = false;
+                System.out.println("Game has ended!");
+            }
+
         }
+
+/*
+        Scanner scanner = new Scanner(System.in);
 
         boolean flag = true;
 
@@ -43,30 +55,30 @@ public class PropertyTester {
                 String hurrdurr = scanner.next();
                 switch (hurrdurr) {
                     case "r":
-                        gameboard.players[playerTurn].takeTurn(gameboard);
+                        gb.players[playerTurn].takeTurn(gb);
                         derp = true;
                         break;
                     case "t":
                         //System.out.println("Trading not yet implemented.");
-                        gameboard.players[playerTurn].trade(gameboard);
+                        gb.players[playerTurn].trade(gb);
                         break;
                     case "v":
-                        gameboard.players[playerTurn].playerProps(gameboard);
+                        gb.players[playerTurn].playerProps(gb);
                         break;
                     case "b":
-                        gameboard.players[playerTurn].builder(gameboard);
+                        gb.players[playerTurn].builder(gb);
                         break;
                     default:
                         System.out.println("That wasn't one of the options.");
                 }
-                System.out.printf("Money: %d\n", gameboard.players[playerTurn].getMoney());
+                System.out.printf("Money: %d\n", gb.players[playerTurn].getMoney());
             }
 
 
             System.out.println("End Turn\n\n");
 
             //Check for end of game
-            if(gameboard.players[playerTurn].isBankrupt()){
+            if(gb.players[playerTurn].isBankrupt()){
                 flag = false;
                 System.out.println("Game has ended!");
             }
@@ -74,7 +86,7 @@ public class PropertyTester {
             //next player
             playerTurn+=1;
             playerTurn%=4;
-        }
+        }*/
 
     }
 
