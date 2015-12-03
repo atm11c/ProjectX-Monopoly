@@ -225,7 +225,6 @@ public class Player {
      * Simulates a turn taken by a player.
      *
      */
-    //TODO Implement Get out of jail free card use
     public void takeTurn(Gameboard gb){
         int numDubs = 0;
         boolean dubs = true;
@@ -276,44 +275,52 @@ public class Player {
             System.out.println("End Roll\n");
         }
 
-        //If the player is in Jail, try to roll dubs to get out.
+        //If the player is in Jail...
         if(inJail && !turnDone){
-            System.out.print("You are in jail! Roll or pay your way out? r/p");
-            String answer = scanner.next();
+            if(jailCards > 0) {
+                System.out.println("Used a Get Out of Jail Free Card");
+                jailCards-=1;
+                setInJail(false);
+                jailTurns = 0;
 
-            //Pay
-            if(answer.matches("p")){
-                if(canAfford(50)) {
-                    System.out.println("Chose to pay way out");
-                    jailTurns = 0;
-                    setInJail(false);
-                }
             }
-            //roll for it
-            else if(answer.matches("r")) {
-                System.out.println("Rolling for doubles...");
-                int die1 = random.nextInt(6) + 1;
-                int die2 = random.nextInt(6) + 1;
-                if (die1 == die2) {
-                    System.out.println("Rolled doubles");
-                    setInJail(false);
-                    position += die1 + die2;
-                    checkCell(gb);
-                    jailTurns = 0;
+            else {
+                System.out.print("You are in jail! Roll or pay your way out? r/p");
+                String answer = scanner.next();
+
+                //Pay
+                if (answer.matches("p")) {
+                    if (canAfford(50)) {
+                        System.out.println("Chose to pay way out");
+                        jailTurns = 0;
+                        setInJail(false);
+                    }
                 }
-                else {
-                    System.out.println("Did not roll doubles.");
-                    jailTurns++;
+                //roll for it
+                else if (answer.matches("r")) {
+                    System.out.println("Rolling for doubles...");
+                    int die1 = random.nextInt(6) + 1;
+                    int die2 = random.nextInt(6) + 1;
+                    if (die1 == die2) {
+                        System.out.println("Rolled doubles");
+                        setInJail(false);
+                        position += die1 + die2;
+                        checkCell(gb);
+                        jailTurns = 0;
+                    } else {
+                        System.out.println("Did not roll doubles.");
+                        jailTurns++;
+                    }
                 }
-            }
 
 
-            //after 3 turns in jail, force payment.
-            if(jailTurns == 3){
-                System.out.println("Payment forced.");
-                if(canAfford(50)) {
-                    setInJail(false);
-                    jailTurns = 0;
+                //after 3 turns in jail, force payment.
+                if (jailTurns == 3) {
+                    System.out.println("Payment forced.");
+                    if (canAfford(50)) {
+                        setInJail(false);
+                        jailTurns = 0;
+                    }
                 }
             }
         }
