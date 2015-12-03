@@ -12,6 +12,7 @@ public class Gameboard {
     public BoardCell[] cells = new BoardCell[40];
     public Player[] players = new Player[4];
 
+
     public List<Integer> chestCards = new ArrayList<>();
     public List<Integer> chanceCards = new ArrayList<>();
 

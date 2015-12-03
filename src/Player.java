@@ -14,6 +14,7 @@ public class Player {
     private int position;
     private int roll;
     private int jailTurns;
+    private int jailCards;
     private boolean inJail, bankrupt;
     private boolean browns,lblues,pinks,oranges,reds,yellows,greens,dblues;
     private Scanner scanner = new Scanner(System.in);
@@ -26,6 +27,7 @@ public class Player {
         setPosition(0);
         setInJail(false);
         setJailTurns(0);
+        setJailCards(0);
         setBankrupt(false);
     }
 
@@ -63,6 +65,10 @@ public class Player {
 
     public void setBankrupt(boolean bankrupt) {
         this.bankrupt = bankrupt;
+    }
+
+    public void setJailCards(int jailCards) {
+        this.jailCards = jailCards;
     }
 
     public void setBrowns(Gameboard gb){
@@ -154,6 +160,10 @@ public class Player {
 
     public int getRoll() {
         return roll;
+    }
+
+    public int getJailCards() {
+        return jailCards;
     }
 
     public boolean isInJail() {
@@ -305,10 +315,7 @@ public class Player {
                     jailTurns = 0;
                 }
             }
-
-
         }
-
     }
 
     /**
@@ -328,19 +335,22 @@ public class Player {
             buyCell(gb);
     }
 
-
     /**
      *  Method effectCell
      *  If the player landed on a cell that is not buyable, then this method resolves the effects of that cell.
      */
     private void effectCell(Gameboard gb){
+        int derp;
         switch(position){
             //Go
             case 0:
                 break;
             //S. Community Chest
             case 2:
-                System.out.println("Community Chest NYI");
+                System.out.println("Community Chest");
+                derp = gb.chanceCards.remove(0);
+                gb.shuffleCards();
+                checkChestCard(derp);
                 break;
             //Income Tax
             case 4:
@@ -360,9 +370,11 @@ public class Player {
                     System.out.println("Just visiting...");
                 break;
             //W. Community Chest
-            //TODO Community Chests
             case 17:
-                System.out.println("Community Chest NYI");
+                System.out.println("Community Chest");
+                derp = gb.chanceCards.remove(0);
+                gb.shuffleCards();
+                checkChestCard(derp);
                 break;
             //Free Parking
             case 20:
@@ -380,7 +392,10 @@ public class Player {
                 break;
             //E. Community Chest
             case 33:
-                System.out.println("Community Chest NYI");
+                System.out.println("Community Chest");
+                derp = gb.chanceCards.remove(0);
+                gb.shuffleCards();
+                checkChestCard(derp);
                 break;
             //E. Chance
             case 36:
@@ -838,22 +853,71 @@ public class Player {
     public void checkChestCard(int y){
         switch (y){
             case 0:
-                System.out.println("Collect $50");
-                    break;
+                System.out.println("Advance to Go!\nCollect $200!");
+                position=0;
+                money+=200;
+                break;
             case 1:
+                System.out.println("Bank Error in Your Favor!\nCollect $200!");
+                money+=200;
+                break;
             case 2:
+                System.out.println("Doctor's Fees!\nPay $50!");
+                canAfford(50);
+                break;
             case 3:
+                System.out.println("Sale of Stock!\nCollect $50!");
+                money+=50;
+                break;
             case 4:
+                System.out.println("Get out of Jail Free!");
+                jailCards+=1;
+                break;
             case 5:
+                System.out.println("Go Directly to Jail!");
+                position = 10;
+                setInJail(true);
+                break;
             case 6:
+                System.out.println("Grand Opera Opening!\nCollect $50 from every player!");
+                //TODO collect $50 from everyone
+                break;
             case 7:
+                System.out.println("Holiday Fund Matures\nCollect $100!");
+                money+=100;
+                break;
             case 8:
+                System.out.println("Income Tax Refund!\nCollect $20!");
+                money+=20;
+                break;
             case 9:
+                System.out.println("Life Insurance Matures!\nCollect $100!");
+                money+=100;
+                break;
             case 10:
+                System.out.println("Pay Hospital Fees!\nPay $100!");
+                canAfford(100);
+                break;
             case 11:
+                System.out.println("Pay School Fees!\nPay $150");
+                canAfford(150);
+                break;
             case 12:
+                System.out.println("Receive Consultancy Fee!\n Collect $25!");
+                money+=25;
+                break;
             case 13:
+                System.out.println("Street Repairs!\nPay up!");
+                //TODO collect stuff
+                break;
             case 14:
+                System.out.println("2nd Place in Beauty Contest!\nCollect $10!");
+                money+=10;
+                break;
+            case 15:
+                System.out.println("Collect Inheritance!\nCollect $100!");
+                money+=100;
+                break;
         }
     }
 
