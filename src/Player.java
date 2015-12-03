@@ -680,5 +680,165 @@ public class Player {
         }
     }
 
+    /**
+     *  Method builder
+     *  Checks to see which properties are available for improvement.
+     */
+    public void builder(Gameboard gb){
+        Property prop1, prop2, prop3;
+        int houses;
+        boolean[] valid = new boolean[40];
+
+        //check Brown properties
+        prop1 = (Property)gb.cells[1];
+        prop2 = (Property)gb.cells[3];
+        if(checkSet(gb, "Brown")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),10);
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[1]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[3]=true;
+            }
+        }
+
+        //check Light Blue properties
+        prop1 = (Property)gb.cells[6];
+        prop2 = (Property)gb.cells[8];
+        prop3 = (Property)gb.cells[9];
+        if(checkSet(gb, "Light Blue")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[6]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[8]=true;
+            }
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+                valid[9]=true;
+            }
+        }
+
+        //check Pink properties
+        prop1 = (Property)gb.cells[11];
+        prop2 = (Property)gb.cells[13];
+        prop3 = (Property)gb.cells[14];
+        if(checkSet(gb, "Pink")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[11]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[13]=true;
+            }
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+                valid[14]=true;
+            }
+        }
+
+        //check Orange properties
+        prop1 = (Property)gb.cells[16];
+        prop2 = (Property)gb.cells[18];
+        prop3 = (Property)gb.cells[19];
+        if(checkSet(gb, "Orange")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[16]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[18]=true;
+            }
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+                valid[19]=true;
+            }
+        }
+
+        //check Red properties
+        prop1 = (Property)gb.cells[21];
+        prop2 = (Property)gb.cells[23];
+        prop3 = (Property)gb.cells[24];
+        if(checkSet(gb, "Red")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[21]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[23]=true;
+            }
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+                valid[24]=true;
+            }
+        }
+
+        //check Yellow properties
+        prop1 = (Property)gb.cells[26];
+        prop2 = (Property)gb.cells[27];
+        prop3 = (Property)gb.cells[29];
+        if(checkSet(gb, "Yellow")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[26]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[27]=true;
+            }
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+                valid[28]=true;
+            }
+        }
+
+        //check Green properties
+        prop1 = (Property)gb.cells[31];
+        prop2 = (Property)gb.cells[32];
+        prop3 = (Property)gb.cells[34];
+        if(checkSet(gb, "Green")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[31]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[32]=true;
+            }
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+                valid[34]=true;
+            }
+        }
+
+        //check Dark Blue properties
+        prop1 = (Property)gb.cells[37];
+        prop2 = (Property)gb.cells[39];
+        if(checkSet(gb, "Dark Blue")){
+            houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),10);
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+                valid[37]=true;
+            }
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+                valid[39]=true;
+            }
+        }
+
+        //Print all valid properties
+        System.out.println("Valid to build on:");
+        for(int i=0;i<valid.length;i++){
+            if(valid[i]){
+                System.out.printf("%s\n", gb.cells[i].getName());
+            }
+        }
+    }
+
+    /**
+     *  Method smallest
+     *  Returns the smallest of three integers
+     */
+    private int smallest(int p1, int p2, int p3){
+        if(p1 <= p2 && p1 <= p3){
+            return p1;
+        }
+        else if(p2 <= p1 && p2 <= p3){
+            return p2;
+        }
+        else
+            return p3;
+    }
 
 }

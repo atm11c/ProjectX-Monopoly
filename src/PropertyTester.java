@@ -39,7 +39,7 @@ public class PropertyTester {
             System.out.printf("Player %d, it's your turn!\n", playerTurn+1);
             boolean derp = false;
             while(!derp) {
-                System.out.print("r. roll dice\nt. trade with other player\nv. view my properties\n");
+                System.out.print("r. roll dice\nt. trade with other player\nv. view my properties\nb. build\n");
                 String hurrdurr = scanner.next();
                 switch (hurrdurr) {
                     case "r":
@@ -52,6 +52,9 @@ public class PropertyTester {
                         break;
                     case "v":
                         gameboard.players[playerTurn].playerProps(gameboard);
+                        break;
+                    case "b":
+                        gameboard.players[playerTurn].builder(gameboard);
                         break;
                     default:
                         System.out.println("That wasn't one of the options.");
