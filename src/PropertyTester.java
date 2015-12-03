@@ -68,7 +68,7 @@ public class PropertyTester {
             //Check for end of game
             if(gameboard.players[playerTurn].isBankrupt()){
                 flag = false;
-                System.out.println("Game Over!");
+                System.out.println("Game has ended!");
             }
 
             //next player

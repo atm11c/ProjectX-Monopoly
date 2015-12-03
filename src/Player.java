@@ -987,7 +987,7 @@ public class Player {
                 money+=150;
                 break;
             case 15:
-                System.out.println("Advance Token to Nearest Railroad!");
+                System.out.println("Advance Token to the Nearest Railroad!");
                 if(position == 7){
                     position = 15;
                 }
