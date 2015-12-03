@@ -14,6 +14,7 @@ public class Player {
     private int position;
     private int roll;
     private int jailTurns;
+    private int propsOwned;
     private boolean inJail, bankrupt;
     private boolean browns,lblues,pinks,oranges,reds,yellows,greens,dblues;
     Scanner scanner = new Scanner(System.in);
@@ -27,6 +28,7 @@ public class Player {
         setInJail(false);
         setJailTurns(0);
         setBankrupt(false);
+        setPropsOwned(0);
     }
 
     /**
@@ -59,6 +61,10 @@ public class Player {
 
     public void setInJail(boolean inJail) {
         this.inJail = inJail;
+    }
+
+    public void setPropsOwned(int propsOwned) {
+        this.propsOwned = propsOwned;
     }
 
     public void setBankrupt(boolean bankrupt) {
@@ -129,6 +135,10 @@ public class Player {
     }
     public void setJailTurns(int i){
         jailTurns = i;
+    }
+
+    public int getPropsOwned() {
+        return propsOwned;
     }
 
     //The Dream
@@ -413,6 +423,7 @@ public class Player {
             if(input.matches("y")){
                 if(canAfford(property.getPrice())) {
                     property.setOwner(playerId);
+                    propsOwned+=1;
                 }
             }
         }
@@ -472,6 +483,7 @@ public class Player {
             if(input.matches("y")){
                 canAfford(ownedCell.getPrice());
                 ownedCell.setOwner(playerId);
+                propsOwned+=1;
 
                 //Increase the number of railroads or utilities owned
                 if(ownedCell.getisRR()){
@@ -617,13 +629,13 @@ public class Player {
         gb.players[trader].playerProps(gb);
 
         //Ask what the trading player wants.
-        System.out.print("What property do you want?(Enter -1 for none)");
+        System.out.print("What property do you want?");
         int rProp = scanner.nextInt();
         System.out.print("How much money do you want from this trade?");
         int rCash = scanner.nextInt();
 
         //Ask what the trading player will offer.
-        System.out.print("What property will you give?(Enter -1 for none)");
+        System.out.print("What property will you give?");
         int sProp = scanner.nextInt();
         System.out.print("How much money will you pay for this trade?");
         int sCash = scanner.nextInt();
