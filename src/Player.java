@@ -240,12 +240,12 @@ public class Player {
      *
      */
     public void takeTurn(Gameboard gb){
-        int numDubs = 0;
-        boolean dubs = true;
-        boolean turnDone = false;
+        //int numDubs = 0;
+        //boolean dubs = true;
+        //boolean turnDone = false;
         Random random = new Random();
 
-        while(dubs && !inJail){
+        //while(dubs && !inJail){
             //roll the dice
             int die1 = random.nextInt(6)+1;
             int die2 = random.nextInt(6)+1;
@@ -254,7 +254,7 @@ public class Player {
             System.out.printf("You rolled a %d!\n", roll);
 
             //check if doubles were rolled.
-            if(die1 == die2){
+           /* if(die1 == die2){
                 System.out.println("DOUBLES");
                 dubs = true;
                 numDubs+=1;
@@ -269,7 +269,7 @@ public class Player {
             }
             else
                 dubs = false;
-
+*/
             //Move the player...
             //If player passes go, collect $200
             if(position+roll > 39) {
@@ -283,15 +283,16 @@ public class Player {
             System.out.printf("New position: %s\n", gb.cells[position].getName());
 
             //Check the cell to see what happens
-//            checkCell(gb);
+            checkCell(gb);
 
-            turnDone = true;
+
+            //turnDone = true;
 
             System.out.println("End Roll\n");
-        }
+        //}
 
         //If the player is in Jail...
-        if(inJail && !turnDone){
+        if(inJail){
             if(jailCards > 0) {
                 System.out.println("Used a Get Out of Jail Free Card");
                 jailCards-=1;
@@ -314,13 +315,13 @@ public class Player {
                 //roll for it
                 else if (answer.matches("r")) {
                     System.out.println("Rolling for doubles...");
-                    int die1 = random.nextInt(6) + 1;
-                    int die2 = random.nextInt(6) + 1;
+                    die1 = random.nextInt(6) + 1;
+                    die2 = random.nextInt(6) + 1;
                     if (die1 == die2) {
                         System.out.println("Rolled doubles");
                         setInJail(false);
                         position += die1 + die2;
-//                        checkCell(gb);
+                        checkCell(gb);
                         jailTurns = 0;
                     } else {
                         System.out.println("Did not roll doubles.");
@@ -442,6 +443,8 @@ public class Player {
                 System.out.println("How the hell did this happen?");
         }
 
+        gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+
     }
 
     /**
@@ -454,14 +457,7 @@ public class Player {
 
         //If nobody owns the property, prompt player to buy the property.
         if(property.getOwner() == 10){
-            System.out.print("Nobody owns this property. Would you like to buy it? y/n ");
-            String input = scanner.next();
-            if(input.matches("y")){
-                if(canAfford(property.getPrice())) {
-                    property.setOwner(playerId);
-                    numProps+=1;
-                }
-            }
+            RollFrame rollFrame = new RollFrame(gb);
         }
         //If somebody does own the property, and it's not the current player, pay up buttercup
         else if(property.getOwner() != playerId){
@@ -497,10 +493,13 @@ public class Player {
             System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, rent);
             gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + rent);
             canAfford(rent);
+            gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
         }
 
-        else
+        else {
             System.out.println("You own this!");
+            gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+        }
     }
 
     /**
@@ -513,25 +512,7 @@ public class Player {
 
         //If unowned, prompt user to buy
         if(ownedCell.getOwner() == 10){
-            System.out.print("Would you like to buy this property? y/n ");
-            String input = scanner.next();
-
-            if(input.matches("y")){
-                if(canAfford(ownedCell.getPrice())) {
-                    ownedCell.setOwner(playerId);
-                    numProps+=1;
-                }
-
-                //Increase the number of railroads or utilities owned
-                if(ownedCell.getisRR()){
-                    rrOwned+=1;
-                }
-                else if(ownedCell.getisUtil()){
-                    utilOwned+=1;
-                }
-                else
-                    System.out.println("Wait how did you...?");
-            }
+            RollFrame rollFrame = new RollFrame(gb);
         }
         //If another player owns this, pay up buttercup
         else if(ownedCell.getOwner() != playerId){
@@ -562,6 +543,7 @@ public class Player {
                         System.out.println("You broke it. Good job.");
 
                 }
+                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
             }
             //If it's a utility
             else if(ownedCell.getisUtil()){
@@ -581,6 +563,8 @@ public class Player {
                 }
                 else
                     System.out.println("Way to go. It broke.");
+
+                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
             }
         }
     }

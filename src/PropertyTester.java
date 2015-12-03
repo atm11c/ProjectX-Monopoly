@@ -10,7 +10,7 @@ public class PropertyTester {
     public static void main(String[] args){
 
         JFrame frame = new JFrame("Monopoly!");
-        MenuPanel mPanel = new MenuPanel();
+        MenuPanel mPanel = new MenuPanel(gb);
 
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth()/2 - frame.getWidth())/2);

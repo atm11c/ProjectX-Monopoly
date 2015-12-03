@@ -8,11 +8,10 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static Gameboard gb = new Gameboard();
-
     public static void main(String[] args){
+        Gameboard gb = new Gameboard();
         JFrame frame = new JFrame("Monopoly!");
-        MenuPanel mPanel = new MenuPanel();
+        MenuPanel mPanel = new MenuPanel(gb);
 
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth()/2 - frame.getWidth())/2);
@@ -53,9 +52,11 @@ class MenuPanel extends JPanel{
 
     private JButton start, quit, credits;
     private JButton n1, n2, n3, n4, n5, n6;
+    public Gameboard gb;
 
+    public MenuPanel(Gameboard gameboard){
 
-    public MenuPanel(){
+        gb = gameboard;
 
         JPanel derp = new JPanel();
 
@@ -117,7 +118,7 @@ class MenuPanel extends JPanel{
             if(event.getSource() == start){
 
                 JFrame gFrame = new JFrame("Game Board");
-                BoardPanel test1 = new BoardPanel();
+                BoardPanel test1 = new BoardPanel(gb);
 
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 int width = (int)screenSize.getWidth();
@@ -159,9 +160,9 @@ class BoardPanel extends JPanel
 
     JTextArea output;
 
-
-    public BoardPanel(){
-
+    private Gameboard gb;
+    public BoardPanel(Gameboard gameboard){
+    gb = gameboard;
         JLabel buildings[][] = new JLabel[40][5];
         JLabel playerPieces[][]= new JLabel[40][5];
 
@@ -268,7 +269,7 @@ class BoardPanel extends JPanel
 
         JPanel board, t1, t2, t3, t4;
 
-        PlayerOptionPanel pan = new PlayerOptionPanel();
+        PlayerOptionPanel pan = new PlayerOptionPanel(gb);
         pan.setBorder(BorderFactory.createLineBorder(Color.black));
 
         add(pan);
@@ -459,7 +460,10 @@ class BoardPanel extends JPanel
 
     class PlayerOptionPanel extends JPanel{
 
-        public PlayerOptionPanel(){
+        private Gameboard gb;
+        public PlayerOptionPanel(Gameboard gameboard){
+
+            gb = gameboard;
             setLayout(new GridLayout(2,1));
 
             PlayerInfoPanel playerInfo = new PlayerInfoPanel();
@@ -541,6 +545,12 @@ class BoardPanel extends JPanel
 
         }
 
+        private class RollHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                gb.players[gb.getCurrentPlayer()].takeTurn(gb);
+            }
+        }
+
     }
 
     class PlayerInfoPanel extends JPanel{
@@ -578,21 +588,16 @@ class BoardPanel extends JPanel
     }
 
 
-    private class RollHandler implements ActionListener{
-        public void actionPerformed(ActionEvent actionEvent) {
-            RollFrame roll = new RollFrame();
-            Menu.gb.players[Menu.gb.getCurrentPlayer()].takeTurn(Menu.gb);
-            Menu.gb.setCurrentPlayer((Menu.gb.getCurrentPlayer()+1)%4);
-
-        }
-    }
-
 }
 
 
 class RollFrame extends JFrame{
-    public RollFrame(){
-        JFrame frame = new JFrame("Roll");
+    private Gameboard gb;
+    private JFrame frame;
+    public RollFrame(Gameboard gameboard){
+        gb = gameboard;
+        frame = new JFrame("Buy Property?");
+
         RollPanel roll = new RollPanel();
 
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -603,13 +608,12 @@ class RollFrame extends JFrame{
 
     class RollPanel extends JPanel{
         JButton buy, sell;
-
         public RollPanel(){
             JPanel rPanel = new JPanel();
-
             buy = new JButton("Yes");
             sell = new JButton("No");
-
+            BuyProp buyProp = new BuyProp();
+            buy.addActionListener(buyProp);
 
             JLabel propLabel = new JLabel("This property is unowned, would you like to buy it?");
             rPanel.add(propLabel);
@@ -619,7 +623,34 @@ class RollFrame extends JFrame{
             add(rPanel);
 
         }
+        private class BuyProp implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                int playerNum = gb.getCurrentPlayer();
+                Player player = gb.players[playerNum];
+                int pos = gb.players[playerNum].getPosition();
+
+                OwnedCell property = (OwnedCell)gb.cells[pos];
+
+
+                if(player.canAfford(property.getPrice())) {
+                    property.setOwner(playerNum);
+                    player.setNumProps(player.getNumProps()+1);
+                    if(property.getisRR()){
+                        player.setRrOwned(player.getRrOwned()+1);
+                    }
+                    else if(property.getisUtil()){
+                        player.setUtilOwned(player.getUtilOwned() + 1);
+                    }
+                }
+
+                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                frame.dispose();
+            }
+        }
+
     }
+
+
 
 }
 
