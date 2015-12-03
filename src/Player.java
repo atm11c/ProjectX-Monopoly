@@ -283,7 +283,7 @@ public class Player {
             System.out.printf("New position: %s\n", gb.cells[position].getName());
 
             //Check the cell to see what happens
-            checkCell(gb);
+//            checkCell(gb);
 
             turnDone = true;
 
@@ -320,7 +320,7 @@ public class Player {
                         System.out.println("Rolled doubles");
                         setInJail(false);
                         position += die1 + die2;
-                        checkCell(gb);
+//                        checkCell(gb);
                         jailTurns = 0;
                     } else {
                         System.out.println("Did not roll doubles.");

@@ -157,6 +157,8 @@ class BoardPanel extends JPanel
     int height = (int)screenSize.getHeight();
     String colors[] = {"Garnet","Gold","Blue","Purple"};
 
+    JTextArea output;
+
 
     public BoardPanel(){
 
@@ -509,7 +511,7 @@ class BoardPanel extends JPanel
             for(int i =0 ; i < 4; i++){
 
                 buttons[i][0] = new JButton("Roll");
-                buttons[i][1] = new JButton("Buy");
+                buttons[i][1] = new JButton("Trade");
                 buttons[i][2] = new JButton("Build");
                 buttons[i][3] = new JButton("Properties");
 
@@ -565,7 +567,7 @@ class BoardPanel extends JPanel
 
                 add(playerStats[i]);
             }
-            JTextArea output = new JTextArea();
+            output = new JTextArea();
             output.setText("This is a test");
             output.setEditable(false);
             output.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -578,12 +580,83 @@ class BoardPanel extends JPanel
 
     private class RollHandler implements ActionListener{
         public void actionPerformed(ActionEvent actionEvent) {
+            RollFrame roll = new RollFrame();
             Menu.gb.players[Menu.gb.getCurrentPlayer()].takeTurn(Menu.gb);
             Menu.gb.setCurrentPlayer((Menu.gb.getCurrentPlayer()+1)%4);
+
         }
     }
 
 }
+
+
+class RollFrame extends JFrame{
+    public RollFrame(){
+        JFrame frame = new JFrame("Roll");
+        RollPanel roll = new RollPanel();
+
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        frame.setSize( 600, 200 );
+        frame.setVisible( true );
+        frame.add(roll);
+    }
+
+    class RollPanel extends JPanel{
+        JButton buy, sell;
+
+        public RollPanel(){
+            JPanel rPanel = new JPanel();
+
+            buy = new JButton("Yes");
+            sell = new JButton("No");
+
+
+            JLabel propLabel = new JLabel("This property is unowned, would you like to buy it?");
+            rPanel.add(propLabel);
+            rPanel.add(buy);
+            rPanel.add(sell);
+
+            add(rPanel);
+
+        }
+    }
+
+}
+
+class TradeFrame extends JFrame{
+    public TradeFrame(){
+        JFrame frame = new JFrame("Roll");
+        TradePanel roll = new TradePanel();
+
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        frame.setSize( 600, 200 );
+        frame.setVisible( true );
+        frame.add(roll);
+    }
+
+    class TradePanel extends JPanel{
+        JButton buy, sell;
+
+        public TradePanel(){
+            JPanel rPanel = new JPanel();
+
+            buy = new JButton("Yes");
+            sell = new JButton("No");
+
+
+            JLabel propLabel = new JLabel("This property is unowned, would you like to buy it?");
+            rPanel.add(propLabel);
+            rPanel.add(buy);
+            rPanel.add(sell);
+
+            add(rPanel);
+
+        }
+    }
+
+}
+
+
 
 
 //class PlayerOptionPanel extends JPanel{
