@@ -134,13 +134,13 @@ class BoardPanel extends JPanel
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int width = (int)screenSize.getWidth();
     int height = (int)screenSize.getHeight();
+    String colors[] = {"Garnet","Gold","Blue","Purple"};
 
 
     public BoardPanel(){
 
         JLabel buildings[][] = new JLabel[40][5];
         JLabel playerPieces[][]= new JLabel[40][5];
-
 
         for(int i = 0; i < 40; i++){
             for(int j =0; j < 5; j++){
@@ -230,7 +230,7 @@ class BoardPanel extends JPanel
                     piece = new ImageIcon(this.getClass().getResource("Test4.png"));
                 }
 
-                BufferedImage bPiece = scaleImage(20,20, piece);
+                BufferedImage bPiece = scaleImage((height / 11)/4,(height / 11) / 4, piece);
                 playerPieces[i][j] = new JLabel(new ImageIcon(bPiece));
 
                 if(j ==4)
@@ -261,43 +261,40 @@ class BoardPanel extends JPanel
 
         for(int i = 0; i < 40; i++){
 
-
-            if(i == 2 || i == 4  || i == 7  || i == 9 || i == 10  || i == 12  || i == 14 || i == 15
-                    || i == 17 || i == 19 || i == 20 || i == 22 || i == 24 || i == 25 || i == 27
-                    || i == 28 || i == 30 || i == 32 || i == 33 || i == 35 || i == 38) {
-                dumb[i] = new JLabel("",SwingConstants.CENTER);
-
-            }else if(i == 6 || i == 16 || i == 26 || i == 36){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 3 || i == 18 || i == 34) {
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 8 || i == 23 || i == 37) {
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 5){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 1) {
-                dumb[i] = new JLabel("", SwingConstants.CENTER);
-            }else if(i == 11){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 13){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 21){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 29){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 31){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else if(i == 39){
-                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-            }else {
-                dumb[i] = new JLabel("", SwingConstants.CENTER);
-            }
-
+//
+//            if(i == 2 || i == 4  || i == 7  || i == 9 || i == 10  || i == 12  || i == 14 || i == 15
+//                    || i == 17 || i == 19 || i == 20 || i == 22 || i == 24 || i == 25 || i == 27
+//                    || i == 28 || i == 30 || i == 32 || i == 33 || i == 35 || i == 38) {
+//                dumb[i] = new JLabel("",SwingConstants.CENTER);
+//
+//            }else if(i == 6 || i == 16 || i == 26 || i == 36){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 3 || i == 18 || i == 34) {
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 8 || i == 23 || i == 37) {
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 5){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 1) {
+//                dumb[i] = new JLabel("", SwingConstants.CENTER);
+//            }else if(i == 11){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 13){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 21){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 29){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 31){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else if(i == 39){
+//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
+//            }else {
+//                dumb[i] = new JLabel("", SwingConstants.CENTER);
+//            }
+            dumb[i] = new JLabel();
             dumb[i].setSize((width/2)/11,(width/2)/11);
         }
-
-
-
 
 
 
@@ -349,13 +346,6 @@ class BoardPanel extends JPanel
 
 
         }
-
-//
-//        dumb[0].add(entity1);
-//        dumb[0].add(entity2);
-//        dumb[0].add(entity3);
-//        dumb[0].add(entity4);
-//
 
 
         t1 = new JPanel();
@@ -544,8 +534,8 @@ class BoardPanel extends JPanel
 
                 playerStats[i].add(new JLabel("Player " + (i+1)));
                 playerStats[i].add(new JLabel("Total cash: " + board.players[i].getMoney()));
-                playerStats[i].add(new JLabel("Number of Properties: " ));
-                playerStats[i].add(new JLabel("Placeholder: "));
+                playerStats[i].add(new JLabel("Number of Properties owned: " + board.players[i].getNumProps() ));
+                playerStats[i].add(new JLabel("Color: " + colors[i]));
 
 
 
