@@ -159,12 +159,16 @@ class BoardPanel extends JPanel
     String colors[] = {"Garnet","Gold","Blue","Purple"};
 
     JTextArea output;
+    JLabel buildings[][];
+    JLabel playerPieces[][];
+
 
     private Gameboard gb;
     public BoardPanel(Gameboard gameboard){
-    gb = gameboard;
-        JLabel buildings[][] = new JLabel[40][5];
-        JLabel playerPieces[][]= new JLabel[40][5];
+        gb = gameboard;
+
+        buildings = new JLabel[40][5];
+        playerPieces= new JLabel[40][5];
 
         for(int i = 0; i < 40; i++){
             for(int j =0; j < 5; j++){
@@ -264,6 +268,11 @@ class BoardPanel extends JPanel
             }
         }
 
+        playerPieces[0][0].setVisible(true);
+        playerPieces[0][1].setVisible(true);
+        playerPieces[0][2].setVisible(true);
+        playerPieces[0][3].setVisible(true);
+
         setLayout(new GridLayout(1,2));
 
 
@@ -285,37 +294,6 @@ class BoardPanel extends JPanel
 
         for(int i = 0; i < 40; i++){
 
-//
-//            if(i == 2 || i == 4  || i == 7  || i == 9 || i == 10  || i == 12  || i == 14 || i == 15
-//                    || i == 17 || i == 19 || i == 20 || i == 22 || i == 24 || i == 25 || i == 27
-//                    || i == 28 || i == 30 || i == 32 || i == 33 || i == 35 || i == 38) {
-//                dumb[i] = new JLabel("",SwingConstants.CENTER);
-//
-//            }else if(i == 6 || i == 16 || i == 26 || i == 36){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 3 || i == 18 || i == 34) {
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 8 || i == 23 || i == 37) {
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 5){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 1) {
-//                dumb[i] = new JLabel("", SwingConstants.CENTER);
-//            }else if(i == 11){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 13){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 21){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 29){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 31){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else if(i == 39){
-//                dumb[i] = new JLabel("",  SwingConstants.CENTER);
-//            }else {
-//                dumb[i] = new JLabel("", SwingConstants.CENTER);
-//            }
             dumb[i] = new JLabel();
             dumb[i].setSize((width/2)/11,(width/2)/11);
         }
@@ -418,6 +396,18 @@ class BoardPanel extends JPanel
         add(board);
 
 
+    }
+
+
+    public void showPlayer(int pos, int playerNum){
+        for(int i = 0; i < 40; i++){
+            if(playerPieces[i][playerNum].isVisible()){
+                playerPieces[i][playerNum].setVisible(false);
+            }
+
+            playerPieces[pos][playerNum].setVisible(true);
+
+        }
     }
 
     public BufferedImage scaleImage(int w, int h, ImageIcon I) {
@@ -548,6 +538,7 @@ class BoardPanel extends JPanel
         private class RollHandler implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
                 gb.players[gb.getCurrentPlayer()].takeTurn(gb);
+                showPlayer(gb.players[gb.getCurrentPlayer()].getPosition(),gb.getCurrentPlayer());
             }
         }
 
