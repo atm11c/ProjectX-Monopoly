@@ -260,6 +260,8 @@ public class Player {
             //Check the cell to see what happens
             checkCell(gb);
 
+            turnDone = true;
+
             System.out.println("End Roll\n");
         }
 
@@ -271,27 +273,33 @@ public class Player {
             //Pay
             if(answer.matches("p")){
                 if(canAfford(50)) {
+                    System.out.println("Chose to pay way out");
                     jailTurns = 0;
                     setInJail(false);
                 }
             }
             //roll for it
             else if(answer.matches("r")) {
+                System.out.println("Rolling for doubles...");
                 int die1 = random.nextInt(6) + 1;
                 int die2 = random.nextInt(6) + 1;
                 if (die1 == die2) {
+                    System.out.println("Rolled doubles");
                     setInJail(false);
                     position += die1 + die2;
                     checkCell(gb);
                     jailTurns = 0;
                 }
-                else
+                else {
+                    System.out.println("Did not roll doubles.");
                     jailTurns++;
+                }
             }
 
 
             //after 3 turns in jail, force payment.
             if(jailTurns == 3){
+                System.out.println("Payment forced.");
                 if(canAfford(50)) {
                     setInJail(false);
                     jailTurns = 0;
@@ -596,7 +604,6 @@ public class Player {
      *  Starts a trade between two players.
      */
     //TODO: Add and subtract from the number of utilities and railroads owned
-    //TODO: Ensure that players cannot trade properties they do not own.
     public void trade(Gameboard gb){
         System.out.print("Which player do you want to trade with?");
         int trader = scanner.nextInt();
