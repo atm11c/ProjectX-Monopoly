@@ -202,6 +202,10 @@ public class Player {
         return dblues;
     }
 
+    public boolean isBankrupt() {
+        return bankrupt;
+    }
+
     /**
      *  Method canAfford
      *  Checks to see if the player can afford a transaction
@@ -358,7 +362,7 @@ public class Player {
                 System.out.println("Community Chest");
                 derp = gb.chestCards.remove(0);
                 gb.shuffleCards();
-                checkChestCard(derp);
+                checkChestCard(gb,derp);
                 break;
             //Income Tax
             case 4:
@@ -385,7 +389,7 @@ public class Player {
                 System.out.println("Community Chest");
                 derp = gb.chestCards.remove(0);
                 gb.shuffleCards();
-                checkChestCard(derp);
+                checkChestCard(gb, derp);
                 break;
             //Free Parking
             case 20:
@@ -408,7 +412,7 @@ public class Player {
                 System.out.println("Community Chest");
                 derp = gb.chestCards.remove(0);
                 gb.shuffleCards();
-                checkChestCard(derp);
+                checkChestCard(gb, derp);
                 break;
             //E. Chance
             case 36:
@@ -929,8 +933,26 @@ public class Player {
                 setInJail(true);
                 break;
             case 8:
-                System.out.println("General Property Repairs!\nPay up!");
-                //TODO repairs
+                System.out.println("General Property Repairs!\nPay $25/House and $100/Hotel");
+                Property prop;
+                int houses = 0;
+                int hotels = 0;
+                for(int i=0;i<gb.cells.length;i++){
+                    if(!Gameboard.contains(gb.BOARDCELLNUMS,i) && !Gameboard.contains(gb.SPECIALCELLS,i)){
+                        prop = (Property)gb.cells[i];
+                        if(prop.getOwner() == playerId){
+                            if(prop.getNumHouses() < 5){
+                                houses+=prop.getNumHouses();
+                            }
+                            else{
+                                hotels+=1;
+                            }
+                        }
+                    }
+                }
+                int total = (houses * 25) + (hotels * 100);
+                System.out.printf("Payed $%d!\n", total);
+                canAfford(total);
                 break;
             case 9:
                 System.out.println("Pay Poor Tax!\nPay $15!");
@@ -949,7 +971,12 @@ public class Player {
                 break;
             case 12:
                 System.out.println("Elected Chairman of the Board!\nPay each player $50!");
-                //TODO pay all players
+                for(int i=0;i<gb.players.length;i++){
+                    if(i != playerId){
+                        canAfford(50);
+                        gb.players[i].setMoney(gb.players[i].getMoney()+50);
+                    }
+                }
                 break;
             case 13:
                 System.out.println("Get Out of Jail Free!");
@@ -984,7 +1011,7 @@ public class Player {
      *  Checks the Community Chest card drawn
      */
 
-    public void checkChestCard(int y){
+    public void checkChestCard(Gameboard gb,int y){
         switch (y){
             case 0:
                 System.out.println("Advance to Go!\nCollect $200!");
@@ -1014,7 +1041,12 @@ public class Player {
                 break;
             case 6:
                 System.out.println("Grand Opera Opening!\nCollect $50 from every player!");
-                //TODO collect $50 from everyone
+                for(int i=0;i<gb.players.length;i++){
+                    if(i != playerId){
+                        money+=50;
+                        gb.players[i].canAfford(50);
+                    }
+                }
                 break;
             case 7:
                 System.out.println("Holiday Fund Matures\nCollect $100!");
@@ -1041,8 +1073,26 @@ public class Player {
                 money+=25;
                 break;
             case 13:
-                System.out.println("Street Repairs!\nPay up!");
-                //TODO collect stuff
+                System.out.println("Street Repairs!\n$40/House and $115/Hotel");
+                Property prop;
+                int houses = 0;
+                int hotels = 0;
+                for(int i=0;i<gb.cells.length;i++){
+                    if(!Gameboard.contains(gb.BOARDCELLNUMS,i) && !Gameboard.contains(gb.SPECIALCELLS,i)){
+                        prop = (Property)gb.cells[i];
+                        if(prop.getOwner() == playerId){
+                            if(prop.getNumHouses() < 5){
+                                houses+=prop.getNumHouses();
+                            }
+                            else{
+                                hotels+=1;
+                            }
+                        }
+                    }
+                }
+                int total = (houses * 40) + (hotels * 115);
+                System.out.printf("Payed $%d!\n", total);
+                canAfford(total);
                 break;
             case 14:
                 System.out.println("2nd Place in Beauty Contest!\nCollect $10!");

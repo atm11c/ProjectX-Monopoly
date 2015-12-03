@@ -54,18 +54,26 @@ public class PropertyTester {
                         gameboard.players[playerTurn].playerProps(gameboard);
                         break;
                     case "b":
-//                        gameboard.players[playerTurn].builder(gameboard);
+                        gameboard.players[playerTurn].builder(gameboard);
                         break;
                     default:
                         System.out.println("That wasn't one of the options.");
                 }
                 System.out.printf("Money: %d\n", gameboard.players[playerTurn].getMoney());
             }
+
+
+            System.out.println("End Turn\n\n");
+
+            //Check for end of game
+            if(gameboard.players[playerTurn].isBankrupt()){
+                flag = false;
+                System.out.println("Game Over!");
+            }
+
             //next player
             playerTurn+=1;
             playerTurn%=4;
-
-            System.out.println("End Turn\n\n");
         }
 
     }
