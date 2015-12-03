@@ -13,6 +13,7 @@ public class Player {
     private int playerId;
     private int position;
     private int roll;
+    private int numProps;
     private int jailTurns;
     private int jailCards;
     private boolean inJail, bankrupt;
@@ -28,6 +29,7 @@ public class Player {
         setInJail(false);
         setJailTurns(0);
         setJailCards(0);
+        setNumProps(0);
         setBankrupt(false);
     }
 
@@ -69,6 +71,10 @@ public class Player {
 
     public void setJailCards(int jailCards) {
         this.jailCards = jailCards;
+    }
+
+    public void setNumProps(int numProps) {
+        this.numProps = numProps;
     }
 
     public void setBrowns(Gameboard gb){
@@ -148,6 +154,10 @@ public class Player {
 
     public int getUtilOwned() {
         return utilOwned;
+    }
+
+    public int getNumProps() {
+        return numProps;
     }
 
     public int getPlayerId() {
@@ -448,6 +458,7 @@ public class Player {
             if(input.matches("y")){
                 if(canAfford(property.getPrice())) {
                     property.setOwner(playerId);
+                    numProps+=1;
                 }
             }
         }
@@ -505,8 +516,10 @@ public class Player {
             String input = scanner.next();
 
             if(input.matches("y")){
-                canAfford(ownedCell.getPrice());
-                ownedCell.setOwner(playerId);
+                if(canAfford(ownedCell.getPrice())) {
+                    ownedCell.setOwner(playerId);
+                    numProps+=1;
+                }
 
                 //Increase the number of railroads or utilities owned
                 if(ownedCell.getisRR()){
