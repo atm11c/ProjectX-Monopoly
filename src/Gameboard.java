@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Andrew on 11/24/2015.
  */
@@ -8,8 +12,16 @@ public class Gameboard {
     public BoardCell[] cells = new BoardCell[40];
     public Player[] players = new Player[4];
 
+    public List<Integer> chestCards = new ArrayList<>();
+    public List<Integer> chanceCards = new ArrayList<>();
+
+
+
 
     Gameboard() {
+
+        shuffleCards();
+
         //Initialize the board
         for (int i = 0; i < cells.length; i++) {
             if (contains(BOARDCELLNUMS, i)) {
@@ -24,6 +36,25 @@ public class Gameboard {
             players[i] = new Player(i);
         }
 
+    }
+
+    public void shuffleCards(){
+
+
+        if(chestCards.isEmpty()){
+            for(int i = 0; i < 15; i++){
+                chestCards.add(i);
+            }
+            Collections.shuffle(chestCards);
+        }
+
+        if(chanceCards.isEmpty()){
+            for(int i = 0; i < 15; i++){
+                chanceCards.add(i);
+            }
+            chanceCards.add(15);
+            Collections.shuffle(chanceCards);
+        }
     }
 
     /**
