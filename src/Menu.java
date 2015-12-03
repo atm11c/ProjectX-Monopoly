@@ -535,6 +535,20 @@ class BoardPanel extends JPanel
 
     }
 
+
+    public void showHouse(int pos){
+        if(!buildings[pos][0].isVisible()){
+            buildings[pos][0].setVisible(true);
+        }else{
+            for(int i = 0; i < 4; i++){
+                if(!buildings[pos][0].isVisible()){
+                    buildings[pos][i].setVisible(true);
+                    break;
+                }
+            }
+        }
+    }
+
     public void showPlayer(int pos, int playerNum){
         for(int i = 0; i < 40; i++){
             if(playerPieces[i][playerNum].isVisible()){
