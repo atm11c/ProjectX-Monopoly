@@ -258,11 +258,12 @@ class BoardPanel extends JPanel
                     piece = new ImageIcon(this.getClass().getResource("Test4.png"));
                 }
 
-                BufferedImage bPiece = scaleImage((height / 11)/4,(height / 11) / 4, piece);
+                BufferedImage bPiece = scaleImage((height / 11)/4,(height / 11)/4, piece);
                 playerPieces[i][j] = new JLabel(new ImageIcon(bPiece));
 
-                if(j ==4)
+                if(j == 4){
                     playerPieces[i][j].setVisible(false);
+                }
 
                 playerPieces[i][j].setVisible(false);
             }
@@ -399,17 +400,6 @@ class BoardPanel extends JPanel
     }
 
 
-    public void showPlayer(int pos, int playerNum){
-        for(int i = 0; i < 40; i++){
-            if(playerPieces[i][playerNum].isVisible()){
-                playerPieces[i][playerNum].setVisible(false);
-            }
-
-            playerPieces[pos][playerNum].setVisible(true);
-
-        }
-    }
-
     public BufferedImage scaleImage(int w, int h, ImageIcon I) {
 
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -537,11 +527,22 @@ class BoardPanel extends JPanel
 
         private class RollHandler implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
+                int temp = gb.getCurrentPlayer();
                 gb.players[gb.getCurrentPlayer()].takeTurn(gb);
-                showPlayer(gb.players[gb.getCurrentPlayer()].getPosition(),gb.getCurrentPlayer());
+                showPlayer(gb.players[temp].getPosition(),temp);
             }
         }
 
+    }
+
+    public void showPlayer(int pos, int playerNum){
+        for(int i = 0; i < 40; i++){
+            if(playerPieces[i][playerNum].isVisible()){
+                playerPieces[i][playerNum].setVisible(false);
+            }
+        }
+
+        playerPieces[pos][playerNum].setVisible(true);
     }
 
     class PlayerInfoPanel extends JPanel{
