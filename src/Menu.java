@@ -162,7 +162,8 @@ class BoardPanel extends JPanel
     JTextArea output;
     JLabel buildings[][];
     JLabel playerPieces[][];
-
+    JPanel playerStats[];
+    JLabel playerStatLabel[][];
 
     private Gameboard gb;
     public BoardPanel(Gameboard gameboard){
@@ -532,6 +533,13 @@ class BoardPanel extends JPanel
                 gb.players[gb.getCurrentPlayer()].takeTurn(gb);
                 showPlayer(gb.players[temp].getPosition(),temp);
 
+
+                for(int i = 0; i < 4; i++) {
+
+                    playerStatLabel[i][1].setText("Total cash: " + gb.players[i].getMoney());
+                    playerStatLabel[i][2].setText("Number of Properties owned: " + gb.players[i].getNumProps());
+                }
+
             }
         }
 
@@ -565,7 +573,8 @@ class BoardPanel extends JPanel
 
         public PlayerInfoPanel(){
 
-            JPanel playerStats[] = new JPanel[5];
+            playerStats = new JPanel[5];
+            playerStatLabel = new JLabel[4][4];
 
             setLayout(new GridLayout(5,1));
             JLabel test = new JLabel("Player");
@@ -573,14 +582,20 @@ class BoardPanel extends JPanel
 
             for(int i=0; i < 4;i++){
                 playerStats[i] = new JPanel();
-                playerStats[i].setLayout(new GridLayout(1,4));
+                playerStats[i].setLayout(new GridLayout(1, 4));
                 playerStats[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-                playerStats[i].add(new JLabel("Player " + (i+1)));
-                playerStats[i].add(new JLabel("Total cash: " + gb.players[i].getMoney()));
-                playerStats[i].add(new JLabel("Number of Properties owned: " + gb.players[i].getNumProps() ));
-                playerStats[i].add(new JLabel("Color: " + colors[i]));
-                repaint();
+                    playerStatLabel[i][0] = new JLabel("Player" + (i + 1));
+                    playerStats[i].add(playerStatLabel[i][0]);
+
+                    playerStatLabel[i][1]=new JLabel("Total cash: " + gb.players[i].getMoney());
+                    playerStats[i].add(playerStatLabel[i][1]);
+
+                    playerStatLabel[i][2]=new JLabel("Number of Properties owned: " + gb.players[i].getNumProps());
+                    playerStats[i].add(playerStatLabel[i][2]);
+
+                    playerStatLabel[i][3]=new JLabel("Color: " + colors[i]);
+                    playerStats[i].add(playerStatLabel[i][3]);
 
 
 
@@ -597,6 +612,19 @@ class BoardPanel extends JPanel
 
     }
 
+
+}
+
+
+class playerStatLabel extends JLabel{
+
+    public playerStatLabel(Gameboard gameboard){
+
+    }
+
+    public void update(){
+
+    }
 
 }
 
