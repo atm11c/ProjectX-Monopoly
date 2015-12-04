@@ -10,6 +10,7 @@ public class Gameboard {
     final int[] BOARDCELLNUMS = {0,2,4,7,10,17,20,22,30,33,36,38};
     final int[] SPECIALCELLS = {5,12,15,25,28,35};
     final int[] TRADETOCELLS = {1,3,5,6,8,9,11,12,13,14,15,16,18,19,21,23,24,25,26,27,28,29,31,32,34,35,37,39};
+    final int[] BUILDTOCELLS = {1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39};
     public BoardCell[] cells = new BoardCell[40];
     public Player[] players = new Player[4];
     private int currentPlayer;
