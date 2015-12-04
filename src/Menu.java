@@ -734,7 +734,7 @@ class BoardPanel extends JPanel
         class AMoneyFrame extends JFrame{
             private JFrame frame;
             AMoneyFrame(){
-                frame = new JFrame("Trading...");
+                frame = new JFrame("Trading");
                 AMoneyPanel derp = new AMoneyPanel();
 
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
