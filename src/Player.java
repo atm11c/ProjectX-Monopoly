@@ -263,6 +263,7 @@ public class Player {
      */
     public void takeTurn(Gameboard gb){
         gb.setMessage("");
+
         //If the player is in Jail...
         if(inJail){
             if(jailCards > 0) {
@@ -325,7 +326,10 @@ public class Player {
 
             System.out.println("End Roll\n");
             gb.addToMessage("End Roll!\n");
+            gb.addToMessage("It is Player " + (gb.getCurrentPlayer()+1) +  "'s turn \n");
         }
+
+
 
     }
 

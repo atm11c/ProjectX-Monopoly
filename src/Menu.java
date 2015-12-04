@@ -963,6 +963,7 @@ class BoardPanel extends JPanel
                                 Player player = gb.players[gb.getCurrentPlayer()];
                                 player.canAfford(prop.getRowNum()*50);
                                 prop.setNumHouses(prop.getNumHouses()+1);
+                                showHouse(gb.players[gb.getCurrentPlayer()].getPosition());
                                 frame.dispose();
                                 break;
                             }
@@ -1044,7 +1045,8 @@ class BoardPanel extends JPanel
             output.setEditable(false);
             output.setBorder(BorderFactory.createLineBorder(Color.black));
 
-            add(output);
+            JScrollPane scroll = new JScrollPane(output);
+            add(scroll);
         }
 
 
