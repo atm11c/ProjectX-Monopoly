@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.Calendar;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -505,8 +506,12 @@ class BoardPanel extends JPanel
                 buttons[i][4] = new JButton("PlaceHolder");
                 buttons[i][4].setVisible(false);
 
+                BuildHandler buildHandler = new BuildHandler();
+                buttons[i][2].addActionListener(buildHandler);
+
                 RollHandler rollHandler = new RollHandler();
                 buttons[i][0].addActionListener(rollHandler);
+
                 PropHandler propHandler = new PropHandler();
                 buttons[i][3].addActionListener(propHandler);
             }
@@ -529,6 +534,29 @@ class BoardPanel extends JPanel
             add(options);
 
         }
+
+        private class BuildHandler implements ActionListener{
+            public void actionPerformed(ActionEvent e) {
+                Player player = null;
+                int playNum = 0;
+
+                if(e.getSource() == buttons[0][3]){
+                    playNum = 0;
+                }
+                else if(e.getSource() == buttons[1][3]){
+                    playNum = 1;
+                }
+                else if(e.getSource() == buttons[2][3]){
+                    playNum = 2;
+                }
+                else if(e.getSource() == buttons[3][3]){
+                    playNum = 3;
+                }
+
+                BuildFrame build = new BuildFrame(gb, playNum);
+            }
+        }
+
 
         private class RollHandler implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
@@ -613,17 +641,17 @@ class BoardPanel extends JPanel
                 playerStats[i].setLayout(new GridLayout(1, 4));
                 playerStats[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-                    playerStatLabel[i][0] = new JLabel("Player" + (i + 1));
-                    playerStats[i].add(playerStatLabel[i][0]);
+                playerStatLabel[i][0] = new JLabel("Player" + (i + 1));
+                playerStats[i].add(playerStatLabel[i][0]);
 
-                    playerStatLabel[i][1]=new JLabel("Total cash: " + gb.players[i].getMoney());
-                    playerStats[i].add(playerStatLabel[i][1]);
+                playerStatLabel[i][1]=new JLabel("Total cash: " + gb.players[i].getMoney());
+                playerStats[i].add(playerStatLabel[i][1]);
 
-                    playerStatLabel[i][2]=new JLabel("Number of Properties owned: " + gb.players[i].getNumProps());
-                    playerStats[i].add(playerStatLabel[i][2]);
+                playerStatLabel[i][2]=new JLabel("Number of Properties owned: " + gb.players[i].getNumProps());
+                playerStats[i].add(playerStatLabel[i][2]);
 
-                    playerStatLabel[i][3]=new JLabel("Color: " + colors[i]);
-                    playerStats[i].add(playerStatLabel[i][3]);
+                playerStatLabel[i][3]=new JLabel("Color: " + colors[i]);
+                playerStats[i].add(playerStatLabel[i][3]);
 
 
 
@@ -655,6 +683,83 @@ class playerStatLabel extends JLabel{
     }
 
 }
+
+class BuildFrame extends JFrame{
+    private JFrame frame;
+    private boolean buildables[];
+    public BuildFrame(Gameboard board, int num){
+
+        frame = new JFrame("Build");
+
+        buildables = board.players[num].builder(board);
+
+        BuildPanel build = new BuildPanel();
+
+
+
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        frame.setSize( 600, 400 );
+        frame.setVisible( true );
+        frame.add(build);
+
+
+    }
+
+    class BuildPanel extends JPanel{
+        private JPanel panel;
+        private JButton props[][];
+
+        public BuildPanel(){
+            panel = new JPanel();
+            panel.setLayout(new GridLayout(6,5));
+
+            props = new JButton[6][5];
+
+            for(int i = 0; i < 6; i++){
+                for(int j = 0; j < 5; j++){
+                    props[i][j] = new JButton("Property");
+                    props[i][j].setVisible(false);
+                    panel.add(props[i][j]);
+                }
+            }
+//
+
+
+            int counter = 0;
+            for(int i = 0; i < 6; i++ ){
+                for(int j = 0; j < 5; j++) {
+                    if(buildables[counter]) {
+
+                        props[i][j].setVisible(true);
+                    }
+                    counter++;
+
+                }
+            }
+
+            props[0][0].setVisible(false);
+            props[0][2].setVisible(false);
+            props[0][4].setVisible(false);
+
+            props[5][0].setVisible(false);
+            props[5][1].setVisible(false);
+            props[5][3].setVisible(false);
+            props[5][4].setVisible(false);
+
+
+            props[5][2].setText("Cancel");
+            props[5][2].setVisible(true);
+
+            add(panel);
+
+        }
+    }
+
+
+}
+
+
+
 class PropFrame extends JFrame{
     private JFrame frame;
     public PropFrame(String derp){
