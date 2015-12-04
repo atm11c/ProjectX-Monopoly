@@ -444,13 +444,15 @@ class BoardPanel extends JPanel
     class PlayerOptionPanel extends JPanel{
 
         private Gameboard gb;
+        private PlayerInfoPanel playerInfo;
+
         private JButton[][] buttons;
         public PlayerOptionPanel(Gameboard gameboard){
 
             gb = gameboard;
             setLayout(new GridLayout(2,1));
 
-            PlayerInfoPanel playerInfo = new PlayerInfoPanel();
+            playerInfo = new PlayerInfoPanel();
 
             add(playerInfo);
 
@@ -516,6 +518,13 @@ class BoardPanel extends JPanel
                 buttons[i][3].addActionListener(propHandler);
             }
 
+//            for(int i = 1; i < 4; i++){
+//                for(int j = 0; j < 4; j++ ) {
+//                    buttons[i][j].setEnabled(false);
+//                 }
+//
+//            }
+
 
             for(int i = 1; i < 6; i++){
                 for(int j = 0; j < 4; j++){
@@ -531,6 +540,7 @@ class BoardPanel extends JPanel
             options.add(playerBoxes[1]);
             options.add(playerBoxes[2]);
             options.add(playerBoxes[3]);
+
             add(options);
 
         }
@@ -560,9 +570,32 @@ class BoardPanel extends JPanel
 
         private class RollHandler implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
-                int temp = gb.getCurrentPlayer();
+                int temp1 = gb.getCurrentPlayer();
+
                 gb.players[gb.getCurrentPlayer()].takeTurn(gb);
-                showPlayer(gb.players[temp].getPosition(),temp);
+
+                showPlayer(gb.players[temp1].getPosition(), temp1);
+
+                playerInfo.changeText(gb.getMessage());
+
+
+//
+//                for(int i =0; i < 4; i++){
+//                    for(int j = 0; j < 4; j++){
+//
+//                        int temp2 = gb.getCurrentPlayer() + 1;
+//
+//                        if(temp2 > 3){
+//                            temp2 = temp2 - 4;
+//                        }
+//
+//                        if(i == temp2) {
+//                            buttons[i][j].setEnabled(true);
+//                        }else{
+//                            buttons[i][j].setEnabled(false);
+//                        }
+//                    }
+//                }
 
 
                 for(int i = 0; i < 4; i++) {
@@ -573,6 +606,7 @@ class BoardPanel extends JPanel
 
             }
         }
+
 
         private class PropHandler implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
@@ -666,6 +700,11 @@ class BoardPanel extends JPanel
             add(output);
         }
 
+
+        public void changeText(String s){
+            output.setText(s);
+        }
+
     }
 
 
@@ -683,6 +722,9 @@ class playerStatLabel extends JLabel{
     }
 
 }
+
+
+
 
 class BuildFrame extends JFrame{
     private JFrame frame;
@@ -854,6 +896,7 @@ class RollFrame extends JFrame{
 
                 if(player.isDubs() && player.getNumDubs() == 2){
                     System.out.println("Too many doubles");
+                    gb.addToMessage("Too many doubles!\n");
                     player.setPosition(10);
                     player.setNumDubs(0);
                     player.setInJail(true);
@@ -916,7 +959,9 @@ class JailFrame extends JFrame{
                 int playerNum = gb.getCurrentPlayer();
                 Player player = gb.players[playerNum];
                 if (player.canAfford(50)) {
+
                     System.out.println("Chose to pay way out");
+                    gb.addToMessage("Chose to pay way out\n");
                     player.setJailTurns(0);
                     player.setInJail(false);
 
@@ -928,24 +973,30 @@ class JailFrame extends JFrame{
 
         private class DubsHandler implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
+
                 int playerNum = gb.getCurrentPlayer();
                 Player player = gb.players[playerNum];
                 System.out.println("Rolling for doubles...");
+                gb.addToMessage("Rolling for doubles...\n");
                 Random random = new Random();
                 int die1 = random.nextInt(6) + 1;
                 int die2 = random.nextInt(6) + 1;
                 if (die1 == die2) {
                     System.out.println("Rolled doubles");
+
+                    gb.addToMessage("Rolled doubles\n");
                     player.setInJail(false);
                     player.setJailTurns(0);
                 }
                 else {
                     System.out.println("Did not roll doubles.");
+                    gb.addToMessage("Did not roll doubles.\n");
                     player.setJailTurns(player.getJailTurns()+1);
                 }
                 //after 3 turns in jail, force payment.
                 if (player.getJailTurns() == 3) {
                     System.out.println("Payment forced.");
+                    gb.addToMessage("Payment forced.\n");
                     if (player.canAfford(50)) {
                         player.setInJail(false);
                         player.setJailTurns(0);

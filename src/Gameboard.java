@@ -51,6 +51,9 @@ public class Gameboard {
         return message;
     }
 
+    public void addToMessage(String s) {
+       message = message + s;
+    }
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;
     }

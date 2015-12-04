@@ -262,7 +262,7 @@ public class Player {
      *
      */
     public void takeTurn(Gameboard gb){
-
+        gb.setMessage("");
         //If the player is in Jail...
         if(inJail){
             if(jailCards > 0) {
@@ -274,7 +274,7 @@ public class Player {
                 gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
             }
             else {
-                JailFrame jailFrame = new JailFrame(gb);
+                JailFrame jailFrame = new JailFrame( gb);
 
                 //after 3 turns in jail, force payment.
                 if (jailTurns == 3) {
@@ -293,10 +293,12 @@ public class Player {
             setRoll(die1 + die2);
 
             System.out.printf("You rolled a %d!\n", roll);
+            gb.addToMessage("You rolled a " + roll + "!\n");
 
             //check if doubles were rolled.
             if (die1 == die2) {
                 System.out.println("DOUBLES");
+                gb.addToMessage("DOUBLES\n");
                 dubs = true;
                 //numDubs+=1;
             } else
@@ -306,6 +308,7 @@ public class Player {
             //If player passes go, collect $200
             if (position + roll > 39) {
                 System.out.println("You passed Go!");
+                gb.addToMessage("You Passed go!\n");
                 money += 200;
             }
 
@@ -313,11 +316,12 @@ public class Player {
             position += roll;
             position %= 40;
             System.out.printf("New position: %s\n", gb.cells[position].getName());
-
+            gb.addToMessage("New position: " + gb.cells[position].getName() + "\n");
             //Check the cell to see what happens
             checkCell(gb);
 
             System.out.println("End Roll\n");
+            gb.addToMessage("End Roll!\n");
         }
 
     }
@@ -353,6 +357,7 @@ public class Player {
             //S. Community Chest
             case 2:
                 System.out.println("Community Chest");
+                gb.addToMessage("Community Chest\n");
                 derp = gb.chestCards.remove(0);
                 gb.shuffleCards();
                 checkChestCard(gb,derp);
@@ -360,6 +365,7 @@ public class Player {
             //Income Tax
             case 4:
                 System.out.println("INCOME TAX: Lose $200");
+                gb.addToMessage("INCOME TAX: Lose $200\n");
                 canAfford(200);
                 break;
             //S. Chance
@@ -374,13 +380,16 @@ public class Player {
             case 10:
                 if(isInJail()) {
                     System.out.println("Getting out of Jail NYI");
+                    gb.addToMessage("Getting out of Jail NYI\n");
                 }
                 else
                     System.out.println("Just visiting...");
+                    gb.addToMessage("Just visiting...\n");
                 break;
             //W. Community Chest
             case 17:
                 System.out.println("Community Chest");
+                gb.addToMessage("Community Chest\n");
                 derp = gb.chestCards.remove(0);
                 gb.shuffleCards();
                 checkChestCard(gb, derp);
@@ -391,6 +400,7 @@ public class Player {
             //N. Chance
             case 22:
                 System.out.println("Chance!");
+                gb.addToMessage("Chance!\n");
                 derp = gb.chanceCards.remove(0);
                 gb.shuffleCards();
                 chance = true;
@@ -399,12 +409,14 @@ public class Player {
             //Go to Jail
             case 30:
                 System.out.println("Go to Jail!");
+                gb.addToMessage("Go to Jail!\n");
                 setPosition(10);
                 setInJail(true);
                 break;
             //E. Community Chest
             case 33:
                 System.out.println("Community Chest");
+                gb.addToMessage("Community Chest\n");
                 derp = gb.chestCards.remove(0);
                 gb.shuffleCards();
                 checkChestCard(gb, derp);
@@ -412,6 +424,7 @@ public class Player {
             //E. Chance
             case 36:
                 System.out.println("Chance!");
+                gb.addToMessage("Chance\n");
                 derp = gb.chanceCards.remove(0);
                 gb.shuffleCards();
                 chance = true;
@@ -420,6 +433,7 @@ public class Player {
             //Luxury Tax
             case 38:
                 System.out.println("Luxury Tax, pay $75");
+                gb.addToMessage("Luxury Tax, pay $75\n");
                 canAfford(75);
                 break;
             //Better not...
@@ -429,6 +443,7 @@ public class Player {
 
         if(!chance && dubs && numDubs == 2){
             System.out.println("Too many doubles");
+            gb.addToMessage("Too many doubles!\n");
             numDubs=0;
             position=10;
             setInJail(true);
@@ -489,10 +504,12 @@ public class Player {
                     System.out.println("Well this shouldnt have happened...");
             }
             System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, rent);
+            gb.addToMessage("Player " + (property.getOwner()+1) + " owns this. You owe them $" + rent + ".\n");
             gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + rent);
             canAfford(rent);
             if(dubs && numDubs == 2){
                 System.out.println("Too many doubles");
+                gb.addToMessage("Too many doubles\n");
                 numDubs=0;
                 position=10;
                 setInJail(true);
@@ -510,8 +527,10 @@ public class Player {
 
         else {
             System.out.println("You own this!");
+            gb.addToMessage("You own this!\n");
             if(dubs && numDubs == 2){
                 System.out.println("Too many doubles");
+                gb.addToMessage("Too many doubles\n");
                 numDubs=0;
                 position=10;
                 setInJail(true);
@@ -547,21 +566,25 @@ public class Player {
                 switch(gb.players[ownedCell.getOwner()].getRrOwned()){
                     case 1:
                         System.out.printf("Player %d owns this. You owe them $25.\n", ownedCell.getOwner() + 1);
+                        gb.addToMessage("Player " + (ownedCell.getOwner()+1) + " owns this. you owe them $25.\n");
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 25);
                         canAfford(25);
                         break;
                     case 2:
                         System.out.printf("Player %d owns this. You owe them $50.\n", ownedCell.getOwner() + 1);
+                        gb.addToMessage("Player " + (ownedCell.getOwner()+1) + " owns this. you owe them $50.\n");
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 50);
                         canAfford(50);
                         break;
                     case 3:
                         System.out.printf("Player %d owns this. You owe them $100.\n", ownedCell.getOwner() + 1);
+                        gb.addToMessage("Player " + (ownedCell.getOwner()+1) + " owns this. you owe them $100.\n");
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 100);
                         canAfford(100);
                         break;
                     case 4:
                         System.out.printf("Player %d owns this. You owe them $200.\n", ownedCell.getOwner() + 1);
+                        gb.addToMessage("Player " + (ownedCell.getOwner()+1) + " owns this. you owe them $200.\n");
                         gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + 200);
                         canAfford(200);
                         break;
@@ -571,6 +594,7 @@ public class Player {
                 }
                 if(dubs && numDubs == 2){
                     System.out.println("Too many doubles");
+                    gb.addToMessage("Too many doubles.\n");
                     position=10;
                     numDubs=0;
                     setInJail(true);
@@ -593,11 +617,16 @@ public class Player {
                 int sum = d1+d2;
                 if(gb.players[ownedCell.getOwner()].utilOwned == 1){
                     System.out.printf("You rolled a %d, you owe Player %d $%d.\n", sum, ownedCell.getOwner() + 1, sum * 4);
+                    gb.addToMessage("You rolled a " + sum + ", you owe Player " + (ownedCell.getOwner() +1) + " $" + sum *4 + ".\n");
+
+
+
                     gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + (sum*4));
                     canAfford(sum*4);
                 }
                 else if(gb.players[ownedCell.getOwner()].utilOwned== 2){
                     System.out.printf("You rolled a %d, you owe Player %d $%d.\n", sum, ownedCell.getOwner()+1, sum*10);
+                    gb.addToMessage("You rolled a " + sum + ", you owe Player " + (ownedCell.getOwner() +1) + " $" + sum *10 + ".\n");
                     gb.players[ownedCell.getOwner()].setMoney(gb.players[ownedCell.getOwner()].getMoney() + (sum*10));
                     canAfford(sum*10);
                 }
@@ -606,6 +635,7 @@ public class Player {
 
                 if(dubs && numDubs == 2){
                     System.out.println("Too many doubles");
+                    gb.addToMessage("Too many doubles.\n");
                     position=10;
                     numDubs=0;
                     setInJail(true);
@@ -852,11 +882,13 @@ public class Player {
         switch(x){
             case 0:
                 System.out.println("Advance to Go!\nCollect $200!");
+                gb.addToMessage("Advance to Go!\nCollect$200\n");
                 position=0;
                 money+=200;
                 break;
             case 1:
                 System.out.println("Advance to Illinois Ave!\nCollect $200 if you pass Go!");
+                gb.addToMessage("Advance to Illinois Ave!\nCollect $200 if you pass Go!\n");
                 if(position > 24){
                     money+=200;
                 }
@@ -865,6 +897,7 @@ public class Player {
                 break;
             case 2:
                 System.out.println("Advance to St. Charles Place\nCollect $200 if you pass Go!");
+                gb.addToMessage("Advance to St. Charles Place\nCollect $200 if you pass Go!\n");
                 if(position > 11){
                     money+=200;
                 }
@@ -873,6 +906,7 @@ public class Player {
                 break;
             case 3:
                 System.out.println("Advance to Nearest Utility!");
+                gb.addToMessage("Advance to Nearest Utility!\n");
                 if(position > 29){
                     money+=200;
                 }
@@ -886,6 +920,7 @@ public class Player {
                 break;
             case 4:
                 System.out.println("Advance Token to Nearest Railroad!");
+                gb.addToMessage("Advance Token to Nearest Railroad!\n");
                 if(position == 7){
                     position = 15;
                 }
@@ -900,10 +935,13 @@ public class Player {
                 break;
             case 5:
                 System.out.println("Bank pays you Divedend!\nCollect $50");
+                gb.addToMessage("Bank pays you Divedend!\nCollect $50\n");
                 money+=50;
                 break;
             case 6:
                 System.out.println("Go Back 3 Spaces!");
+                gb.addToMessage("Go Back 3 Spaces!\n");
+
                 if(position==7) {
                     position -= 3;
                     effectCell(gb);
@@ -921,11 +959,13 @@ public class Player {
                 break;
             case 7:
                 System.out.println("Go to Jail!");
+                gb.addToMessage("Go to Jail!\n");
                 position=10;
                 setInJail(true);
                 break;
             case 8:
                 System.out.println("General Property Repairs!\nPay $25/House and $100/Hotel");
+                gb.addToMessage("General Property Repairs!\nPay $25/House and $100/Hotel\n");
                 Property prop;
                 int houses = 0;
                 int hotels = 0;
@@ -944,25 +984,31 @@ public class Player {
                 }
                 int total = (houses * 25) + (hotels * 100);
                 System.out.printf("Payed $%d!\n", total);
+                gb.addToMessage("Payed $" + total + " !.\n");
                 canAfford(total);
                 break;
             case 9:
                 System.out.println("Pay Poor Tax!\nPay $15!");
+                gb.addToMessage("Pay Poor Tax!\nPay $15!\n");
                 canAfford(15);
                 break;
             case 10:
                 System.out.println("Take a trip to the Reading Railroad!\nAdvance to Reading Railroad!");
+                gb.addToMessage("Take a trip to the Reading Railroad!\nAdvance to Reading Railroad!\n");
+
                 money+=200;
                 position=5;
                 buySpec(gb);
                 break;
             case 11:
                 System.out.println("Take a Walk on Boardwalk!\nAdvance to Boardwalk!");
+                gb.addToMessage("Take a Walk on Boardwalk!\nAdvance to Boardwalk!\n");
                 position=39;
                 buyCell(gb);
                 break;
             case 12:
                 System.out.println("Elected Chairman of the Board!\nPay each player $50!");
+                gb.addToMessage("Elected Chairman of the Board!\nPay each player $50!\n");
                 for(int i=0;i<gb.players.length;i++){
                     if(i != playerId){
                         canAfford(50);
@@ -972,14 +1018,17 @@ public class Player {
                 break;
             case 13:
                 System.out.println("Get Out of Jail Free!");
+                gb.addToMessage("Get Out of Jail Free!\n");
                 jailCards+=1;
                 break;
             case 14:
                 System.out.println("Building Loan Matures!\nCollect $150");
+                gb.addToMessage("Building Loan Matures!\nCollect $150\n");
                 money+=150;
                 break;
             case 15:
                 System.out.println("Advance Token to the Nearest Railroad!");
+                gb.addToMessage("Advance Token to the Nearest Railroad!\n");
                 if(position == 7){
                     position = 15;
                 }
@@ -1007,32 +1056,43 @@ public class Player {
         switch (y){
             case 0:
                 System.out.println("Advance to Go!\nCollect $200!");
+                gb.addToMessage("Advance to Go!\nCollect $200!\n");
                 position=0;
                 money+=200;
                 break;
             case 1:
                 System.out.println("Bank Error in Your Favor!\nCollect $200!");
+                gb.addToMessage("Bank Error in Your Favor!\nCollect $200!\n");
                 money+=200;
                 break;
             case 2:
                 System.out.println("Doctor's Fees!\nPay $50!");
+                gb.addToMessage("Doctor's Fees!\nPay $50!\n");
+
                 canAfford(50);
                 break;
             case 3:
                 System.out.println("Sale of Stock!\nCollect $50!");
+                gb.addToMessage("Sale of Stock!\nCollect $50!\n");
+
                 money+=50;
                 break;
             case 4:
                 System.out.println("Get out of Jail Free!");
+                gb.addToMessage("Get out of Jail Free!\n");
+
                 jailCards+=1;
                 break;
             case 5:
                 System.out.println("Go Directly to Jail!");
+                gb.addToMessage("Go Directly to Jail!\n");
+
                 position = 10;
                 setInJail(true);
                 break;
             case 6:
                 System.out.println("Grand Opera Opening!\nCollect $50 from every player!");
+                gb.addToMessage("Grand Opera Opening!\nCollect $50 from every player!\n");
                 for(int i=0;i<gb.players.length;i++){
                     if(i != playerId){
                         money+=50;
@@ -1042,30 +1102,37 @@ public class Player {
                 break;
             case 7:
                 System.out.println("Holiday Fund Matures\nCollect $100!");
+                gb.addToMessage("Holiday Fund Matures\nCollect $100!\n");
                 money+=100;
                 break;
             case 8:
                 System.out.println("Income Tax Refund!\nCollect $20!");
+                gb.addToMessage("Income Tax Refund!\nCollect $20!\n");
                 money+=20;
                 break;
             case 9:
                 System.out.println("Life Insurance Matures!\nCollect $100!");
+                gb.addToMessage("Life Insurance Matures!\nCollect $100!\n");
                 money+=100;
                 break;
             case 10:
                 System.out.println("Pay Hospital Fees!\nPay $100!");
+                gb.addToMessage("Pay Hospital Fees!\nPay $100!\n");
                 canAfford(100);
                 break;
             case 11:
                 System.out.println("Pay School Fees!\nPay $150");
+                gb.addToMessage("Pay School Fees!\nPay $150\n");
                 canAfford(150);
                 break;
             case 12:
                 System.out.println("Receive Consultancy Fee!\nCollect $25!");
+                gb.addToMessage("Receive Consultancy Fee!\nCollect $25!\n");
                 money+=25;
                 break;
             case 13:
                 System.out.println("Street Repairs!\n$40/House and $115/Hotel");
+                gb.addToMessage("Street Repairs!\n$40/House and $115/Hotel\n");
                 Property prop;
                 int houses = 0;
                 int hotels = 0;
@@ -1084,14 +1151,17 @@ public class Player {
                 }
                 int total = (houses * 40) + (hotels * 115);
                 System.out.printf("Payed $%d!\n", total);
+                gb.addToMessage("Payed $" + total + "!\n");
                 canAfford(total);
                 break;
             case 14:
                 System.out.println("2nd Place in Beauty Contest!\nCollect $10!");
+                gb.addToMessage("2nd Place in Beauty Contest!\nCollect $10!\n");
                 money+=10;
                 break;
             case 15:
                 System.out.println("Collect Inheritance!\nCollect $100!");
+                gb.addToMessage("Collect Inheritance!\nCollect $100!\n");
                 money+=100;
                 break;
         }
