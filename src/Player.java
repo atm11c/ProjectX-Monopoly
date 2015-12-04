@@ -16,7 +16,8 @@ public class Player {
     private int numProps;
     private int jailTurns;
     private int jailCards;
-    private boolean inJail, bankrupt;
+    private int numDubs;
+    private boolean inJail, bankrupt,dubs;
     private boolean browns,lblues,pinks,oranges,reds,yellows,greens,dblues;
     private Scanner scanner = new Scanner(System.in);
 
@@ -59,6 +60,14 @@ public class Player {
 
     public void setRoll(int roll) {
         this.roll = roll;
+    }
+
+    public void setDubs(boolean dubs) {
+        this.dubs = dubs;
+    }
+
+    public void setNumDubs(int numDubs) {
+        this.numDubs = numDubs;
     }
 
     public void setInJail(boolean inJail) {
@@ -144,6 +153,11 @@ public class Player {
     }
 
     //The Dream
+
+    public int getNumDubs() {
+        return numDubs;
+    }
+
     public int getMoney() {
         return money;
     }
@@ -178,6 +192,10 @@ public class Player {
 
     public boolean isInJail() {
         return inJail;
+    }
+
+    public boolean isDubs() {
+        return dubs;
     }
 
     public boolean isBrowns() {
@@ -240,59 +258,42 @@ public class Player {
      *
      */
     public void takeTurn(Gameboard gb){
-        //int numDubs = 0;
-        //boolean dubs = true;
-        //boolean turnDone = false;
+
         Random random = new Random();
+        int die1 = random.nextInt(6)+1;
+        int die2 = random.nextInt(6)+1;
+        setRoll(die1+die2);
 
-        //while(dubs && !inJail){
-            //roll the dice
-            int die1 = random.nextInt(6)+1;
-            int die2 = random.nextInt(6)+1;
-            setRoll(die1+die2);
+        System.out.printf("You rolled a %d!\n", roll);
 
-            System.out.printf("You rolled a %d!\n", roll);
+        //check if doubles were rolled.
+        if(die1 == die2){
+            System.out.println("DOUBLES");
+            dubs = true;
+            //numDubs+=1;
+        }
+        else
+            dubs = false;
 
-            //check if doubles were rolled.
-           /* if(die1 == die2){
-                System.out.println("DOUBLES");
-                dubs = true;
-                numDubs+=1;
-                //If three doubles were rolled, go to jail...
-                if(numDubs == 3){
-                    System.out.println("Going to Jail for too many doubles...");
-                    setPosition(10);
-                    setInJail(true);
-                    turnDone = true;
-                    break;
-                }
-            }
-            else
-                dubs = false;
-*/
-            //Move the player...
-            //If player passes go, collect $200
-            if(position+roll > 39) {
-                System.out.println("You passed Go!");
-                money += 200;
-            }
+        //Move the player...
+        //If player passes go, collect $200
+        if(position+roll > 39) {
+            System.out.println("You passed Go!");
+            money += 200;
+        }
 
-            //Set the player's new Position
-            position+=roll;
-            position%=40;
-            System.out.printf("New position: %s\n", gb.cells[position].getName());
+        //Set the player's new Position
+        position+=roll;
+        position%=40;
+        System.out.printf("New position: %s\n", gb.cells[position].getName());
 
-            //Check the cell to see what happens
-            checkCell(gb);
+        //Check the cell to see what happens
+        checkCell(gb);
 
-
-            //turnDone = true;
-
-            System.out.println("End Roll\n");
-        //}
+        System.out.println("End Roll\n");
 
         //If the player is in Jail...
-        if(inJail){
+        /*if(inJail){
             if(jailCards > 0) {
                 System.out.println("Used a Get Out of Jail Free Card");
                 jailCards-=1;
@@ -339,7 +340,7 @@ public class Player {
                     }
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -443,7 +444,19 @@ public class Player {
                 System.out.println("How the hell did this happen?");
         }
 
-        gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+        if(dubs && numDubs == 2){
+            System.out.println("Too many doubles");
+            position=10;
+            setInJail(true);
+            gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+        }
+        else if(dubs){
+            numDubs+=1;
+            gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
+        }
+        else if(!dubs) {
+            gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+        }
 
     }
 
@@ -493,12 +506,36 @@ public class Player {
             System.out.printf("Player %d owns this. You owe them $%d.\n", property.getOwner() + 1, rent);
             gb.players[property.getOwner()].setMoney(gb.players[property.getOwner()].getMoney() + rent);
             canAfford(rent);
-            gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+            if(dubs && numDubs == 2){
+                System.out.println("Too many doubles");
+                position=10;
+                setInJail(true);
+                gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+            }
+            else if(dubs){
+                numDubs+=1;
+                gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
+            }
+            else if(!dubs) {
+                gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+            }
         }
 
         else {
             System.out.println("You own this!");
-            gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+            if(dubs && numDubs == 2){
+                System.out.println("Too many doubles");
+                position=10;
+                setInJail(true);
+                gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+            }
+            else if(dubs){
+                numDubs+=1;
+                gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
+            }
+            else if(!dubs) {
+                gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+            }
         }
     }
 
@@ -543,7 +580,19 @@ public class Player {
                         System.out.println("You broke it. Good job.");
 
                 }
-                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                if(dubs && numDubs == 2){
+                    System.out.println("Too many doubles");
+                    position=10;
+                    setInJail(true);
+                    gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                }
+                else if(dubs){
+                    numDubs+=1;
+                    gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
+                }
+                else if(!dubs) {
+                    gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                }
             }
             //If it's a utility
             else if(ownedCell.getisUtil()){
@@ -564,7 +613,19 @@ public class Player {
                 else
                     System.out.println("Way to go. It broke.");
 
-                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                if(dubs && numDubs == 2){
+                    System.out.println("Too many doubles");
+                    position=10;
+                    setInJail(true);
+                    gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                }
+                else if(dubs){
+                    numDubs+=1;
+                    gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
+                }
+                else if(!dubs) {
+                    gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                }
             }
         }
     }

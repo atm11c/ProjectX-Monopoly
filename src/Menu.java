@@ -649,7 +649,19 @@ class RollFrame extends JFrame{
                     }
                 }
 
-                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                if(player.isDubs() && player.getNumDubs() == 2){
+                    System.out.println("Too many doubles");
+                    player.setPosition(10);
+                    player.setInJail(true);
+                    gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                }
+                else if(player.isDubs()){
+                    player.setNumDubs(player.getNumDubs()+1);
+                    gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
+                }
+                else if(!player.isDubs()) {
+                    gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                }
                 frame.dispose();
             }
         }
