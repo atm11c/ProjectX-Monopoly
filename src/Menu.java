@@ -1010,51 +1010,48 @@ class BuildFrame extends JFrame{
 
     class BuildPanel extends JPanel{
         private JPanel panel;
-        private JButton props[][];
+        private JButton props[];
 
         public BuildPanel(){
             panel = new JPanel();
             panel.setLayout(new GridLayout(6,5));
 
-            props = new JButton[6][5];
+            props = new JButton[30];
 
-            for(int i = 0; i < 6; i++){
-                for(int j = 0; j < 5; j++){
-                    props[i][j] = new JButton("Property");
-                    props[i][j].setVisible(false);
-                    panel.add(props[i][j]);
-                }
+            for(int i = 0; i < 30; i++){
+                props[i] = new JButton("Property");
+                props[i].setVisible(false);
+                panel.add(props[i]);
+
             }
 //
 
 
             int counter = 0;
-            for(int i = 0; i < 6; i++ ){
-                for(int j = 0; j < 5; j++) {
-                    if(buildables[counter]) {
+            for(int i = 0; i < 30; i++ ){
 
-                        props[i][j].setVisible(true);
-                    }
-                    counter++;
+                if(buildables[counter])
+                    props[i].setVisible(true);
 
-                }
+                counter++;
+
             }
 
-            props[0][0].setVisible(false);
-            props[0][2].setVisible(false);
-            props[0][4].setVisible(false);
+            props[0].setVisible(false);
+            props[2].setVisible(false);
+            props[4].setVisible(false);
 
-            props[5][0].setVisible(false);
-            props[5][1].setVisible(false);
-            props[5][3].setVisible(false);
-            props[5][4].setVisible(false);
+            props[25].setVisible(false);
+            props[26].setVisible(false);
+            props[28].setVisible(false);
+            props[29].setVisible(false);
 
 
-            props[5][2].setText("Cancel");
-            props[5][2].setVisible(true);
+            props[27].setText("Cancel");
+            props[27].setVisible(true);
 
             CancelHandler cancelHandler = new CancelHandler();
-            props[5][2].addActionListener(cancelHandler);
+            props[27].addActionListener(cancelHandler);
 
 
 
