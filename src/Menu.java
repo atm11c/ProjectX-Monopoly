@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -655,6 +656,7 @@ class RollFrame extends JFrame{
                 if(player.isDubs() && player.getNumDubs() == 2){
                     System.out.println("Too many doubles");
                     player.setPosition(10);
+                    player.setNumDubs(0);
                     player.setInJail(true);
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
                 }
@@ -663,6 +665,7 @@ class RollFrame extends JFrame{
                     gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
                 }
                 else if(!player.isDubs()) {
+                    player.setNumDubs(0);
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
                 }
                 frame.dispose();
@@ -677,10 +680,11 @@ class RollFrame extends JFrame{
 
 class JailFrame extends JFrame{
     private Gameboard gb;
+    private JFrame frame;
     JButton roll, pay;
     public JailFrame(Gameboard gameboard){
         gb = gameboard;
-        JFrame frame = new JFrame("JAIL");
+        frame = new JFrame("JAIL");
         JailPanel jailPan = new JailPanel();
 
         frame.setSize(600, 200);
@@ -693,6 +697,12 @@ class JailFrame extends JFrame{
             JPanel panel = new JPanel();
             roll = new JButton("Roll");
             pay = new JButton("Pay");
+            PayHandler payHandler = new PayHandler();
+            DubsHandler dubsHandler = new DubsHandler();
+
+            roll.addActionListener(dubsHandler);
+            pay.addActionListener(payHandler);
+
             JLabel jailLabel = new JLabel("You are in jail :(, what would you like to do?");
 
             panel.add(jailLabel);
@@ -700,6 +710,51 @@ class JailFrame extends JFrame{
             panel.add(pay);
 
             add(panel);
+        }
+
+        private class PayHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                int playerNum = gb.getCurrentPlayer();
+                Player player = gb.players[playerNum];
+                if (player.canAfford(50)) {
+                    System.out.println("Chose to pay way out");
+                    player.setJailTurns(0);
+                    player.setInJail(false);
+
+                }
+                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                frame.dispose();
+            }
+        }
+
+        private class DubsHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                int playerNum = gb.getCurrentPlayer();
+                Player player = gb.players[playerNum];
+                System.out.println("Rolling for doubles...");
+                Random random = new Random();
+                int die1 = random.nextInt(6) + 1;
+                int die2 = random.nextInt(6) + 1;
+                if (die1 == die2) {
+                    System.out.println("Rolled doubles");
+                    player.setInJail(false);
+                    player.setJailTurns(0);
+                }
+                else {
+                    System.out.println("Did not roll doubles.");
+                    player.setJailTurns(player.getJailTurns()+1);
+                }
+                //after 3 turns in jail, force payment.
+                if (player.getJailTurns() == 3) {
+                    System.out.println("Payment forced.");
+                    if (player.canAfford(50)) {
+                        player.setInJail(false);
+                        player.setJailTurns(0);
+                    }
+                }
+                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                frame.dispose();
+            }
         }
 
     }

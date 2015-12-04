@@ -12,13 +12,11 @@ public class Gameboard {
     public BoardCell[] cells = new BoardCell[40];
     public Player[] players = new Player[4];
     private int currentPlayer;
+    private String message;
 
 
     public List<Integer> chestCards = new ArrayList<>();
     public List<Integer> chanceCards = new ArrayList<>();
-
-
-
 
     Gameboard() {
 
@@ -39,6 +37,18 @@ public class Gameboard {
         }
         setCurrentPlayer(0);
 
+    }
+
+    public void setCells(BoardCell[] cells) {
+        this.cells = cells;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public void setCurrentPlayer(int currentPlayer) {

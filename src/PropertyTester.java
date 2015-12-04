@@ -35,7 +35,7 @@ public class PropertyTester {
             //Check for end of game
             if(gb.players[playerTurn].isBankrupt()){
                 flag = false;
-                System.out.println("Game has ended!");
+                gb.setMessage("Game has ended!");
             }
 
         }

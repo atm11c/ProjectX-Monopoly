@@ -190,6 +190,10 @@ public class Player {
         return jailCards;
     }
 
+    public int getJailTurns() {
+        return jailTurns;
+    }
+
     public boolean isInJail() {
         return inJail;
     }
@@ -293,43 +297,17 @@ public class Player {
         System.out.println("End Roll\n");
 
         //If the player is in Jail...
-        /*if(inJail){
+        if(inJail){
             if(jailCards > 0) {
                 System.out.println("Used a Get Out of Jail Free Card");
                 jailCards-=1;
                 setInJail(false);
                 jailTurns = 0;
-
+                dubs = false;
+                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
             }
             else {
-                System.out.print("You are in jail! Roll or pay your way out? r/p");
-                String answer = scanner.next();
-
-                //Pay
-                if (answer.matches("p")) {
-                    if (canAfford(50)) {
-                        System.out.println("Chose to pay way out");
-                        jailTurns = 0;
-                        setInJail(false);
-                    }
-                }
-                //roll for it
-                else if (answer.matches("r")) {
-                    System.out.println("Rolling for doubles...");
-                    die1 = random.nextInt(6) + 1;
-                    die2 = random.nextInt(6) + 1;
-                    if (die1 == die2) {
-                        System.out.println("Rolled doubles");
-                        setInJail(false);
-                        position += die1 + die2;
-                        checkCell(gb);
-                        jailTurns = 0;
-                    } else {
-                        System.out.println("Did not roll doubles.");
-                        jailTurns++;
-                    }
-                }
-
+                JailFrame jailFrame = new JailFrame(gb);
 
                 //after 3 turns in jail, force payment.
                 if (jailTurns == 3) {
@@ -340,7 +318,7 @@ public class Player {
                     }
                 }
             }
-        }*/
+        }
     }
 
     /**
@@ -446,6 +424,7 @@ public class Player {
 
         if(dubs && numDubs == 2){
             System.out.println("Too many doubles");
+            numDubs=0;
             position=10;
             setInJail(true);
             gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
@@ -455,6 +434,7 @@ public class Player {
             gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
         }
         else if(!dubs) {
+            numDubs=0;
             gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
         }
 
@@ -508,6 +488,7 @@ public class Player {
             canAfford(rent);
             if(dubs && numDubs == 2){
                 System.out.println("Too many doubles");
+                numDubs=0;
                 position=10;
                 setInJail(true);
                 gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
@@ -517,6 +498,7 @@ public class Player {
                 gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
             }
             else if(!dubs) {
+                numDubs=0;
                 gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
             }
         }
@@ -525,6 +507,7 @@ public class Player {
             System.out.println("You own this!");
             if(dubs && numDubs == 2){
                 System.out.println("Too many doubles");
+                numDubs=0;
                 position=10;
                 setInJail(true);
                 gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
@@ -534,6 +517,7 @@ public class Player {
                 gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
             }
             else if(!dubs) {
+                numDubs=0;
                 gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
             }
         }
@@ -583,6 +567,7 @@ public class Player {
                 if(dubs && numDubs == 2){
                     System.out.println("Too many doubles");
                     position=10;
+                    numDubs=0;
                     setInJail(true);
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
                 }
@@ -591,6 +576,7 @@ public class Player {
                     gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
                 }
                 else if(!dubs) {
+                    numDubs=0;
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
                 }
             }
@@ -616,6 +602,7 @@ public class Player {
                 if(dubs && numDubs == 2){
                     System.out.println("Too many doubles");
                     position=10;
+                    numDubs=0;
                     setInJail(true);
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
                 }
@@ -624,6 +611,7 @@ public class Player {
                     gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
                 }
                 else if(!dubs) {
+                    numDubs=0;
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
                 }
             }
@@ -940,7 +928,7 @@ public class Player {
                     money+=200;
                 }
                 position=24;
-                checkCell(gb);
+                buyCell(gb);
                 break;
             case 2:
                 System.out.println("Advance to St. Charles Place\nCollect $200 if you pass Go!");
@@ -948,7 +936,7 @@ public class Player {
                     money+=200;
                 }
                 position=11;
-                checkCell(gb);
+                buyCell(gb);
                 break;
             case 3:
                 System.out.println("Advance to Nearest Utility!");
@@ -961,7 +949,7 @@ public class Player {
                 else{
                     position = 12;
                 }
-                checkCell(gb);
+                buySpec(gb);
                 break;
             case 4:
                 System.out.println("Advance Token to Nearest Railroad!");
@@ -975,7 +963,7 @@ public class Player {
                     money+=200;
                     position = 5;
                 }
-                checkCell(gb);
+                buySpec(gb);
                 break;
             case 5:
                 System.out.println("Bank pays you Divedend!\nCollect $50");
@@ -983,7 +971,19 @@ public class Player {
                 break;
             case 6:
                 System.out.println("Go Back 3 Spaces!");
-                position-=3;
+                if(position==7) {
+                    position -= 3;
+                    effectCell(gb);
+                }
+                else if(position==22){
+                    position-=3;
+                    buyCell(gb);
+                }
+                else if(position==36){
+                    position-=3;
+                    effectCell(gb);
+                }
+
                 checkCell(gb);
                 break;
             case 7:
@@ -1021,12 +1021,12 @@ public class Player {
                 System.out.println("Take a trip to the Reading Railroad!\nAdvance to Reading Railroad!");
                 money+=200;
                 position=5;
-                checkCell(gb);
+                buySpec(gb);
                 break;
             case 11:
                 System.out.println("Take a Walk on Boardwalk!\nAdvance to Boardwalk!");
                 position=39;
-                checkCell(gb);
+                buyCell(gb);
                 break;
             case 12:
                 System.out.println("Elected Chairman of the Board!\nPay each player $50!");
@@ -1057,7 +1057,7 @@ public class Player {
                     money+=200;
                     position = 5;
                 }
-                checkCell(gb);
+                buySpec(gb);
                 break;
 
 
