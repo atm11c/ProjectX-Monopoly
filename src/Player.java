@@ -267,6 +267,7 @@ public class Player {
         if(inJail){
             if(jailCards > 0) {
                 System.out.println("Used a Get Out of Jail Free Card");
+                gb.addToMessage("Used a Get Out of Jail Free Card!\n");
                 jailCards-=1;
                 setInJail(false);
                 jailTurns = 0;
@@ -279,6 +280,7 @@ public class Player {
                 //after 3 turns in jail, force payment.
                 if (jailTurns == 3) {
                     System.out.println("Payment forced.");
+                    gb.addToMessage("Payment forced!\n");
                     if (canAfford(50)) {
                         setInJail(false);
                         jailTurns = 0;
@@ -291,6 +293,7 @@ public class Player {
             int die1 = random.nextInt(6) + 1;
             int die2 = random.nextInt(6) + 1;
             setRoll(die1 + die2);
+
 
             System.out.printf("You rolled a %d!\n", roll);
             gb.addToMessage("You rolled a " + roll + "!\n");
@@ -545,6 +548,8 @@ public class Player {
                 gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
             }
         }
+
+
     }
 
     /**
