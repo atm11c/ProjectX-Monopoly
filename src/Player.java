@@ -263,6 +263,30 @@ public class Player {
      */
     public void takeTurn(Gameboard gb){
 
+        //If the player is in Jail...
+        if(inJail){
+            if(jailCards > 0) {
+                System.out.println("Used a Get Out of Jail Free Card");
+                jailCards-=1;
+                setInJail(false);
+                jailTurns = 0;
+                dubs = false;
+                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+            }
+            else {
+                JailFrame jailFrame = new JailFrame(gb);
+
+                //after 3 turns in jail, force payment.
+                if (jailTurns == 3) {
+                    System.out.println("Payment forced.");
+                    if (canAfford(50)) {
+                        setInJail(false);
+                        jailTurns = 0;
+                    }
+                }
+            }
+        }
+
         Random random = new Random();
         int die1 = random.nextInt(6)+1;
         int die2 = random.nextInt(6)+1;
@@ -296,29 +320,7 @@ public class Player {
 
         System.out.println("End Roll\n");
 
-        //If the player is in Jail...
-        if(inJail){
-            if(jailCards > 0) {
-                System.out.println("Used a Get Out of Jail Free Card");
-                jailCards-=1;
-                setInJail(false);
-                jailTurns = 0;
-                dubs = false;
-                gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
-            }
-            else {
-                JailFrame jailFrame = new JailFrame(gb);
 
-                //after 3 turns in jail, force payment.
-                if (jailTurns == 3) {
-                    System.out.println("Payment forced.");
-                    if (canAfford(50)) {
-                        setInJail(false);
-                        jailTurns = 0;
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -344,6 +346,7 @@ public class Player {
      */
     private void effectCell(Gameboard gb){
         int derp;
+        boolean chance = false;
         switch(position){
             //Go
             case 0:
@@ -365,6 +368,7 @@ public class Player {
                 System.out.println("Chance!");
                 derp = gb.chanceCards.remove(0);
                 gb.shuffleCards();
+                chance = true;
                 checkChanceCard(gb, derp);
                 break;
             //Jail
@@ -390,6 +394,7 @@ public class Player {
                 System.out.println("Chance!");
                 derp = gb.chanceCards.remove(0);
                 gb.shuffleCards();
+                chance = true;
                 checkChanceCard(gb, derp);
                 break;
             //Go to Jail
@@ -410,6 +415,7 @@ public class Player {
                 System.out.println("Chance!");
                 derp = gb.chanceCards.remove(0);
                 gb.shuffleCards();
+                chance = true;
                 checkChanceCard(gb, derp);
                 break;
             //Luxury Tax
@@ -422,18 +428,18 @@ public class Player {
                 System.out.println("How the hell did this happen?");
         }
 
-        if(dubs && numDubs == 2){
+        if(!chance && dubs && numDubs == 2){
             System.out.println("Too many doubles");
             numDubs=0;
             position=10;
             setInJail(true);
             gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
         }
-        else if(dubs){
+        else if(!chance && dubs){
             numDubs+=1;
             gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
         }
-        else if(!dubs) {
+        else if(!chance && !dubs) {
             numDubs=0;
             gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
         }
@@ -451,7 +457,6 @@ public class Player {
         //If nobody owns the property, prompt player to buy the property.
         if(property.getOwner() == 10){
             RollFrame rollFrame = new RollFrame(gb);
-            money = getMoney();
         }
         //If somebody does own the property, and it's not the current player, pay up buttercup
         else if(property.getOwner() != playerId){
@@ -669,17 +674,21 @@ public class Player {
      *  Method playerProps
      *  Prints a specific player's owned properties
      */
-    public void playerProps(Gameboard gb){
+    public String playerProps(Gameboard gb){
         OwnedCell oc;
-        System.out.printf("Player %d owns the following properties: \n", playerId+1);
+        String derp="";
+        derp = String.format("<html>Player %d owns the following properties:<br> \n", playerId+1);
         for(int i=0;i<gb.cells.length;i++){
             if(!Gameboard.contains(gb.BOARDCELLNUMS,i)){
                 oc = (OwnedCell)gb.cells[i];
                 if(oc.getOwner()==playerId){
-                    System.out.printf("%s\n", oc.getName());
+                    derp += String.format("%s <br>", oc.getName());
                 }
             }
+            derp+="</html>";
         }
+
+        return derp;
     }
 
     /**

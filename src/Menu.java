@@ -443,6 +443,7 @@ class BoardPanel extends JPanel
     class PlayerOptionPanel extends JPanel{
 
         private Gameboard gb;
+        private JButton[][] buttons;
         public PlayerOptionPanel(Gameboard gameboard){
 
             gb = gameboard;
@@ -492,7 +493,7 @@ class BoardPanel extends JPanel
             Holder3[0][1].add(new JLabel("Player 3"));
             Holder4[0][1].add(new JLabel("Player 4"));
 
-            JButton buttons[][] = new JButton[4][5];
+            buttons = new JButton[4][5];
 
             for(int i =0 ; i < 4; i++){
 
@@ -506,6 +507,8 @@ class BoardPanel extends JPanel
 
                 RollHandler rollHandler = new RollHandler();
                 buttons[i][0].addActionListener(rollHandler);
+                PropHandler propHandler = new PropHandler();
+                buttons[i][3].addActionListener(propHandler);
             }
 
 
@@ -540,6 +543,18 @@ class BoardPanel extends JPanel
                     playerStatLabel[i][2].setText("Number of Properties owned: " + gb.players[i].getNumProps());
                 }
 
+            }
+        }
+
+        private class PropHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                Player player;
+                String hurrdurr;
+                if(actionEvent.getSource() == buttons[0][3]){
+                    player = gb.players[0];
+                    hurrdurr = player.playerProps(gb);
+                    PropFrame propFrame = new PropFrame(hurrdurr);
+                }
             }
         }
 
@@ -627,7 +642,35 @@ class playerStatLabel extends JLabel{
     }
 
 }
+class PropFrame extends JFrame{
+    public PropFrame(String derp){
+        JFrame frame = new JFrame("Props");
+        PropPanel roll = new PropPanel(derp);
 
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        frame.setSize( 600, 200 );
+        frame.setVisible( true );
+        frame.add(roll);
+    }
+
+    class PropPanel extends JPanel{
+        JButton okay;
+
+        public PropPanel(String derp){
+            JPanel pPanel = new JPanel();
+
+            okay = new JButton("Yes");
+
+            JLabel propLabel = new JLabel(derp);
+            pPanel.add(propLabel);
+            pPanel.add(okay);
+
+            add(pPanel);
+
+        }
+    }
+
+}
 
 class RollFrame extends JFrame{
     private Gameboard gb;
@@ -787,6 +830,8 @@ class JailFrame extends JFrame{
 
     }
 }
+
+
 
 class TradeFrame extends JFrame{
     public TradeFrame(){
