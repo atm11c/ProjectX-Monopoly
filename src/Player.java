@@ -675,7 +675,7 @@ public class Player {
             if(!Gameboard.contains(gb.BOARDCELLNUMS,i)){
                 oc = (OwnedCell)gb.cells[i];
                 if(oc.getOwner()==playerId){
-                    System.out.printf("%d, %s\n", oc.getCellId(), oc.getName());
+                    System.out.printf("%s\n", oc.getName());
                 }
             }
         }
