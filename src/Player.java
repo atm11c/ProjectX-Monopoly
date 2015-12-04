@@ -762,7 +762,7 @@ public class Player {
      *  Method builder
      *  Checks to see which properties are available for improvement.
      */
-    public void builder(Gameboard gb){
+    public boolean[] builder(Gameboard gb){
         Property prop1, prop2, prop3;
         int houses;
         boolean[] valid = new boolean[22];
@@ -895,13 +895,7 @@ public class Player {
             }
         }
 
-        //Print all valid properties
-        System.out.println("Valid to build on:");
-        for(int i=0;i<valid.length;i++){
-            if(valid[i]){
-                System.out.printf("%s\n", gb.cells[i].getName());
-            }
-        }
+        return valid;
     }
 
     /**
