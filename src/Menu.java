@@ -1085,7 +1085,7 @@ class BoardPanel extends JPanel
 
 class EndFrame extends JFrame{
     private JFrame frame;
-    public EndFrame(){
+    public EndFrame(Gameboard gb){
         frame = new JFrame("GAME OVER!");
         EndPanel ePanel = new EndPanel();
 
