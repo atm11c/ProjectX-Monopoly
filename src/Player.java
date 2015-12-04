@@ -738,10 +738,10 @@ public class Player {
         prop2 = (Property)gb.cells[3];
         if(checkSet(gb, "Brown")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),10);
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[0]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[1]=true;
             }
         }
@@ -752,13 +752,13 @@ public class Player {
         prop3 = (Property)gb.cells[9];
         if(checkSet(gb, "Light Blue")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[2]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[3]=true;
             }
-            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 5){
                 valid[4]=true;
             }
         }
@@ -769,13 +769,13 @@ public class Player {
         prop3 = (Property)gb.cells[14];
         if(checkSet(gb, "Pink")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[5]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[6]=true;
             }
-            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 5){
                 valid[7]=true;
             }
         }
@@ -786,13 +786,13 @@ public class Player {
         prop3 = (Property)gb.cells[19];
         if(checkSet(gb, "Orange")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[8]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[9]=true;
             }
-            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 5){
                 valid[10]=true;
             }
         }
@@ -803,13 +803,13 @@ public class Player {
         prop3 = (Property)gb.cells[24];
         if(checkSet(gb, "Red")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[11]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[12]=true;
             }
-            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 5){
                 valid[13]=true;
             }
         }
@@ -820,13 +820,13 @@ public class Player {
         prop3 = (Property)gb.cells[29];
         if(checkSet(gb, "Yellow")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[14]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[15]=true;
             }
-            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 5){
                 valid[16]=true;
             }
         }
@@ -837,13 +837,13 @@ public class Player {
         prop3 = (Property)gb.cells[34];
         if(checkSet(gb, "Green")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[17]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[18]=true;
             }
-            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
+            if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 5){
                 valid[19]=true;
             }
         }
@@ -853,10 +853,10 @@ public class Player {
         prop2 = (Property)gb.cells[39];
         if(checkSet(gb, "Dark Blue")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),10);
-            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
+            if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 5){
                 valid[20]=true;
             }
-            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
+            if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 5){
                 valid[21]=true;
             }
         }

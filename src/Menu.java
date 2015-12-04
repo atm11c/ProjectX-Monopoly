@@ -565,7 +565,7 @@ class BoardPanel extends JPanel
                     playNum = 3;
                 }
 
-                BuildFrame build = new BuildFrame(gb, playNum);
+                BuildFrame build = new BuildFrame(gb);
             }
         }
 
@@ -892,6 +892,92 @@ class BoardPanel extends JPanel
 
         }
 
+        class BuildFrame extends JFrame{
+            private JFrame frame;
+            private boolean buildables[];
+            public BuildFrame(Gameboard board){
+
+                frame = new JFrame("Build");
+
+                buildables = gb.players[gb.getCurrentPlayer()].builder(gb);
+
+                BuildPanel build = new BuildPanel();
+
+                frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+                frame.setSize( 800, 400 );
+                frame.setVisible( true );
+                frame.add(build);
+
+
+            }
+
+            class BuildPanel extends JPanel{
+                private JPanel panel;
+                private JButton props[];
+
+                public BuildPanel(){
+                    panel = new JPanel();
+                    panel.setLayout(new GridLayout(6,5));
+
+
+                    props = new JButton[30];
+                    HouseHandler houseHandler = new HouseHandler();
+                    for(int i = 0; i < 30; ++i){
+                        if(i<22) {
+                            props[i] = new JButton(gb.cells[gb.BUILDTOCELLS[i]].getName());
+                            //props[i].setVisible(true);
+                            props[i].addActionListener(houseHandler);
+                            panel.add(props[i]);
+                        }
+                        else{
+                            props[i] = new JButton();
+                            //props[i].setVisible(true);
+                            panel.add(props[i]);
+                        }
+                        props[i].setVisible(false);
+
+                    }
+
+                    int counter = 0;
+                    for(int i = 0; i < 30; i++ ){
+                        if(buildables[counter])
+                            props[i].setVisible(true);
+                        counter++;
+                    }
+
+                    props[27].setText("Cancel");
+                    props[27].setVisible(true);
+
+                    CancelHandler cancelHandler = new CancelHandler();
+                    props[27].addActionListener(cancelHandler);
+
+                    add(panel);
+
+                }
+                class HouseHandler implements ActionListener{
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        for(int i=0;i<props.length;i++){
+                            if(actionEvent.getSource() == props[i]){
+
+                                Property prop = (Property)gb.cells[gb.BUILDTOCELLS[i]];
+                                Player player = gb.players[gb.getCurrentPlayer()];
+                                player.canAfford(prop.getRowNum()*50);
+                                prop.setNumHouses(prop.getNumHouses()+1);
+                                frame.dispose();
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                class CancelHandler implements ActionListener{
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        frame.dispose();
+                    }
+                }
+            }
+        }
+
 
 
     }
@@ -987,86 +1073,7 @@ class playerStatLabel extends JLabel{
 
 
 
-class BuildFrame extends JFrame{
-    private JFrame frame;
-    private boolean buildables[];
-    public BuildFrame(Gameboard board, int num){
 
-        frame = new JFrame("Build");
-
-        buildables = board.players[num].builder(board);
-
-        BuildPanel build = new BuildPanel();
-
-
-
-        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        frame.setSize( 600, 400 );
-        frame.setVisible( true );
-        frame.add(build);
-
-
-    }
-
-    class BuildPanel extends JPanel{
-        private JPanel panel;
-        private JButton props[];
-
-        public BuildPanel(){
-            panel = new JPanel();
-            panel.setLayout(new GridLayout(6,5));
-
-            props = new JButton[30];
-
-            for(int i = 0; i < 30; i++){
-                props[i] = new JButton("Property");
-                props[i].setVisible(false);
-                panel.add(props[i]);
-
-            }
-//
-
-
-            int counter = 0;
-            for(int i = 0; i < 30; i++ ){
-
-                if(buildables[counter])
-                    props[i].setVisible(true);
-
-                counter++;
-
-            }
-
-            props[0].setVisible(false);
-            props[2].setVisible(false);
-            props[4].setVisible(false);
-
-            props[25].setVisible(false);
-            props[26].setVisible(false);
-            props[28].setVisible(false);
-            props[29].setVisible(false);
-
-
-            props[27].setText("Cancel");
-            props[27].setVisible(true);
-
-            CancelHandler cancelHandler = new CancelHandler();
-            props[27].addActionListener(cancelHandler);
-
-
-
-            add(panel);
-
-        }
-        class CancelHandler implements ActionListener{
-            public void actionPerformed(ActionEvent actionEvent) {
-                frame.dispose();
-            }
-        }
-    }
-
-
-}
 
 
 
