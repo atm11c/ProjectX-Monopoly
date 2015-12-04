@@ -765,7 +765,7 @@ public class Player {
     public boolean[] builder(Gameboard gb){
         Property prop1, prop2, prop3;
         int houses;
-        boolean[] valid = new boolean[22];
+        boolean[] valid = new boolean[30];
 
         //check Brown properties
         prop1 = (Property)gb.cells[1];
@@ -773,10 +773,10 @@ public class Player {
         if(checkSet(gb, "Brown")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),10);
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[1]=true;
+                valid[0]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[2]=true;
+                valid[1]=true;
             }
         }
 
@@ -787,13 +787,13 @@ public class Player {
         if(checkSet(gb, "Light Blue")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[3]=true;
+                valid[2]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[4]=true;
+                valid[3]=true;
             }
             if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
-                valid[5]=true;
+                valid[4]=true;
             }
         }
 
@@ -804,13 +804,13 @@ public class Player {
         if(checkSet(gb, "Pink")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[6]=true;
+                valid[5]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[7]=true;
+                valid[6]=true;
             }
             if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
-                valid[8]=true;
+                valid[7]=true;
             }
         }
 
@@ -821,13 +821,13 @@ public class Player {
         if(checkSet(gb, "Orange")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[9]=true;
+                valid[8]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[10]=true;
+                valid[9]=true;
             }
             if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
-                valid[11]=true;
+                valid[10]=true;
             }
         }
 
@@ -838,13 +838,13 @@ public class Player {
         if(checkSet(gb, "Red")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[12]=true;
+                valid[11]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[13]=true;
+                valid[12]=true;
             }
             if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
-                valid[14]=true;
+                valid[13]=true;
             }
         }
 
@@ -855,13 +855,13 @@ public class Player {
         if(checkSet(gb, "Yellow")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[15]=true;
+                valid[14]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[16]=true;
+                valid[15]=true;
             }
             if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
-                valid[17]=true;
+                valid[16]=true;
             }
         }
 
@@ -872,13 +872,13 @@ public class Player {
         if(checkSet(gb, "Green")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),prop3.getNumHouses());
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[18]=true;
+                valid[17]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[19]=true;
+                valid[18]=true;
             }
             if(prop3.getNumHouses() == houses && prop3.getNumHouses() < 6){
-                valid[20]=true;
+                valid[19]=true;
             }
         }
 
@@ -888,10 +888,10 @@ public class Player {
         if(checkSet(gb, "Dark Blue")){
             houses = smallest(prop1.getNumHouses(),prop2.getNumHouses(),10);
             if(prop1.getNumHouses() == houses && prop1.getNumHouses() < 6){
-                valid[21]=true;
+                valid[20]=true;
             }
             if(prop2.getNumHouses() == houses && prop2.getNumHouses() < 6){
-                valid[22]=true;
+                valid[21]=true;
             }
         }
 
