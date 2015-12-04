@@ -530,6 +530,7 @@ class BoardPanel extends JPanel
                 int temp = gb.getCurrentPlayer();
                 gb.players[gb.getCurrentPlayer()].takeTurn(gb);
                 showPlayer(gb.players[temp].getPosition(),temp);
+
             }
         }
 
@@ -575,9 +576,11 @@ class BoardPanel extends JPanel
                 playerStats[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 playerStats[i].add(new JLabel("Player " + (i+1)));
-                playerStats[i].add(new JLabel("Total cash: " + board.players[i].getMoney()));
-                playerStats[i].add(new JLabel("Number of Properties owned: " + board.players[i].getNumProps() ));
+                playerStats[i].add(new JLabel("Total cash: " + gb.players[i].getMoney()));
+                playerStats[i].add(new JLabel("Number of Properties owned: " + gb.players[i].getNumProps() ));
                 playerStats[i].add(new JLabel("Color: " + colors[i]));
+                repaint();
+
 
 
 
@@ -670,6 +673,36 @@ class RollFrame extends JFrame{
 
 
 
+}
+
+class JailFrame extends JFrame{
+    private Gameboard gb;
+    JButton roll, pay;
+    public JailFrame(Gameboard gameboard){
+        gb = gameboard;
+        JFrame frame = new JFrame("JAIL");
+        JailPanel jailPan = new JailPanel();
+
+        frame.setSize(600, 200);
+        frame.setVisible(true);
+        frame.add(jailPan);
+
+    }
+    class JailPanel extends JPanel{
+        public JailPanel(){
+            JPanel panel = new JPanel();
+            roll = new JButton("Roll");
+            pay = new JButton("Pay");
+            JLabel jailLabel = new JLabel("You are in jail :(, what would you like to do?");
+
+            panel.add(jailLabel);
+            panel.add(roll);
+            panel.add(pay);
+
+            add(panel);
+        }
+
+    }
 }
 
 class TradeFrame extends JFrame{
