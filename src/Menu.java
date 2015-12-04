@@ -1053,8 +1053,18 @@ class BuildFrame extends JFrame{
             props[5][2].setText("Cancel");
             props[5][2].setVisible(true);
 
+            CancelHandler cancelHandler = new CancelHandler();
+            props[5][2].addActionListener(cancelHandler);
+
+
+
             add(panel);
 
+        }
+        class CancelHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                frame.dispose();
+            }
         }
     }
 
@@ -1119,22 +1129,32 @@ class RollFrame extends JFrame{
     }
 
     class RollPanel extends JPanel{
-        JButton buy, sell;
+        JButton buy, no;
         public RollPanel(){
             JPanel rPanel = new JPanel();
             buy = new JButton("Yes");
-            sell = new JButton("No");
+            no = new JButton("No");
             BuyProp buyProp = new BuyProp();
             buy.addActionListener(buyProp);
 
             JLabel propLabel = new JLabel("This property is unowned, would you like to buy it?");
             rPanel.add(propLabel);
             rPanel.add(buy);
-            rPanel.add(sell);
+            rPanel.add(no);
+
+            NoBuy noBuy = new NoBuy();
+            no.addActionListener(noBuy);
 
             add(rPanel);
 
         }
+
+        private class NoBuy implements ActionListener{
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        }
+
         private class BuyProp implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
                 int playerNum = gb.getCurrentPlayer();
