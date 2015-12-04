@@ -1081,21 +1081,50 @@ class BoardPanel extends JPanel
 }
 
 
-class playerStatLabel extends JLabel{
 
-    public playerStatLabel(Gameboard gameboard){
+
+class EndFrame extends JFrame{
+    private JFrame frame;
+    public EndFrame(){
+        frame = new JFrame("GAME OVER!");
+        EndPanel ePanel = new EndPanel();
+
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        frame.setSize( 600, 200 );
+        frame.setVisible( true );
+        frame.add(ePanel);
 
     }
 
-    public void update(){
+    class EndPanel extends JPanel{
+        private JPanel panel;
+        private JButton end;
 
+        public EndPanel(){
+            end = new JButton("End Game");
+            EndHandler over = new EndHandler();
+            end.addActionListener(over);
+
+            panel = new JPanel();
+            panel.setLayout(new GridLayout(1,5));
+
+            panel.add(new JLabel("Player 1's total worth:" + ""));
+            panel.add(new JLabel("Player 2's total worth:" + ""));
+            panel.add(new JLabel("Player 3's total worth:" + ""));
+            panel.add(new JLabel("Player 4's total worth:" + ""));
+            panel.add(new JLabel("The Winner is:" + "!!!"));
+
+            add(panel);
+            add(end);
+        }
+
+        class EndHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                frame.dispose();
+            }
+        }
     }
-
 }
-
-
-
-
 
 
 
