@@ -684,9 +684,8 @@ public class Player {
                     derp += String.format("%s <br>", oc.getName());
                 }
             }
-            derp+="</html>";
         }
-
+        derp+="</html>";
         return derp;
     }
 

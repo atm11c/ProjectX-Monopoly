@@ -552,9 +552,22 @@ class BoardPanel extends JPanel
                 String hurrdurr;
                 if(actionEvent.getSource() == buttons[0][3]){
                     player = gb.players[0];
-                    hurrdurr = player.playerProps(gb);
-                    PropFrame propFrame = new PropFrame(hurrdurr);
                 }
+                else if(actionEvent.getSource() == buttons[1][3]){
+                    player = gb.players[1];
+                }
+                else if(actionEvent.getSource() == buttons[2][3]){
+                    player = gb.players[2];
+                }
+                else if(actionEvent.getSource() == buttons[3][3]){
+                    player = gb.players[3];
+                }
+                else{
+                    player = new Player(75);
+                }
+
+                hurrdurr = player.playerProps(gb);
+                PropFrame propFrame = new PropFrame(hurrdurr);
             }
         }
 
@@ -643,8 +656,9 @@ class playerStatLabel extends JLabel{
 
 }
 class PropFrame extends JFrame{
+    private JFrame frame;
     public PropFrame(String derp){
-        JFrame frame = new JFrame("Props");
+        frame = new JFrame("Props");
         PropPanel roll = new PropPanel(derp);
 
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -654,19 +668,28 @@ class PropFrame extends JFrame{
     }
 
     class PropPanel extends JPanel{
-        JButton okay;
 
         public PropPanel(String derp){
             JPanel pPanel = new JPanel();
 
-            okay = new JButton("Yes");
+            JButton okay = new JButton("Okay");
+            OkayHandler okayHandler = new OkayHandler();
+            okay.addActionListener(okayHandler);
 
-            JLabel propLabel = new JLabel(derp);
+            JLabel propLabel = new JLabel();
+
+            propLabel.setText(derp);
+
             pPanel.add(propLabel);
             pPanel.add(okay);
 
             add(pPanel);
 
+        }
+        class OkayHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                frame.dispose();
+            }
         }
     }
 
