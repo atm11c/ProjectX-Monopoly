@@ -236,8 +236,6 @@ class BoardPanel extends JPanel
                         buildings[i][j] = new JLabel(new ImageIcon(bHotel), SwingConstants.LEFT);
                     }
 
-
-
                     buildings[i][j].setVisible(false);
 
                 }
@@ -577,7 +575,6 @@ class BoardPanel extends JPanel
                 showPlayer(gb.players[temp1].getPosition(), temp1);
 
                 playerInfo.changeText(gb.getMessage());
-
 
 //
 //                for(int i =0; i < 4; i++){
@@ -1012,40 +1009,141 @@ class JailFrame extends JFrame{
 
 
 
-class TradeFrame extends JFrame{
-    public TradeFrame(){
-        JFrame frame = new JFrame("Roll");
-        TradePanel roll = new TradePanel();
+class APropFrame extends JFrame{
+    Gameboard board;
+    public APropFrame(Gameboard gb){
+        board = gb;
+        JFrame frame = new JFrame("APropFrame");
+        APropPanel aPanel = new APropPanel();
 
-        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        frame.setSize( 600, 200 );
+        frame.setSize( 600, 600 );
         frame.setVisible( true );
-        frame.add(roll);
+        frame.add(aPanel);
+
+
     }
-
-    class TradePanel extends JPanel{
-        JButton buy, sell;
-
-        public TradePanel(){
-            JPanel rPanel = new JPanel();
-
-            buy = new JButton("Yes");
-            sell = new JButton("No");
+    class APropPanel extends JPanel{
+        JButton buttons[];
+        public APropPanel(){
+            buttons = new JButton[28];
 
 
-            JLabel propLabel = new JLabel("This property is unowned, would you like to buy it?");
-            rPanel.add(propLabel);
-            rPanel.add(buy);
-            rPanel.add(sell);
+            JPanel panel = new JPanel();
+            JLabel label = new JLabel("You own the following properties, which do you wish to trade?");
 
-            add(rPanel);
+
+            panel.setLayout(new GridLayout(7,4));
+
+            for(int i = 0; i < 28; i++){
+                buttons[i] = new JButton("Test");
+
+                panel.add(buttons[i]);
+                buttons[i].setVisible(false);
+            }
+
+            JButton cancel = new JButton("Cancel");
+
+            panel.add(cancel);
+
+            add(label);
+            add(panel);
+            add(cancel);
 
         }
+
+    }
+
+}
+
+class BPropFrame extends JFrame{
+    Gameboard board;
+    public BPropFrame(Gameboard gb){
+        board = gb;
+        JFrame frame = new JFrame("BPropFrame");
+        BPropPanel aPanel = new BPropPanel();
+
+        frame.setSize( 600, 600 );
+        frame.setVisible( true );
+        frame.add(aPanel);
+
+
+    }
+    class BPropPanel extends JPanel{
+        JButton buttons[];
+        public BPropPanel(){
+            buttons = new JButton[28];
+
+
+            JPanel panel = new JPanel();
+            JLabel label = new JLabel("The other player has the following properties, which would you like?");
+
+
+            panel.setLayout(new GridLayout(7,4));
+
+            for(int i = 0; i < 28; i++){
+                buttons[i] = new JButton("Test");
+
+                panel.add(buttons[i]);
+                buttons[i].setVisible(false);
+            }
+
+            JButton cancel = new JButton("Cancel");
+
+            panel.add(cancel);
+
+            add(label);
+            add(panel);
+            add(cancel);
+
+        }
+
     }
 
 }
 
 
+
+
+
+
+
+
+
+
+
+//
+//class TradeFrame extends JFrame{
+//    public TradeFrame(){
+//        JFrame frame = new JFrame("Roll");
+//        TradePanel roll = new TradePanel();
+//
+//        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//        frame.setSize( 600, 200 );
+//        frame.setVisible( true );
+//        frame.add(roll);
+//    }
+//
+//    class TradePanel extends JPanel{
+//        JButton buy, sell;
+//
+//        public TradePanel(){
+//            JPanel rPanel = new JPanel();
+//
+//            buy = new JButton("Yes");
+//            sell = new JButton("No");
+//
+//
+//            JLabel propLabel = new JLabel("This property is unowned, would you like to buy it?");
+//            rPanel.add(propLabel);
+//            rPanel.add(buy);
+//            rPanel.add(sell);
+//
+//            add(rPanel);
+//
+//        }
+//    }
+//
+//}
 
 
 //class PlayerOptionPanel extends JPanel{
