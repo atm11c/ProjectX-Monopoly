@@ -451,6 +451,7 @@ public class Player {
         //If nobody owns the property, prompt player to buy the property.
         if(property.getOwner() == 10){
             RollFrame rollFrame = new RollFrame(gb);
+            money = getMoney();
         }
         //If somebody does own the property, and it's not the current player, pay up buttercup
         else if(property.getOwner() != playerId){
