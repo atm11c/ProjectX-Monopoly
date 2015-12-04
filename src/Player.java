@@ -690,75 +690,6 @@ public class Player {
     }
 
     /**
-     *  Method trade
-     *  Starts a trade between two players.
-     */
-    public void trade(Gameboard gb){
-        System.out.print("Which player do you want to trade with?");
-        int trader = scanner.nextInt();
-        trader-=1;
-
-        //Print current players stuff
-        System.out.printf("Player %d has $%d\n", playerId+1, money);
-        playerProps(gb);
-
-        //Print other players stuff
-        System.out.printf("Player %d has $%d\n", trader+1, gb.players[trader].getMoney());
-        gb.players[trader].playerProps(gb);
-
-        //Ask what the trading player wants.
-        System.out.print("What property do you want?(Enter -1 for none)");
-        int rProp = scanner.nextInt();
-        System.out.print("How much money do you want from this trade?");
-        int rCash = scanner.nextInt();
-
-        //Ask what the trading player will offer.
-        System.out.print("What property will you give?(Enter -1 for none)");
-        int sProp = scanner.nextInt();
-        System.out.print("How much money will you pay for this trade?");
-        int sCash = scanner.nextInt();
-
-        //Confirm trade
-        System.out.printf("Player %d, do you want trade %s and $%d for %s and $%d? y/n ", trader+1,
-                gb.cells[rProp].getName(), rCash, gb.cells[sProp].getName(), sCash);
-        String in = scanner.next();
-        if(in.matches("y")){
-            money+=rCash;
-            canAfford(sCash);
-            gb.players[trader].setMoney(gb.players[trader].getMoney()+sCash);
-            gb.players[trader].canAfford(rCash);
-
-            OwnedCell rec = (OwnedCell)gb.cells[rProp];
-            rec.setOwner(playerId);
-            OwnedCell sen = (OwnedCell)gb.cells[sProp];
-            sen.setOwner(trader);
-
-            //Add and subtract number of railroads and utilities from players if applicable.
-            if(rec.getisRR()){
-                rrOwned+=1;
-                gb.players[trader].setRrOwned(gb.players[trader].getRrOwned() - 1);
-            }
-            else if(rec.getisUtil()){
-                utilOwned+=1;
-                gb.players[trader].setUtilOwned(gb.players[trader].getUtilOwned()-1);
-            }
-
-            if(sen.getisRR()){
-                rrOwned-=1;
-                gb.players[trader].setRrOwned(gb.players[trader].getRrOwned()+1);
-            }
-            else if(sen.getisUtil()){
-                utilOwned-=1;
-                gb.players[trader].setRrOwned(gb.players[trader].getRrOwned()+1);
-            }
-
-
-        } else {
-            System.out.printf("Player %d declined the trade.\n", trader+1);
-        }
-    }
-
-    /**
      *  Method builder
      *  Checks to see which properties are available for improvement.
      */
@@ -1165,5 +1096,27 @@ public class Player {
                 break;
         }
     }
+
+    /**
+     *  Mehthod tradeable
+     *  returns a boolean array to display which properties of a player are tradeable
+     */
+    public boolean[] tradeable(Gameboard gb){
+        boolean[] valid = new boolean[28];
+        OwnedCell ownedCell;
+        int counter=0;
+        for(int i=0;i<gb.cells.length;i++){
+            if(!Gameboard.contains(gb.BOARDCELLNUMS, i)){
+                ownedCell=(OwnedCell)gb.cells[i];
+                if(ownedCell.getOwner()==playerId){
+                    valid[counter]=true;
+                }
+                counter+=1;
+            }
+        }
+
+        return valid;
+    }
+
 
 }

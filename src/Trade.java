@@ -68,4 +68,23 @@ public class Trade {
     public Player getPlayerB() {
         return playerB;
     }
+
+    public void finalize(Gameboard gb){
+        //Send PlayerA's money to PlayerB
+        playerA.canAfford(aMoney);
+        playerB.setMoney(playerB.getMoney()+aMoney);
+
+        //Send PlayerB's money to PlayerA
+        playerB.canAfford(bMoney);
+        playerA.setMoney(playerA.getMoney()+bMoney);
+
+        //Exchange Properties
+        OwnedCell cellA = (OwnedCell)gb.cells[aProperty];
+        OwnedCell cellB = (OwnedCell)gb.cells[bProperty];
+
+        cellA.setOwner(playerB.getPlayerId());
+        cellB.setOwner(playerA.getPlayerId());
+
+    }
+
 }
