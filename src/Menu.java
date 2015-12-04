@@ -443,6 +443,7 @@ class BoardPanel extends JPanel
 
         private Gameboard gb;
         private PlayerInfoPanel playerInfo;
+        private Trade trade;
 
         private JButton[][] buttons;
         public PlayerOptionPanel(Gameboard gameboard){
@@ -514,6 +515,9 @@ class BoardPanel extends JPanel
 
                 PropHandler propHandler = new PropHandler();
                 buttons[i][3].addActionListener(propHandler);
+
+                TradeHandler tradeHandler = new TradeHandler();
+                buttons[i][1].addActionListener(tradeHandler);
             }
 
 //            for(int i = 1; i < 4; i++){
@@ -630,6 +634,266 @@ class BoardPanel extends JPanel
             }
         }
 
+        private class TradeHandler implements ActionListener{
+            public void actionPerformed(ActionEvent actionEvent) {
+                Player player;
+                String hurrdurr;
+                trade = new Trade();
+                if(actionEvent.getSource() == buttons[0][1]){
+                    player = gb.players[0];
+                }
+                else if(actionEvent.getSource() == buttons[1][1]){
+                    player = gb.players[1];
+                }
+                else if(actionEvent.getSource() == buttons[2][1]){
+                    player = gb.players[2];
+                }
+                else if(actionEvent.getSource() == buttons[3][1]){
+                    player = gb.players[3];
+                }
+                else{
+                    player = new Player(75);
+                }
+
+                if(player.getPlayerId() == gb.getCurrentPlayer()){
+                    gb.addToMessage("You can't trade with yourself...\n");
+                }
+                else{
+                    trade.setPlayerA(gb.players[gb.getCurrentPlayer()]);
+                    trade.setPlayerB(player);
+                    APropFrame aPropFrame = new APropFrame();
+                }
+            }
+        }
+
+        class APropFrame extends JFrame{
+            public JFrame frame;
+            public APropFrame(){
+                frame = new JFrame("Trading...");
+                APropPanel aPanel = new APropPanel();
+
+                frame.setSize( 600, 600 );
+                frame.setVisible( true );
+                frame.add(aPanel);
+
+
+            }
+            class APropPanel extends JPanel{
+                public JButton buttons[];
+                public JButton cancel;
+                public APropPanel(){
+                    buttons = new JButton[28];
+
+                    boolean[] valid = trade.getPlayerA().tradeable(gb);
+                    JPanel panel = new JPanel();
+                    JLabel label = new JLabel("You own the following properties, which do you wish to trade?");
+
+                    panel.setLayout(new GridLayout(7,4));
+                    APropHandler aPropHandler = new APropHandler();
+                    for(int i = 0; i < 28; i++){
+                        String derp = gb.cells[gb.TRADETOCELLS[i]].getName();
+                        buttons[i] = new JButton(derp);
+                        buttons[i].addActionListener(aPropHandler);
+                        panel.add(buttons[i]);
+
+                        buttons[i].setVisible(valid[i]);
+                    }
+
+                    cancel = new JButton("Cancel");
+                    cancel.addActionListener(aPropHandler);
+
+                    panel.add(cancel);
+
+                    add(label);
+                    add(panel);
+                    add(cancel);
+                }
+
+                class APropHandler implements ActionListener{
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        if(actionEvent.getSource()==cancel){
+                            frame.dispose();
+                        }
+                        else{
+                            for(int i=0;i<buttons.length;i++){
+                                if(actionEvent.getSource() == buttons[i]){
+                                    trade.setaProperty(gb.TRADETOCELLS[i]);
+                                    break;
+                                }
+                            }
+                            frame.dispose();
+                            AMoneyFrame aMoneyFrame = new AMoneyFrame();
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        class AMoneyFrame extends JFrame{
+            private JFrame frame;
+            AMoneyFrame(){
+                frame = new JFrame("Trading");
+                AMoneyPanel derp = new AMoneyPanel();
+
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(600, 200);
+                frame.setVisible(true);
+                frame.add(derp);
+            }
+
+            class AMoneyPanel extends JPanel{
+
+                AMoneyPanel(){
+                    JPanel jPanel = new JPanel();
+                    JLabel jLabel1 = new JLabel();
+                    JLabel jLabel2 = new JLabel();
+                    JTextField jTextField = new JTextField();
+                    jTextField.setMaximumSize(new Dimension(200, 25));
+                    AMoneyHandler aMoneyHandler = new AMoneyHandler();
+                    jTextField.addActionListener(aMoneyHandler);
+
+                    String hurr;
+                    hurr = String.format("You have $%d.",trade.getPlayerA().getMoney());
+                    jLabel1.setText(hurr);
+                    jLabel2.setText("How much do you money do you want to give in this trade? (Hit Enter to Continue)");
+                    Box box = Box.createVerticalBox();
+                    box.add(jLabel1);
+                    box.add(jLabel2);
+                    box.add(jTextField);
+
+                    jPanel.add(box);
+                    add(jPanel);
+                }
+
+                class AMoneyHandler implements ActionListener{
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        int durr = Integer.parseInt(actionEvent.getActionCommand());
+                        trade.setaMoney(durr);
+                        frame.dispose();
+                        BPropFrame bPropFrame = new BPropFrame();
+                    }
+                }
+            }
+
+        }
+
+        class BPropFrame extends JFrame{
+            public JFrame frame;
+            public BPropFrame(){
+                frame = new JFrame("Trading...");
+                BPropPanel bPanel = new BPropPanel();
+
+                frame.setSize( 600, 600 );
+                frame.setVisible( true );
+                frame.add(bPanel);
+
+
+            }
+            class BPropPanel extends JPanel{
+                public JButton buttons[];
+                public JButton cancel;
+                public BPropPanel(){
+                    buttons = new JButton[28];
+
+                    boolean[] valid = trade.getPlayerB().tradeable(gb);
+                    JPanel panel = new JPanel();
+                    JLabel label = new JLabel("Other player owns these properties, which do you want from this trade?");
+
+                    panel.setLayout(new GridLayout(7,4));
+                    BPropHandler bPropHandler = new BPropHandler();
+                    for(int i = 0; i < 28; i++){
+                        String derp = gb.cells[gb.TRADETOCELLS[i]].getName();
+                        buttons[i] = new JButton(derp);
+                        buttons[i].addActionListener(bPropHandler);
+                        panel.add(buttons[i]);
+
+                        buttons[i].setVisible(valid[i]);
+                    }
+
+                    cancel = new JButton("Cancel");
+                    cancel.addActionListener(bPropHandler);
+
+                    panel.add(cancel);
+
+                    add(label);
+                    add(panel);
+                    add(cancel);
+                }
+
+                class BPropHandler implements ActionListener{
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        if(actionEvent.getSource()==cancel){
+                            frame.dispose();
+                        }
+                        else{
+                            for(int i=0;i<buttons.length;i++){
+                                if(actionEvent.getSource() == buttons[i]){
+                                    trade.setbProperty(gb.TRADETOCELLS[i]);
+                                    break;
+                                }
+                            }
+                            frame.dispose();
+                            BMoneyFrame bMoneyFrame = new BMoneyFrame();
+                        }
+                    }
+                }
+
+            }
+
+            class BMoneyFrame extends JFrame{
+                private JFrame frame;
+                BMoneyFrame(){
+                    frame = new JFrame("Trading...");
+                    BMoneyPanel derp = new BMoneyPanel();
+
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setSize(600, 200);
+                    frame.setVisible(true);
+                    frame.add(derp);
+                }
+
+                class BMoneyPanel extends JPanel{
+
+                    BMoneyPanel(){
+                        JPanel jPanel = new JPanel();
+                        JLabel jLabel1 = new JLabel();
+                        JLabel jLabel2 = new JLabel();
+                        JTextField jTextField = new JTextField();
+                        jTextField.setMaximumSize(new Dimension(200, 25));
+                        BMoneyHandler bMoneyHandler = new BMoneyHandler();
+                        jTextField.addActionListener(bMoneyHandler);
+
+                        String hurr;
+                        hurr = String.format("You have $%d.",trade.getPlayerB().getMoney());
+                        jLabel1.setText(hurr);
+                        jLabel2.setText("How much do you money do you want to get from this trade? (Hit Enter to Continue)");
+                        Box box = Box.createVerticalBox();
+                        box.add(jLabel1);
+                        box.add(jLabel2);
+                        box.add(jTextField);
+
+                        jPanel.add(box);
+                        add(jPanel);
+                    }
+
+                    class BMoneyHandler implements ActionListener{
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            int durr = Integer.parseInt(actionEvent.getActionCommand());
+                            trade.setbMoney(durr);
+                            trade.finalize(gb);
+                            frame.dispose();
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+
+
     }
 
 
@@ -690,7 +954,7 @@ class BoardPanel extends JPanel
                 add(playerStats[i]);
             }
             output = new JTextArea();
-            output.setText("Player 1 begins...");
+            output.setText("This is a test");
             output.setEditable(false);
             output.setBorder(BorderFactory.createLineBorder(Color.black));
 
@@ -980,23 +1244,20 @@ class JailFrame extends JFrame{
                 int die2 = random.nextInt(6) + 1;
                 if (die1 == die2) {
                     System.out.println("Rolled doubles");
-                    gb.addToMessage("Rolled doubles\n");
 
-                    JailOutputFrame frame = new JailOutputFrame("Rolled doubles, you are free :D!\n");
+                    gb.addToMessage("Rolled doubles\n");
                     player.setInJail(false);
                     player.setJailTurns(0);
                 }
                 else {
                     System.out.println("Did not roll doubles.");
                     gb.addToMessage("Did not roll doubles.\n");
-                    JailOutputFrame frame = new JailOutputFrame("Did not roll doubles...\nstill in jail D:\n");
                     player.setJailTurns(player.getJailTurns()+1);
                 }
                 //after 3 turns in jail, force payment.
                 if (player.getJailTurns() == 3) {
                     System.out.println("Payment forced.");
                     gb.addToMessage("Payment forced.\n");
-                    JailOutputFrame frame = new JailOutputFrame("Payment forced, you are \"free\" to go...\n");
                     if (player.canAfford(50)) {
                         player.setInJail(false);
                         player.setJailTurns(0);
@@ -1012,120 +1273,9 @@ class JailFrame extends JFrame{
 
 
 
-class JailOutputFrame extends JFrame{
-    private String output;
-    public JailOutputFrame(String s){
-        JFrame frame = new JFrame();
-        output = s;
-
-        JailOutputPanel pan = new JailOutputPanel();
-
-        frame.setSize( 600, 200 );
-        frame.setVisible( true );
-        frame.add(pan);
-
-    }
-    class JailOutputPanel extends JPanel{
-        public JailOutputPanel() {
-            JPanel panel = new JPanel();
-            panel.add(new JLabel(output));
-            add(panel);
-        }
-    }
-}
 
 
-class APropFrame extends JFrame{
-    Gameboard board;
-    public APropFrame(Gameboard gb){
-        board = gb;
-        JFrame frame = new JFrame("APropFrame");
-        APropPanel aPanel = new APropPanel();
 
-        frame.setSize( 600, 600 );
-        frame.setVisible( true );
-        frame.add(aPanel);
-
-
-    }
-    class APropPanel extends JPanel{
-        JButton buttons[];
-        public APropPanel(){
-            buttons = new JButton[28];
-
-
-            JPanel panel = new JPanel();
-            JLabel label = new JLabel("You own the following properties, which do you wish to trade?");
-
-
-            panel.setLayout(new GridLayout(7,4));
-
-            for(int i = 0; i < 28; i++){
-                buttons[i] = new JButton("Test");
-
-                panel.add(buttons[i]);
-                buttons[i].setVisible(false);
-            }
-
-            JButton cancel = new JButton("Cancel");
-
-            panel.add(cancel);
-
-            add(label);
-            add(panel);
-            add(cancel);
-
-        }
-
-    }
-
-}
-
-class BPropFrame extends JFrame{
-    Gameboard board;
-    public BPropFrame(Gameboard gb){
-        board = gb;
-        JFrame frame = new JFrame("BPropFrame");
-        BPropPanel aPanel = new BPropPanel();
-
-        frame.setSize( 600, 600 );
-        frame.setVisible( true );
-        frame.add(aPanel);
-
-
-    }
-    class BPropPanel extends JPanel{
-        JButton buttons[];
-        public BPropPanel(){
-            buttons = new JButton[28];
-
-
-            JPanel panel = new JPanel();
-            JLabel label = new JLabel("The other player has the following properties, which would you like?");
-
-
-            panel.setLayout(new GridLayout(7,4));
-
-            for(int i = 0; i < 28; i++){
-                buttons[i] = new JButton("Test");
-
-                panel.add(buttons[i]);
-                buttons[i].setVisible(false);
-            }
-
-            JButton cancel = new JButton("Cancel");
-
-            panel.add(cancel);
-
-            add(label);
-            add(panel);
-            add(cancel);
-
-        }
-
-    }
-
-}
 
 
 
