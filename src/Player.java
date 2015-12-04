@@ -286,40 +286,39 @@ public class Player {
                 }
             }
         }
+        else {
+            Random random = new Random();
+            int die1 = random.nextInt(6) + 1;
+            int die2 = random.nextInt(6) + 1;
+            setRoll(die1 + die2);
 
-        Random random = new Random();
-        int die1 = random.nextInt(6)+1;
-        int die2 = random.nextInt(6)+1;
-        setRoll(die1+die2);
+            System.out.printf("You rolled a %d!\n", roll);
 
-        System.out.printf("You rolled a %d!\n", roll);
+            //check if doubles were rolled.
+            if (die1 == die2) {
+                System.out.println("DOUBLES");
+                dubs = true;
+                //numDubs+=1;
+            } else
+                dubs = false;
 
-        //check if doubles were rolled.
-        if(die1 == die2){
-            System.out.println("DOUBLES");
-            dubs = true;
-            //numDubs+=1;
+            //Move the player...
+            //If player passes go, collect $200
+            if (position + roll > 39) {
+                System.out.println("You passed Go!");
+                money += 200;
+            }
+
+            //Set the player's new Position
+            position += roll;
+            position %= 40;
+            System.out.printf("New position: %s\n", gb.cells[position].getName());
+
+            //Check the cell to see what happens
+            checkCell(gb);
+
+            System.out.println("End Roll\n");
         }
-        else
-            dubs = false;
-
-        //Move the player...
-        //If player passes go, collect $200
-        if(position+roll > 39) {
-            System.out.println("You passed Go!");
-            money += 200;
-        }
-
-        //Set the player's new Position
-        position+=roll;
-        position%=40;
-        System.out.printf("New position: %s\n", gb.cells[position].getName());
-
-        //Check the cell to see what happens
-        checkCell(gb);
-
-        System.out.println("End Roll\n");
-
 
     }
 
