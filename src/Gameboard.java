@@ -115,4 +115,13 @@ public class Gameboard {
         }
     }
 
+    public void gameOver(){
+        for(int i=0;i<4;i++){
+            if(players[i].isBankrupt()){
+                //launch new thing that ends the game.
+                break;
+            }
+        }
+    }
+
 }

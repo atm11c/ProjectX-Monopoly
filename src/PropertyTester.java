@@ -24,7 +24,7 @@ public class PropertyTester {
 
 
         boolean flag = true;
-
+/*
         while(flag) {
             int playerTurn = gb.getCurrentPlayer();
             //System.out.printf("Player %d, it's your turn!\n", playerTurn+1);
@@ -38,7 +38,7 @@ public class PropertyTester {
                 gb.setMessage("Game has ended!");
             }
 
-        }
+  *///      }
 
 /*
         Scanner scanner = new Scanner(System.in);

@@ -899,6 +899,14 @@ class BoardPanel extends JPanel
 
                 frame = new JFrame("Build");
 
+                //DELETE THIS
+                for(int i=0;i<gb.cells.length;i++){
+                    if(!Gameboard.contains(gb.BOARDCELLNUMS,i)){
+                        OwnedCell ownedCell = (OwnedCell)gb.cells[i];
+                        ownedCell.setOwner(0);
+                    }
+                }
+
                 buildables = gb.players[gb.getCurrentPlayer()].builder(gb);
 
                 BuildPanel build = new BuildPanel();
@@ -963,7 +971,7 @@ class BoardPanel extends JPanel
                                 Player player = gb.players[gb.getCurrentPlayer()];
                                 player.canAfford(prop.getRowNum()*50);
                                 prop.setNumHouses(prop.getNumHouses()+1);
-                                showHouse(gb.players[gb.getCurrentPlayer()].getPosition());
+                                showHouse(prop.getCellId());
                                 frame.dispose();
                                 break;
                             }
@@ -989,7 +997,7 @@ class BoardPanel extends JPanel
             buildings[pos][0].setVisible(true);
         }else{
             for(int i = 0; i < 4; i++){
-                if(!buildings[pos][0].isVisible()){
+                if(!buildings[pos][i].isVisible()){
                     buildings[pos][i].setVisible(true);
                     break;
                 }
