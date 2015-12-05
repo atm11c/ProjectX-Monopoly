@@ -9,44 +9,7 @@ import java.util.Scanner;
 
 
 public class Menu {
-
-    public static void main(String[] args){
-        Gameboard gb = new Gameboard();
-        JFrame frame = new JFrame("Monopoly!");
-        MenuPanel mPanel = new MenuPanel(gb);
-
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((dimension.getWidth()/2 - frame.getWidth())/2);
-        int y = (int) ((dimension.getHeight()/2 - frame.getHeight()) / 2);
-
-        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        frame.setSize( 600, 400 );
-        frame.setVisible( true );
-        frame.setLocation(x, y);
-        frame.add(mPanel);
-
-        boolean flag = true;
-
-        while(flag) {
-            int playerTurn = gb.getCurrentPlayer();
-            System.out.printf("Player %d, it's your turn!\n", playerTurn+1);
-
-
-            System.out.println("End Turn\n\n");
-
-            //Check for end of game
-            if(gb.players[playerTurn].isBankrupt()){
-                flag = false;
-                System.out.println("Game has ended!");
-            }
-
-            //next player
-            gb.setCurrentPlayer((playerTurn+1)%4);
-        }
-
-
-    }
-
+    //lolwut
 }
 
 
@@ -138,7 +101,7 @@ class MenuPanel extends JPanel{
             }
 
             if(event.getSource() == credits){
-                String cred = "PlaceHolder";
+                String cred = "Written by: Andrew Miller & Timothy Barao";
 
                 ImageIcon placeHolder = new ImageIcon( this.getClass().getResource("Monopoly-artwork-detail.jpg"));
                 JLabel dPic = new JLabel(placeHolder);
@@ -289,15 +252,15 @@ class BoardPanel extends JPanel
         board.setLayout(new BorderLayout());
 
 
-        JLabel dumb[] = new JLabel[44];
+        JLabel cell[] = new JLabel[44];
 
 
         ImageIcon Pieces[] = SetAllPieces();
 
         for(int i = 0; i < 40; i++){
 
-            dumb[i] = new JLabel();
-            dumb[i].setSize((width/2)/11,(width/2)/11);
+            cell[i] = new JLabel();
+            cell[i].setSize((width/2)/11,(width/2)/11);
         }
 
 
@@ -305,30 +268,30 @@ class BoardPanel extends JPanel
         for(int i = 0; i <40 ; i++){
 
             if((i >= 0 && i < 11) || (i >= 20 && i < 31) ) {
-                dumb[i].setLayout(new GridLayout(2,5));
+                cell[i].setLayout(new GridLayout(2,5));
             }else if((i >= 11 && i < 20) || (i >=31 && i < 40)) {
-                dumb[i].setLayout(new GridLayout(5,2));
+                cell[i].setLayout(new GridLayout(5,2));
             }
 
-            dumb[i].setIcon(Pieces[i]);
+            cell[i].setIcon(Pieces[i]);
 
             if(i >= 0 && i < 11) {
                 for (int j = 0; j < 5; j++) {
-                    dumb[i].add(buildings[i][j]);
+                    cell[i].add(buildings[i][j]);
                 }
 
                 for (int j = 0; j < 5; j++) {
-                    dumb[i].add(playerPieces[i][j]);
+                    cell[i].add(playerPieces[i][j]);
                 }
             }
 
             if(i >= 20 && i < 31){
                 for (int j = 0; j < 5; j++) {
-                    dumb[i].add(playerPieces[i][j]);
+                    cell[i].add(playerPieces[i][j]);
                 }
 
                 for (int j = 0; j < 5; j++) {
-                    dumb[i].add(buildings[i][j]);
+                    cell[i].add(buildings[i][j]);
                 }
 
             }
@@ -336,15 +299,15 @@ class BoardPanel extends JPanel
 
             if(i >= 11 && i < 20){
                 for(int j =0; j < 5; j++) {
-                    dumb[i].add(playerPieces[i][j]);
-                    dumb[i].add(buildings[i][j]);
+                    cell[i].add(playerPieces[i][j]);
+                    cell[i].add(buildings[i][j]);
                 }
             }
 
             if(i >=31 && i < 40){
                 for(int j =0; j < 5; j++) {
-                    dumb[i].add(buildings[i][j]);
-                    dumb[i].add(playerPieces[i][j]);
+                    cell[i].add(buildings[i][j]);
+                    cell[i].add(playerPieces[i][j]);
                 }
             }
 
@@ -369,16 +332,16 @@ class BoardPanel extends JPanel
         t4.setPreferredSize(new Dimension((width/2)/11,(height)/11));
 
         for(int i = 10; i >= 0; i--){
-            t1.add(dumb[i]);
+            t1.add(cell[i]);
         }
         for(int i = 19; i > 10; i--){
-            t3.add(dumb[i]);
+            t3.add(cell[i]);
         }
         for(int i = 20; i < 31; i++){
-            t2.add(dumb[i]);
+            t2.add(cell[i]);
         }
         for(int i = 31; i < 40; i++){
-            t4.add(dumb[i]);
+            t4.add(cell[i]);
         }
 
         ImageIcon centerPiece = new ImageIcon( this.getClass().getResource("/Pieces/CenterPiece.png"));
@@ -602,7 +565,7 @@ class BoardPanel extends JPanel
                 for(int i = 0; i < 4; i++) {
 
                     playerStatLabel[i][1].setText("Total cash: " + gb.players[i].getMoney());
-                    playerStatLabel[i][2].setText("Number of Properties owned: " + gb.players[i].getNumProps());
+                    playerStatLabel[i][2].setText("Properties owned: " + gb.players[i].getNumProps());
                 }
 
             }
@@ -899,14 +862,6 @@ class BoardPanel extends JPanel
 
                 frame = new JFrame("Build");
 
-                //DELETE THIS
-                for(int i=0;i<gb.cells.length;i++){
-                    if(!Gameboard.contains(gb.BOARDCELLNUMS,i)){
-                        OwnedCell ownedCell = (OwnedCell)gb.cells[i];
-                        ownedCell.setOwner(0);
-                    }
-                }
-
                 buildables = gb.players[gb.getCurrentPlayer()].builder(gb);
 
                 BuildPanel build = new BuildPanel();
@@ -1050,7 +1005,7 @@ class BoardPanel extends JPanel
                 playerStatLabel[i][1]=new JLabel("Total cash: " + gb.players[i].getMoney());
                 playerStats[i].add(playerStatLabel[i][1]);
 
-                playerStatLabel[i][2]=new JLabel("Number of Properties owned: " + gb.players[i].getNumProps());
+                playerStatLabel[i][2]=new JLabel("Properties owned: " + gb.players[i].getNumProps());
                 playerStats[i].add(playerStatLabel[i][2]);
 
                 playerStatLabel[i][3]=new JLabel("Color: " + colors[i]);
@@ -1062,7 +1017,7 @@ class BoardPanel extends JPanel
                 add(playerStats[i]);
             }
             output = new JTextArea();
-            output.setText("This is a test");
+            output.setText("Welcome to M'Nopoly!");
             output.setEditable(false);
             output.setBorder(BorderFactory.createLineBorder(Color.black));
 
@@ -1085,7 +1040,9 @@ class BoardPanel extends JPanel
 
 class EndFrame extends JFrame{
     private JFrame frame;
-    public EndFrame(Gameboard gb){
+    private Gameboard gb;
+    public EndFrame(Gameboard gameboard){
+        gb= gameboard;
         frame = new JFrame("GAME OVER!");
         EndPanel ePanel = new EndPanel();
 
@@ -1101,26 +1058,53 @@ class EndFrame extends JFrame{
         private JButton end;
 
         public EndPanel(){
+            Box box = Box.createVerticalBox();
             end = new JButton("End Game");
             EndHandler over = new EndHandler();
             end.addActionListener(over);
 
             panel = new JPanel();
-            panel.setLayout(new GridLayout(1,5));
+            int total1,total2,total3,total4;
+            total1 = gb.players[0].totalUp(gb);
+            total2 = gb.players[1].totalUp(gb);
+            total3 = gb.players[2].totalUp(gb);
+            total4 = gb.players[3].totalUp(gb);
 
-            panel.add(new JLabel("Player 1's total worth:" + ""));
-            panel.add(new JLabel("Player 2's total worth:" + ""));
-            panel.add(new JLabel("Player 3's total worth:" + ""));
-            panel.add(new JLabel("Player 4's total worth:" + ""));
-            panel.add(new JLabel("The Winner is:" + "!!!"));
+            box.add(new JLabel("Player 1's total worth: " + total1));
+            box.add(new JLabel("Player 2's total worth: " + total2));
+            box.add(new JLabel("Player 3's total worth: " + total3));
+            box.add(new JLabel("Player 4's total worth: " + total4));
+
+            String endMsg ="";
+            //Find largest value
+            if(total1 > total2 && total1 > total3 && total1 > total4){
+                endMsg = "The Winner is Player 1!!!";
+            }
+            else if(total2>total1 && total2>total3 && total2>total4){
+                endMsg = "The Winner is Player 2!!!";
+            }
+            else if(total3>total1 && total3>total2 && total3>total4){
+                endMsg = "The Winner is Player 3!!!";
+            }
+            else if(total4>total1 && total4>total2 && total4>total3){
+                endMsg = "The Winner is Player 4!!!";
+            }
+            else{
+                endMsg = "Tie Game!";
+            }
+
+
+            box.add(new JLabel(endMsg));
+            box.add(end);
+            panel.add(box);
 
             add(panel);
-            add(end);
+
         }
 
         class EndHandler implements ActionListener{
             public void actionPerformed(ActionEvent actionEvent) {
-                frame.dispose();
+                System.exit(0);
             }
         }
     }
@@ -1232,20 +1216,22 @@ class RollFrame extends JFrame{
                 }
 
                 if(player.isDubs() && player.getNumDubs() == 2){
-                    System.out.println("Too many doubles");
                     gb.addToMessage("Too many doubles!\n");
                     player.setPosition(10);
                     player.setNumDubs(0);
                     player.setInJail(true);
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                    gb.gameOver();
                 }
                 else if(player.isDubs()){
                     player.setNumDubs(player.getNumDubs()+1);
                     gb.setCurrentPlayer((gb.getCurrentPlayer()) % 4);
+                    gb.gameOver();
                 }
                 else if(!player.isDubs()) {
                     player.setNumDubs(0);
                     gb.setCurrentPlayer((gb.getCurrentPlayer() + 1) % 4);
+                    gb.gameOver();
                 }
                 frame.dispose();
             }
@@ -1297,13 +1283,14 @@ class JailFrame extends JFrame{
                 Player player = gb.players[playerNum];
                 if (player.canAfford(50)) {
 
-                    System.out.println("Chose to pay way out");
+
                     gb.addToMessage("Chose to pay way out\n");
                     player.setJailTurns(0);
                     player.setInJail(false);
 
                 }
                 gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                gb.gameOver();
                 frame.dispose();
             }
         }
@@ -1313,26 +1300,21 @@ class JailFrame extends JFrame{
 
                 int playerNum = gb.getCurrentPlayer();
                 Player player = gb.players[playerNum];
-                System.out.println("Rolling for doubles...");
                 gb.addToMessage("Rolling for doubles...\n");
                 Random random = new Random();
                 int die1 = random.nextInt(6) + 1;
                 int die2 = random.nextInt(6) + 1;
                 if (die1 == die2) {
-                    System.out.println("Rolled doubles");
-
                     gb.addToMessage("Rolled doubles\n");
                     player.setInJail(false);
                     player.setJailTurns(0);
                 }
                 else {
-                    System.out.println("Did not roll doubles.");
                     gb.addToMessage("Did not roll doubles.\n");
                     player.setJailTurns(player.getJailTurns()+1);
                 }
                 //after 3 turns in jail, force payment.
                 if (player.getJailTurns() == 3) {
-                    System.out.println("Payment forced.");
                     gb.addToMessage("Payment forced.\n");
                     if (player.canAfford(50)) {
                         player.setInJail(false);
@@ -1340,6 +1322,7 @@ class JailFrame extends JFrame{
                     }
                 }
                 gb.setCurrentPlayer((gb.getCurrentPlayer()+1)%4);
+                gb.gameOver();
                 frame.dispose();
             }
         }
